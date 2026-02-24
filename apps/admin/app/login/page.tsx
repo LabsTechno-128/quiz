@@ -24,7 +24,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       console.log(data)
-      const response = await publicRequest.post("/auth/login", data);
+      const response = await publicRequest.post("auth/login", data);
       console.log(response)
       const resData = response.data;
 
