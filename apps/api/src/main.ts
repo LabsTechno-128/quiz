@@ -16,21 +16,23 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/v1');
 
-  app.enableCors({
-    // origin: 'http://localhost:3000',
-    origin: [
-      'https://thinkhive.net',
-      'https://www.thinkhive.net',
-      'http://localhost:3000',
-      'https://admin.thinkhive.net',
-      'https://www.admin.thinkhive.net',
-      'http://localhost:3001',
-      'http://localhost:4000',
-      'http://localhost:3002',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true,
-  });
+  // app.enableCors({
+  //   // origin: 'http://localhost:3000',
+  //   // origin: [
+  //   //   'https://thinkhive.net',
+  //   //   'https://www.thinkhive.net',
+  //   //   'http://localhost:3000',
+  //   //   'https://admin.thinkhive.net',
+  //   //   'https://www.admin.thinkhive.net',
+  //   //   'http://localhost:3001',
+  //   //   'http://localhost:4000',
+  //   //   'http://localhost:3002',
+  //   // ],
+  //   origin: '*',
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  //   // credentials: true,
+  // });
+  app.enableCors(); // Allow all origins for development; adjust in production
   await app.listen(PORT);
   console.log(`🚀 App running on http://localhost:${PORT}`);
 }
