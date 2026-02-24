@@ -3,8 +3,8 @@ import axios from "axios";
 
 
 
-const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}` 
-// const apiUrl = "http://127.0.0.1:8000/api"
+// const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}` 
+const apiUrl = "https://api.thinkhive.net/api"
 /* Publica/Common request config */
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
