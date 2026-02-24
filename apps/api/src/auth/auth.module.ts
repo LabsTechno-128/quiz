@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { GoogleStrategy } from 'utility/strategies/google.strategy';
+import { GoogleStrategy } from 'src/utility/strategies/google.strategy';
 import { User } from 'src/user/entities/user.entity';
 import { RefreshToken } from './entities/refresh-token.entity';
 
