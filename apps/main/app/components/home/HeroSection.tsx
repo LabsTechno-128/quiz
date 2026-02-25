@@ -18,8 +18,9 @@ export default function HeroSection() {
   const loadBanners = async () => {
     try {
       setIsLoading(true);
-      const data = await bannerService.getActive();
-      setBanners(data.length > 0 ? data : [getDefaultBanner()]);
+      const data = await bannerService.getAll();
+      setBanners(data.result?.length > 0 ? data.result : [getDefaultBanner()]);
+      // console.log(data,"---------");
     } catch (e) {
       console.error("Error loading banners:", e);
       // Use default banner on error
@@ -31,8 +32,8 @@ export default function HeroSection() {
 
   const getDefaultBanner = (): Banner => ({
     id: 'default',
-    title: 'Boost Your Brainpower',
-    subtitle: 'With Daily Quizzes',
+    name: 'Boost Your Brainpower',
+    subname: 'With Daily Quizzes',
     description: 'Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!',
     image: '/assets/hero.png',
     buttonText: 'Take Quiz Now',
@@ -55,7 +56,7 @@ export default function HeroSection() {
         {/* Left Text Section */}
         <div className="lg:w-[50%] pb-10">
           <h1 className="text-xl md:text-5xl font-extrabold text-title leading-tight">
-            {banner.title} {banner.subtitle && <><br />{banner.subtitle}</>}
+            {banner.name} {banner.subname && <><br />{banner.subname}</>}
           </h1>
           <p className="text-normal mt-5">
             {banner.description || 'Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!'}
@@ -77,13 +78,13 @@ export default function HeroSection() {
 
         {/* Right Image Section */}
         <div className="relative py-10">
-          <Image
-            src={banner.image || banner.imageUrl || "/assets/hero.png"}
-            alt={banner.title}
+          { banner.image ? <Image
+            src={banner.image}
+            alt={banner.name}
             width={490}
             height={500}
             className="object-contain w-96 lg:w-full"
-          />
+          /> : null}
         </div>
       </div>
     </section>

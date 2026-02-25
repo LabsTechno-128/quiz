@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, Index } from 'typeorm';
 
 @Entity('banners')
-@Index(['isDeleted']) // Add index for better query performance
+// @Index(['isDeleted']) // Add index for better query performance
 @Index(['deletedAt'])
 export class Banner {
   @PrimaryGeneratedColumn('uuid')
@@ -11,10 +11,10 @@ export class Banner {
   image: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  title: string | null;
+  name: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  subtitle: string | null;
+  subName: string | null;
 
   @Column({ type: 'text', nullable: true })
   description: string | null;

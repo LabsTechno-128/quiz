@@ -30,6 +30,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Banner } from './entities/banner.entity';
 import { PaginatedBannersDto } from '../banners/dto/paginated-banners.dto';
+import { response } from 'express';
 
 @ApiTags('banners')
 @Controller('banners')
@@ -62,23 +63,16 @@ export class BannersController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('search') search?: string,
-  ): Promise<PaginatedBannersDto> {
+  )  {
     const result = await this.bannersService.findAll({
       page: Number(page),
       limit: Number(limit),
       search,
     });
 
-    const response = new PaginatedBannersDto();
-    response.data = result.data;
-    response.total = result.total;
-    response.page = result.page;
-    response.limit = result.limit;
-    response.totalPages = result.totalPages;
-    response.hasNextPage = result.hasNextPage;
-    response.hasPreviousPage = result.hasPreviousPage;
+    
 
-    return response;
+    return result;
   }
 
   @Post('upload')

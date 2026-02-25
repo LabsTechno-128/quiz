@@ -103,7 +103,7 @@ export class BannersService {
     page = 1,
     limit = 10,
     search,
-  }: FindAllBannersOptions = {}): Promise<PaginatedBannersDto> {
+  }) {
     try {
       this.logger.log(`Fetching banners - Page: ${page}, Limit: ${limit}`);
 
@@ -124,16 +124,24 @@ export class BannersService {
 
       const totalPages = Math.ceil(total / limit);
 
-      const result = new PaginatedBannersDto();
-      result.data = data;
-      result.total = total;
-      result.page = page;
-      result.limit = limit;
-      result.totalPages = totalPages;
-      result.hasNextPage = page < totalPages;
-      result.hasPreviousPage = page > 1;
+      // const result = new PaginatedBannersDto();
+      // result.data = data;
+      // result.total = total;
+      // result.page = page;
+      // result.limit = limit;
+      // result.totalPages = totalPages;
+      // result.hasNextPage = page < totalPages;
+      // result.hasPreviousPage = page > 1;
 
-      return result;
+      return {
+        result: data,
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      };
     } catch (error) {
       this.logger.error(`Error fetching banners: ${error.message}`, error.stack);
       throw new InternalServerErrorException('Failed to fetch banners');

@@ -242,8 +242,8 @@ export interface ArticleQueryParams extends PaginationParams {
 
 export interface Banner {
     id: string;
-    title: string;
-    subtitle?: string;
+    name: string;
+    subname?: string;
     description?: string;
     image: string;
     imageUrl?: string;
