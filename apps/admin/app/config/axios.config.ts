@@ -2,7 +2,7 @@
 import axios from "axios";
 import { getAccessToken, getRefreshToken, setAccessToken, removeToken } from "../utils/helpers";
 
-const apiUrl = `${process.env.NEXT_PUBLIC_API_SERVER}/api/v1`;
+const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
 // const apiUrl = "https://api.thinkhive.net/api/v1";
 
 /* Public request config */
