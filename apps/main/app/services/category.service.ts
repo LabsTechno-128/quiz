@@ -11,7 +11,9 @@ class CategoryService {
     /**
      * Get all categories
      */
-    async getAll(): Promise<Category[]> {
+    async getAll(): Promise<{
+        result: Category[]
+    }> {
         return clientApi.get(this.BASE_PATH);
     }
 

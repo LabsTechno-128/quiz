@@ -15,7 +15,7 @@ const Layout = ({ children }: {
 }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [userData, setUserData] = useState<userData | null>(null);
@@ -45,20 +45,21 @@ const Layout = ({ children }: {
     <div className="flex h-screen bg-[#f8fafc] overflow-hidden font-sans">
       {/* Sidebar - Desktop */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-        <Sidebar />
+        <Sidebar setIsSidebarOpen={setIsSidebarOpen} />
       </aside>
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top Header */}
         <header className="h-20 bg-white border-b border-slate-200 px-8 flex items-center justify-between shadow-sm z-40">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4  justify-end">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors lg:hidden"
+              className="p-2 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors lg:hidden  "
             >
               <Menu className="h-6 w-6" />
             </button>
+
             <div className="relative hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
@@ -73,7 +74,14 @@ const Layout = ({ children }: {
             <button className="relative p-2.5 rounded-2xl text-slate-500 hover:bg-slate-50 hover:text-indigo-600 transition-all">
               <Bell className="h-5 w-5" />
               <span className="absolute top-2.5 right-2.5 h-2 w-2 bg-red-500 rounded-full border-2 border-white"></span>
+              {/* <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="p-2 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors lg:hidden"
+              >
+                <Menu className="h-6 w-6" />sdfdsf
+              </button> */}
             </button>
+
 
             <div className="h-8 w-[1px] bg-slate-200 mx-2 hidden sm:block"></div>
 
@@ -121,7 +129,7 @@ const Layout = ({ children }: {
         </header>
 
         {/* Dynamic Content */}
-        <main className="flex-1 overflow-y-auto p-8 lg:p-10 space-y-8">
+        <main className="flex-1 overflow-y-auto p-8 lg:p-10 space-y-8" onClick={() => setIsSidebarOpen(false)}>
           {children}
         </main>
       </div>

@@ -124,7 +124,9 @@ export class ArticlesController {
     type: Article,
   })
   @ApiResponse({ status: 404, description: 'Article not found' })
-  findOne(@Param('id') id: string): Promise<Article> {
+  findOne(@Param('id') id: string): Promise<{
+    result: Article
+  }> {
     return this.articlesService.findOne(id);
   }
 

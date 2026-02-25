@@ -20,7 +20,7 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private articlesRepository: Repository<Article>,
-  ) {}
+  ) { }
 
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
     try {
@@ -72,7 +72,7 @@ export class ArticlesService {
     const totalPages = Math.ceil(total / limit);
 
     return {
-      items,
+      result: items,
       total,
       page,
       limit,
@@ -82,18 +82,22 @@ export class ArticlesService {
     };
   }
 
-  async findOne(id: string): Promise<Article> {
+  async findOne(id: string): Promise<{
+    result: Article
+  }> {
     const article = await this.articlesRepository.findOne({ where: { id } });
     if (!article) {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
-    return article;
+    return {
+      result: article
+    };
   }
 
   async update(id: string, updateArticleDto: UpdateArticleDto): Promise<Article> {
     const article = await this.findOne(id);
-    
-    const updatedArticle = this.articlesRepository.merge(article, {
+
+    const updatedArticle = this.articlesRepository.merge(article.result, {
       ...updateArticleDto,
       updatedDate: new Date(),
     });

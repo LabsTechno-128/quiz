@@ -9,7 +9,7 @@ export interface PaginationParams {
 }
 
 export interface PaginatedResponse<T> {
-    data: T[];
+    result: T[];
     items?: T[]; // Some endpoints use 'items' instead of 'data'
     total: number;
     page: number;
@@ -89,7 +89,7 @@ export interface QuizQuestion {
 }
 
 export interface Quiz {
-    id: string  ;
+    id: string;
     title: string;
     description?: string;
     category?: string;

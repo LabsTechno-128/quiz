@@ -3,7 +3,7 @@ import { Article } from '../entities/article.entity';
 
 export class PaginatedArticlesDto {
   @ApiProperty({ type: [Article] })
-  items: Article[];
+  result: Article[];
 
   @ApiProperty()
   total: number;

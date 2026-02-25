@@ -37,8 +37,7 @@ export default function Home() {
       setIsLoadingCategories(true);
       setCategoryError(null);
       const data = await categoryService.getAll();
-      console.log("Categories:", data);
-      // setCategories(data );
+      setCategories(data.result || []);
     } catch (e: unknown) {
       console.error("Error loading categories:", e);
       setCategoryError(e instanceof Error ? e.message : "Failed to load categories");
@@ -51,8 +50,9 @@ export default function Home() {
     try {
       setIsLoadingArticles(true);
       setArticleError(null);
-      const response = await articleService.getPublished({ page: 1, limit: 10 });
-      setArticles(response.items || response.data || []);
+      const response = await articleService.getAll({ page: 1, limit: 10 });
+
+      setArticles(response.result || []);
     } catch (e: unknown) {
       console.error("Error loading articles:", e);
       setArticleError(e instanceof Error ? e.message : "Failed to load articles");

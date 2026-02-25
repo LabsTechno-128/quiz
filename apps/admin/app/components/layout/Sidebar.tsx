@@ -13,7 +13,8 @@ import {
   ChevronRight,
   Settings,
   Bell,
-  Search
+  Search,
+  X
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getUser, removeToken } from "@/app/utils/helpers";
@@ -28,7 +29,7 @@ const navigation = [
   { name: "Profile", href: "/profile", icon: User },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ setIsSidebarOpen }: { setIsSidebarOpen: (open: boolean) => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
@@ -58,6 +59,12 @@ export default function Sidebar() {
             Admin Panel
           </p>
         </div>
+        <button
+          onClick={() => setIsSidebarOpen(false)}
+          className="lg:hidden absolute top-6 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer"
+        >
+          <X className="h-6 w-6" />
+        </button>
       </div>
 
       {/* Main Navigation */}
@@ -74,8 +81,8 @@ export default function Sidebar() {
               key={item.name}
               href={item.href}
               className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 ${isActive
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
-                  : "hover:bg-slate-800 hover:text-white"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
+                : "hover:bg-slate-800 hover:text-white"
                 }`}
             >
               <div className="flex items-center gap-3">

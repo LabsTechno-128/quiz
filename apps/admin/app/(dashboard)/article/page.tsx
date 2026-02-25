@@ -59,12 +59,15 @@ export default function ArticlePage() {
 
       const response = await privateRequest.get(url);
       const data = response.data;
+      console.log(data.result, data)
 
       if (Array.isArray(data)) {
+
         setArticles(data);
         setPagination(prev => ({ ...prev, total: data.length, totalPages: 1, page: 1 }));
       } else {
-        setArticles(data.data || []);
+        console.log(data.data)
+        setArticles(data.result || []);
         setPagination({
           page: data.meta?.currentPage || page,
           limit: data.meta?.itemsPerPage || limit,
@@ -72,6 +75,7 @@ export default function ArticlePage() {
           totalPages: data.meta?.totalPages || 0
         });
       }
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching articles:", error);
       Toastify.Error("Failed to fetch articles");
@@ -160,7 +164,6 @@ export default function ArticlePage() {
           />
         </div>
       </div>
-
       {/* Content View */}
       {loading ? (
         <div className="min-h-[400px] flex flex-col items-center justify-center gap-4 bg-white/50 rounded-[2.5rem] border border-slate-100 border-dashed">

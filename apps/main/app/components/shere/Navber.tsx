@@ -71,7 +71,7 @@ export default function Navbar() {
     async function loadData() {
       try {
         const res = await publicRequest.get("categories");
-        console.log("Categories in Navbar:", res.data);
+        // console.log("Categories in Navbar:", res.data);
         setCategory(res.data?.data);
         setLoading(false);
       } catch (e: unknown) {

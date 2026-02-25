@@ -28,8 +28,7 @@ export default function CategoryPage() {
   const fetchCategories = async () => {
     try {
       const response = await privateRequest.get("/categories");
-      console.log(response.data);
-      setCategories(response.data?.data);
+      setCategories(response.data?.result);
     } catch (error) {
       console.error("Error fetching categories:", error);
       Toastify.Error("Failed to fetch categories");
