@@ -8,7 +8,7 @@ import type {
 } from '../types/api.types';
 
 class QuizService {
-    private readonly BASE_PATH = 'quizzes';
+    private readonly BASE_PATH = 'quiz';
 
     /**
      * Get all quizzes with pagination

@@ -23,7 +23,7 @@ import { Toastify } from "../ui/toastify";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Categories", href: "/category", icon: Layers },
-  { name: "Quizzes", href: "/quizz", icon: HelpCircle },
+  { name: "Quiz", href: "/quiz", icon: HelpCircle },
   { name: "Blogs", href: "/article", icon: FileText },
   { name: "Users", href: "/users", icon: Users },
   { name: "Profile", href: "/profile", icon: User },

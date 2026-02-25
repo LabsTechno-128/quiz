@@ -16,18 +16,13 @@ export class QuizService {
     private questionRepository: Repository<Question>,
     @InjectRepository(Option)
     private optionRepository: Repository<Option>,
-  ) {}
+  ) { }
 
   async create(createQuizDto: CreateQuizDto): Promise<Quiz> {
-    const { questions, ...quizData } = createQuizDto;
-    
-    const quiz = this.quizRepository.create(quizData);
+
+    console.log(createQuizDto)
+    const quiz = this.quizRepository.create(createQuizDto);
     const savedQuiz = await this.quizRepository.save(quiz);
-
-    if (questions && questions.length > 0) {
-      await this.addQuestionsToQuiz(savedQuiz.id, questions);
-    }
-
     return this.findOne(savedQuiz.id);
   }
 
@@ -35,7 +30,7 @@ export class QuizService {
     page: number = 1,
     limit: number = 10,
     includeRelations: boolean = false,
-  ): Promise<{ data: Quiz[]; total: number }> {
+  ): Promise<{ result: Quiz[]; total: number, page: number, limit: number, totalPage: number }> {
     const [data, total] = await this.quizRepository.findAndCount({
       relations: includeRelations ? ['questions', 'questions.options'] : [],
       skip: (page - 1) * limit,
@@ -44,7 +39,7 @@ export class QuizService {
       withDeleted: false,
     });
 
-    return { data, total };
+    return { result: data, total, page, limit, totalPage: Math.ceil(total / limit) };
   }
 
   async findOne(id: string): Promise<Quiz> {
@@ -63,31 +58,31 @@ export class QuizService {
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
     const quiz = await this.findOne(id);
-    
-    if (updateQuizDto.questions) {
-      // Remove existing questions and options
-      await this.removeQuestions(quiz.id);
-      
-      // Add new questions
-      await this.addQuestionsToQuiz(quiz.id, updateQuizDto.questions);
-      
-      // Remove questions from DTO to avoid updating them directly
-      const { questions, ...updateData } = updateQuizDto;
-      
-      // Only update if there are other fields to update
-      if (Object.keys(updateData).length > 0) {
-        await this.quizRepository.update(id, updateData as any);
-      }
-    } else {
-      await this.quizRepository.update(id, updateQuizDto as any);
-    }
+
+    // if (updateQuizDto.questions) {
+    //   // Remove existing questions and options
+    //   await this.removeQuestions(quiz.id);
+
+    //   // Add new questions
+    //   await this.addQuestionsToQuiz(quiz.id, updateQuizDto.questions);
+
+    //   // Remove questions from DTO to avoid updating them directly
+    //   const { questions, ...updateData } = updateQuizDto;
+
+    //   // Only update if there are other fields to update
+    //   if (Object.keys(updateData).length > 0) {
+    //     await this.quizRepository.update(id, updateData as any);
+    //   }
+    // } else {
+    //   await this.quizRepository.update(id, updateQuizDto as any);
+    // }
 
     return this.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
     const result = await this.quizRepository.softDelete(id);
-    
+
     if (result.affected === 0) {
       throw new NotFoundException(`Quiz with ID ${id} not found`);
     }
@@ -96,12 +91,12 @@ export class QuizService {
   private async addQuestionsToQuiz(quizId: string, questions: any[]): Promise<void> {
     for (const questionData of questions) {
       const { options, ...questionProps } = questionData;
-      
+
       const question = this.questionRepository.create({
         ...questionProps,
         quizId,
       });
-      
+
       // Save the question and get the saved entity
       const savedQuestion = await this.questionRepository.save(question);
 
@@ -126,17 +121,17 @@ export class QuizService {
       where: { quizId },
       select: ['id'],
     });
-    
+
     if (questions.length > 0) {
       const questionIds = questions.map(q => q.id);
-      
+
       // Delete options first
       await this.optionRepository
         .createQueryBuilder()
         .delete()
         .where('questionId IN (:...ids)', { ids: questionIds })
         .execute();
-      
+
       // Then delete questions
       await this.questionRepository
         .createQueryBuilder()

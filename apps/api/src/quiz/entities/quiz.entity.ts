@@ -9,10 +9,16 @@ export class Quiz {
   id: string = uuidv4();
 
   @Column({ type: 'varchar', length: 255 })
-  title: string;
+  name: string;
 
   @Column({ type: 'text', nullable: true })
   description: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  slug: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image: string;
 
   @OneToMany('Question', 'quiz', { cascade: true })
   questions: any[]; // Using 'any' to avoid circular dependency, will be properly typed in service
@@ -26,7 +32,5 @@ export class Quiz {
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt: Date | null;
 
-  constructor(partial: Partial<Quiz> = {}) {
-    Object.assign(this, partial);
-  }
+
 }

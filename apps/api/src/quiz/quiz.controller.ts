@@ -23,21 +23,24 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Roles as RoleEnum } from 'src/user/enums/user-roles.enum';
 
-@ApiTags('quizzes')
-@Controller('quizzes')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@ApiTags('quiz')
+@Controller('quiz')
+// @UseGuards(JwtAuthGuard, RolesGuard)
 export class QuizController {
   constructor(private readonly quizService: QuizService) { }
 
   @Post()
-  @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
-  @ApiBearerAuth()
+  // @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
+  // @ApiBearerAuth()
   @ApiResponse({ status: 201, description: 'Quiz created successfully', type: Quiz })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() createQuizDto: CreateQuizDto): Promise<Quiz> {
+  // @HttpCode(HttpStatus.CREATED)
+  create(@Body() createQuizDto: any): Promise<Quiz> {
+    console.log(createQuizDto)
     return this.quizService.create(createQuizDto);
   }
+
+
 
   @Get()
   @ApiOperation({ summary: 'Get all quizzes with pagination' })

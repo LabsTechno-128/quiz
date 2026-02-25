@@ -6,6 +6,7 @@ import { QuizQuestion } from '@/app/types/api.types';
 type Product = {
   id: string;
   title: string;
+  name?: string;
   category?: string;
   price?: number;
   rating?: number;
@@ -55,8 +56,8 @@ export default function QuizCard({
       {/* Image */}
       <div className="flex justify-center pt-14 mb-4 bg-[#F6F6F6] pb-14 rounded-xl ">
         <Image
-          src={quiz.thumbnail || quiz.image || '/assets/card.png'}
-          alt={quiz.title}
+          src={quiz.image || '/assets/card.png'}
+          alt={quiz.name || "image"}
           width={100}
           height={100}
           className="object-contain mt-8"

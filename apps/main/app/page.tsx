@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import { Article, Category } from "./types/api.types";
+import { Article, Category, Quiz } from "./types/api.types";
 import { categoryService } from "./services/category.service";
 import { articleService } from "./services/article.service";
 import HeroSection from "./components/home/HeroSection";
@@ -21,7 +21,6 @@ export default function Home() {
   const [isLoadingArticles, setIsLoadingArticles] = useState(true);
   const [categoryError, setCategoryError] = useState<string | null>(null);
   const [articleError, setArticleError] = useState<string | null>(null);
-
   // Load categories
   useEffect(() => {
     loadCategories();
@@ -78,7 +77,7 @@ export default function Home() {
         <FeaturedCategory category={categories}></FeaturedCategory>
       )}
 
-      <QuizSection></QuizSection>
+      <QuizSection  ></QuizSection>
       <Physics></Physics>
 
       {/* Articles Section */}

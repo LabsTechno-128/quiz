@@ -15,6 +15,7 @@ import {
   Loader2
 } from "lucide-react";
 import { Toastify } from "@/app/components/ui/toastify";
+import Link from "next/link";
 
 export default function QuizPage() {
   const [quizzes, setQuizzes] = useState([]);
@@ -24,10 +25,10 @@ export default function QuizPage() {
   const fetchQuizzes = async () => {
     setLoading(true);
     try {
-      const response = await privateRequest.get(`/quizzes?search=${searchTerm}`);
+      const response = await privateRequest.get(`/quiz?search=${searchTerm}`);
       // Handle array or paginated response
       const data = response.data;
-      setQuizzes(Array.isArray(data) ? data : data.items || []);
+      setQuizzes(Array.isArray(data) ? data : data.result || []);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
       Toastify.Error("Failed to fetch quizzes");
@@ -59,10 +60,11 @@ export default function QuizPage() {
           <h1 className="text-2xl font-bold text-slate-900">Quiz Management</h1>
           <p className="text-sm text-slate-500 font-medium">Create and manage interactive assessments.</p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
-          <Plus className="h-4 w-4" />
+        <Link href="/quiz/create"
+          className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+        ><Plus className="h-4 w-4zz" />
           Create New Quiz
-        </button>
+        </Link>
       </div>
 
       {/* Filters & Search */}
