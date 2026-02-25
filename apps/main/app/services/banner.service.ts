@@ -32,7 +32,7 @@ class BannerService {
     async getActive(): Promise<Banner[]> {
         const response = await this.getAll({ limit: 100 });
         // Filter active banners on client side
-        return (response.data || response.items || []).filter(banner => banner.isActive);
+        return (response.result || []).filter(banner => banner.isActive);
     }
 
     /**

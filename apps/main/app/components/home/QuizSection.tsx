@@ -21,7 +21,7 @@ export default function QuizSection() {
       setIsLoading(true);
       setError(null);
       const response = await quizService.getAll({ page: 1, limit: 4 });
-      setQuizzes(response.data || response.items || []);
+      setQuizzes(response.result || []);
     } catch (e: unknown) {
       console.error("Error loading quizzes:", e);
       setError(e instanceof Error ? e.message : "Failed to load quizzes");
