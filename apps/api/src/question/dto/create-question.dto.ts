@@ -35,6 +35,10 @@ export class CreateQuestionDto {
   @IsString()
   @IsOptional()
   description: string;
+ 
+  @IsString()
+  @IsOptional()
+  quizId: string;
 
   @IsArray()
   @ValidateNested({ each: true })

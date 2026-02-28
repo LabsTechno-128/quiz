@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingSpinner from '@/app/components/common/LoadingSpinner';
 import { quizService } from '@/app/services/quiz.service';
 import { Quiz } from '@/app/types/api.types';
 import { use, useEffect, useState } from 'react';
@@ -40,13 +41,13 @@ export default function QuizQuestion({
     }
   };
   // Countdown Timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   // Format time as MM:SS
   const formatTime = (seconds: number): string => {
@@ -63,6 +64,10 @@ export default function QuizQuestion({
     'Raise a security incident and go back doing your work'
   ];
 
+  console.log("Quiz data:", quizzes); 
+  if(isLoading){
+    return <LoadingSpinner/>
+  }
   return (
     <>
       <div className="flex gap-4 justify-between bg-[#F7F7F7] py-14 px-4 lg:px-24 max-w-[1440px] mx-auto ">
@@ -79,7 +84,8 @@ export default function QuizQuestion({
         </div>
 
         {/* Quiz Box */}
-        <div className="bg-[#F7F7F7] rounded-2xl shadow-md w-full max-w-lg p-8 relative">
+        {quizzes.questions.map((question: any, index: number) => (
+        <div className="bg-[#F7F7F7] rounded-2xl shadow-md w-full max-w-lg p-8 relative mb-2" key={question.id}>
           {/* Back Button */}
           <button
             type="button"
@@ -91,7 +97,7 @@ export default function QuizQuestion({
 
           {/* Question */}
           <h2 className="text-center text-lg font-semibold text-gray-900 mb-4 mt-2">
-            Question 30
+            sdf
           </h2>
 
           <p className="text-gray-600 text-sm text-center mb-8">
@@ -102,7 +108,7 @@ export default function QuizQuestion({
 
           {/* Answer Options */}
           <div className="flex flex-col gap-3">
-            {answers.map((ans, i) => (
+            {question?.option.map((ans:{name:string}, i:number) => (
               <button
                 key={i}
                 type="button"
@@ -112,11 +118,12 @@ export default function QuizQuestion({
                   : 'border-gray-300 text-gray-700 hover:border-indigo-400'
                   }`}
               >
-                {ans}
+                {ans?.name}
               </button>
             ))}
           </div>
         </div>
+        ))}
         {/* Submit Button */}
         <button
           type="button"

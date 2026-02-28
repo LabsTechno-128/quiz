@@ -5,6 +5,7 @@ import { Question } from './entities/question.entity';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Option } from './entities/option.entity';
+import { Quiz } from 'src/quiz/entities/quiz.entity';
 
 @Injectable()
 export class QuestionService {
@@ -13,12 +14,14 @@ export class QuestionService {
     private questionRepository: Repository<Question>,
      @InjectRepository(Option)
     private optionRepository: Repository<Option>,
+    @InjectRepository(Quiz)
+    private quizRepository: Repository<Quiz>,
   ) {}
 
  
  async findAll(): Promise<{result:Question[],total:number,page:number,limit:number,totalPage:number}> { 
   const result = await this.questionRepository.find({
-      relations:['option']
+      relations:['option','quiz']
     });
     return  {
       result,
@@ -31,12 +34,18 @@ export class QuestionService {
  
   async create(dto: CreateQuestionDto)  { 
     // const option = this.optionRepository.create(dto.option);
-    const question = this.questionRepository.create({
+    let question = this.questionRepository.create({
       name:dto.name,
       slug:dto.slug,
       description:dto.description,
       status:dto.status,
     });
+    if(dto.quizId){
+      const quiz = await this.quizRepository.findOne({where:{id:dto.quizId}});
+      if(quiz){
+        question.quiz = quiz;
+      }
+    }
     const questionData = await this.questionRepository.save(question);
     if(dto.option){ 
       for(let value of dto.option){

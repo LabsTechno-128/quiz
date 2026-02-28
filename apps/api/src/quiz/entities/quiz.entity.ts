@@ -1,3 +1,4 @@
+import { Question } from 'src/question/entities/question.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -28,8 +29,10 @@ export class Quiz {
   @Column({ type: 'varchar', length: 255, nullable: true })
   image: string;
 
-  @OneToMany('Question', 'quiz', { cascade: true , nullable: true })
-  questions: any[]; // Using 'any' to avoid circular dependency, will be properly typed in service
+    @OneToMany(() => Question, (question) => question.quiz, {
+      cascade: true,  nullable: true
+    })
+    questions: Question[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

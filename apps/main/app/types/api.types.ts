@@ -103,11 +103,11 @@ export interface Quiz {
     isPublished?: boolean;
     startDate?: string;
     endDate?: string;
-    questions?: QuizQuestion[];
+    questions: QuizQuestion[];
     sold?: number;
     rating?: number;
     createdAt: string;
-    updatedAt?: string;
+    updatedAt?: string; 
 }
 
 export interface CreateQuizDto {

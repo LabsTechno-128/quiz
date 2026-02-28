@@ -9,16 +9,20 @@ import {
     FileText,
     Globe,
     CheckCircle,
+    Layers,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { privateRequest } from "@/app/config/axios.config";
 import { Toastify } from "@/app/components/ui/toastify";
 import PageHeader from "@/app/components/ui/pageHeader";
+import Select from "react-select";
+import useFetch from "@/app/hooks/useFetch";
 
 export default function CreateQuestionForm({ onSuccess }: { onSuccess: any }) {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
+const { data: quizData, loading: quizFetchLoading } = useFetch("/quiz");
+console.log(quizData,"quizData");   
     const {
         register,
         handleSubmit,
@@ -33,6 +37,7 @@ export default function CreateQuestionForm({ onSuccess }: { onSuccess: any }) {
             slug: "",
             description: "",
             status: true,
+            quizId: "",
             option: [
                 { name: "", isCorrect: false },
                 { name: "", isCorrect: false },
@@ -67,7 +72,7 @@ export default function CreateQuestionForm({ onSuccess }: { onSuccess: any }) {
             Toastify.Success("Question created successfully!");
             reset();
             onSuccess?.(res.data);
-            router.push("/question");
+            // router.push("/question");
         } catch (err) {
             console.error(err);
             Toastify.Error("Failed to create question!");
@@ -76,6 +81,44 @@ export default function CreateQuestionForm({ onSuccess }: { onSuccess: any }) {
         }
     };
     const options = watch("option");
+
+      const customSelectStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: "#f8fafc", // slate-50
+      borderColor: state.isFocused ? "#6366f1" : "#f1f5f9", // indigo-500 : slate-100
+      borderRadius: "1.5rem",
+      padding: "0.5rem 1rem",
+      boxShadow: state.isFocused ? "0 0 0 4px #e0e7ff" : "none", // indigo-100
+      "&:hover": {
+        borderColor: "#6366f1",
+      },
+      transition: "all 0.2s ease",
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#6366f1" : state.isFocused ? "#eef2ff" : "white",
+      color: state.isSelected ? "white" : "#1e293b",
+      padding: "0.75rem 1.25rem",
+      borderRadius: "0.75rem",
+      margin: "0.25rem 0.5rem",
+      cursor: "pointer",
+      width: "auto",
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      borderRadius: "1.5rem",
+      padding: "0.5rem",
+      boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+      border: "1px solid #f1f5f9",
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      color: "#94a3b8",
+      fontSize: "0.875rem",
+      fontWeight: "500",
+    }),
+  };
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <PageHeader
@@ -90,6 +133,23 @@ export default function CreateQuestionForm({ onSuccess }: { onSuccess: any }) {
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Left */}
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
+                                <Layers className="h-3.5 w-3.5 text-indigo-500" />
+                                Parent Category
+                            </label>
+                            <Select
+                                options={quizData?.result?.map((p: any) => ({
+                                    value: p.id,
+                                    label: p.name,
+                                }))}
+                                isLoading={quizFetchLoading}
+                                isClearable
+                                placeholder="Select a parent category"
+                                styles={customSelectStyles}
+                                onChange={(quiz: any) => setValue("quizId", quiz ? quiz.value : null)}
+                            />
+                        </div>
                         <div className="space-y-6">
                             {/* Question Name */}
                             <div className="space-y-2">

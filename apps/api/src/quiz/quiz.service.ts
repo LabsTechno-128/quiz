@@ -35,7 +35,7 @@ export class QuizService {
     totalPage: number;
   }> {
     const [data, total] = await this.quizRepository.findAndCount({
-      relations: includeRelations ? ['questions', 'questions.options'] : [],
+      relations:   ['questions','questions.option' ]  ,
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: 'DESC' },
@@ -54,6 +54,7 @@ export class QuizService {
   async findOne(id: string): Promise<Quiz> {
     const quiz = await this.quizRepository.findOne({
       where: { id }, 
+      relations:   ['questions','questions.option' ]  ,
       withDeleted: false,
     });
 
