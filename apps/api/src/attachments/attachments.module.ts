@@ -7,10 +7,7 @@ import { Attachment } from './entities/attachment.entity';
 import { CloudinaryProvider } from '../config/cloudinary.config';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Attachment]),
-    ConfigModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Attachment]), ConfigModule],
   controllers: [AttachmentsController],
   providers: [AttachmentsService, CloudinaryProvider],
   exports: [AttachmentsService],

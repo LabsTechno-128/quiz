@@ -33,7 +33,7 @@ import { Roles as RoleEnum } from '../user/enums/user-roles.enum';
 @Controller('articles')
 // @UseGuards(JwtAuthGuard, RolesGuard)
 export class ArticlesController {
-  constructor(private readonly articlesService: ArticlesService) { }
+  constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
   // @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
@@ -125,7 +125,7 @@ export class ArticlesController {
   })
   @ApiResponse({ status: 404, description: 'Article not found' })
   findOne(@Param('id') id: string): Promise<{
-    result: Article
+    result: Article;
   }> {
     return this.articlesService.findOne(id);
   }

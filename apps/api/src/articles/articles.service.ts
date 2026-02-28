@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, Not, IsNull } from 'typeorm';
 import { Article } from './entities/article.entity';
@@ -20,7 +24,7 @@ export class ArticlesService {
   constructor(
     @InjectRepository(Article)
     private articlesRepository: Repository<Article>,
-  ) { }
+  ) {}
 
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
     try {
@@ -83,18 +87,21 @@ export class ArticlesService {
   }
 
   async findOne(id: string): Promise<{
-    result: Article
+    result: Article;
   }> {
     const article = await this.articlesRepository.findOne({ where: { id } });
     if (!article) {
       throw new NotFoundException(`Article with ID ${id} not found`);
     }
     return {
-      result: article
+      result: article,
     };
   }
 
-  async update(id: string, updateArticleDto: UpdateArticleDto): Promise<Article> {
+  async update(
+    id: string,
+    updateArticleDto: UpdateArticleDto,
+  ): Promise<Article> {
     const article = await this.findOne(id);
 
     const updatedArticle = this.articlesRepository.merge(article.result, {

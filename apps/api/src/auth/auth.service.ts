@@ -21,7 +21,7 @@ export class AuthService {
     @InjectRepository(RefreshToken)
     private refreshTokenRepository: Repository<RefreshToken>,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async signup(signupDto: SignupDto): Promise<{
     accessToken: string;
@@ -36,14 +36,16 @@ export class AuthService {
       const emailExists = await this.userRepository.findOne({
         where: { email },
       });
-      if (emailExists) throw new BadRequestException('Email already registered');
+      if (emailExists)
+        throw new BadRequestException('Email already registered');
     }
 
     if (phone) {
       const phoneExists = await this.userRepository.findOne({
         where: { phone },
       });
-      if (phoneExists) throw new BadRequestException('Phone already registered');
+      if (phoneExists)
+        throw new BadRequestException('Phone already registered');
     }
 
     // Hash password

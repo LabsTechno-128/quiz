@@ -1,7 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, IsUUID, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CreateQuestionDto } from './create-question.dto';
+import {
+  IsString,
+  IsOptional,
+} from 'class-validator'; 
 
 export class CreateQuizDto {
   @ApiProperty({ description: 'The name of the quiz' })
@@ -12,5 +13,4 @@ export class CreateQuizDto {
   @IsString()
   @IsOptional()
   description?: string;
-
 }

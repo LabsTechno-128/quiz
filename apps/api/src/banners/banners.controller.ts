@@ -35,7 +35,7 @@ import { response } from 'express';
 @ApiTags('banners')
 @Controller('banners')
 export class BannersController {
-  constructor(private readonly bannersService: BannersService) { }
+  constructor(private readonly bannersService: BannersService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new banner' })
@@ -63,14 +63,12 @@ export class BannersController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('search') search?: string,
-  )  {
+  ) {
     const result = await this.bannersService.findAll({
       page: Number(page),
       limit: Number(limit),
       search,
     });
-
-    
 
     return result;
   }

@@ -25,6 +25,7 @@ const navigation = [
   { name: "Categories", href: "/category", icon: Layers },
   { name: "Banners", href: "/banner", icon: Layers },
   { name: "Quiz", href: "/quiz", icon: HelpCircle },
+  { name: "Questions", href: "/question", icon: HelpCircle },
   { name: "Blogs", href: "/article", icon: FileText },
   { name: "Users", href: "/users", icon: Users },
   { name: "Profile", href: "/profile", icon: User },

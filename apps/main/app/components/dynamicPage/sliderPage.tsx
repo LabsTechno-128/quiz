@@ -1,9 +1,11 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { FiStar } from 'react-icons/fi';
 
-export default function SliderPage() {
+export default function SliderPage({ id }: { id: string }) {
+
   const images = ['/assets/hero.png', '/assets/hero2.png', '/assets/hero3.png'];
 
   const [current, setCurrent] = useState(0);
@@ -15,6 +17,7 @@ export default function SliderPage() {
   //     }, 3000);
   //     return () => clearInterval(interval);
   //   }, []);
+
 
   const prevSlide = () => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -33,9 +36,8 @@ export default function SliderPage() {
           {images.map((src, index) => (
             <div
               key={index}
-              className={`absolute transition-opacity duration-1000  ${
-                index === current ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute transition-opacity duration-1000  ${index === current ? 'opacity-100' : 'opacity-0'
+                }`}
             >
               <Image
                 src={src}
@@ -82,9 +84,9 @@ export default function SliderPage() {
             to the top!
           </p>
           <div className="flex flex-wrap items-center gap-4 mt-8">
-            <button className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary transition">
+            <Link href={`/question-answer/${id}`} className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary transition">
               Take Quiz Now
-            </button>
+            </Link>
             <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition">
               View Detail
             </button>

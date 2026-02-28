@@ -26,7 +26,7 @@ import type { Express } from 'express';
 @ApiTags('attachments')
 @Controller('attachments')
 export class AttachmentsController {
-  constructor(private readonly attachmentsService: AttachmentsService) { }
+  constructor(private readonly attachmentsService: AttachmentsService) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))

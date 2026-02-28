@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+} from 'typeorm';
 
 @Entity('articles')
 export class Article {
@@ -12,7 +19,7 @@ export class Article {
   @Index()
   title: string;
 
-  // slug added 
+  // slug added
   @Column({ nullable: true })
   slug: string;
 

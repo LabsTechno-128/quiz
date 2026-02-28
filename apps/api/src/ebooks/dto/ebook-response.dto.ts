@@ -13,10 +13,10 @@ export class EbookResponseDto {
   @ApiPropertyOptional({ description: 'Author of the ebook' })
   author: string | null;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'Categories of the ebook',
     type: [String],
-    example: ['Fiction', 'Science']
+    example: ['Fiction', 'Science'],
   })
   categories: string[] | null;
 
@@ -26,24 +26,24 @@ export class EbookResponseDto {
   @ApiPropertyOptional({ description: 'URL of the cover image' })
   coverImageUrl: string | null;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'Publication date of the ebook',
     type: 'string',
-    format: 'date-time'
+    format: 'date-time',
   })
   publishedAt: Date | null;
 
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Creation timestamp',
     type: 'string',
-    format: 'date-time'
+    format: 'date-time',
   })
   createdAt: Date;
 
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Last update timestamp',
     type: 'string',
-    format: 'date-time'
+    format: 'date-time',
   })
   updatedAt: Date;
 

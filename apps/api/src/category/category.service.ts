@@ -10,13 +10,13 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
-  ) { }
+  ) {}
 
   async create(dto: CreateCategoryDto): Promise<Category> {
     const parent = dto.parent_id
       ? await this.categoryRepo.findOne({
-        where: { id: dto.parent_id },
-      })
+          where: { id: dto.parent_id },
+        })
       : undefined;
     const category = this.categoryRepo.create({
       ...dto,
@@ -27,7 +27,9 @@ export class CategoryService {
 
   async findAll(): Promise<{ result: Category[]; message: string }> {
     return {
-      result: await this.categoryRepo.find({ relations: ['parent', 'children'] }),
+      result: await this.categoryRepo.find({
+        relations: ['parent', 'children'],
+      }),
       message: 'Categories retrieved successfully',
     };
   }

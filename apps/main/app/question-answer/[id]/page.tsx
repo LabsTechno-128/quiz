@@ -1,12 +1,44 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { quizService } from '@/app/services/quiz.service';
+import { Quiz } from '@/app/types/api.types';
+import { use, useEffect, useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 
-export default function QuizQuestion() {
+export default function QuizQuestion({
+  params
+}: {
+  params: Promise<{ slug: string; id: string }>;
+}) {
+  // Unwrap the promise
+  const { slug, id } = use(params);
   const [timeLeft, setTimeLeft] = useState<number>(65); // ✅ explicitly typed number
   const [selected, setSelected] = useState<number | null>(null); // ✅ start as null
 
+  const [quizzes, setQuizzes] = useState<Quiz>({} as Quiz);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadQuizzes();
+  }, []);
+
+  const loadQuizzes = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await quizService.getById(id);
+      setQuizzes(response);
+      console.log("Quiz data:", response);
+      // setQuizzes(response.result || []);
+    } catch (e: unknown) {
+      console.error("Error loading quizzes:", e);
+      setError(e instanceof Error ? e.message : "Failed to load quizzes");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   // Countdown Timer
   useEffect(() => {
     const timer = setInterval(() => {
@@ -75,11 +107,10 @@ export default function QuizQuestion() {
                 key={i}
                 type="button"
                 onClick={() => setSelected(i)}
-                className={`w-full border rounded-lg py-3 px-4 text-sm transition-all duration-200 ${
-                  selected === i
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'border-gray-300 text-gray-700 hover:border-indigo-400'
-                }`}
+                className={`w-full border rounded-lg py-3 px-4 text-sm transition-all duration-200 ${selected === i
+                  ? 'bg-indigo-600 text-white border-indigo-600'
+                  : 'border-gray-300 text-gray-700 hover:border-indigo-400'
+                  }`}
               >
                 {ans}
               </button>

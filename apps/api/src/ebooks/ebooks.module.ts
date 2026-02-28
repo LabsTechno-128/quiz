@@ -12,4 +12,4 @@ import { Ebook } from './entities/ebook.entity';
   providers: [EbooksService],
   exports: [EbooksService], // Export if needed by other modules
 })
-export class EbooksModule { }
+export class EbooksModule {}

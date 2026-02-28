@@ -41,7 +41,7 @@ export class EbooksService {
 
       const [result, total] = await this.ebookRepository.findAndCount(options);
       return {
-        data: result.map(ebook => this.mapToResponseDto(ebook)),
+        data: result.map((ebook) => this.mapToResponseDto(ebook)),
         total,
       };
     } catch (error) {

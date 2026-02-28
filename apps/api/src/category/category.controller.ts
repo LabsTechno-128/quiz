@@ -19,7 +19,7 @@ import { UseGuards } from '@nestjs/common';
 @Controller('categories')
 // @UseGuards(JwtAuthGuard, RolesGuard)
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) { }
+  constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
   // @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)

@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, DeleteDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  DeleteDateColumn,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 // Using string literal for relation to avoid circular dependency
@@ -20,17 +28,19 @@ export class Quiz {
   @Column({ type: 'varchar', length: 255, nullable: true })
   image: string;
 
-  @OneToMany('Question', 'quiz', { cascade: true })
+  @OneToMany('Question', 'quiz', { cascade: true , nullable: true })
   questions: any[]; // Using 'any' to avoid circular dependency, will be properly typed in service
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt: Date | null;
-
-
 }

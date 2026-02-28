@@ -20,7 +20,7 @@ import { EbookResponseDto } from './dto/ebook-response.dto';
 @ApiTags('ebooks')
 @Controller('ebooks')
 export class EbooksController {
-  constructor(private readonly ebooksService: EbooksService) { }
+  constructor(private readonly ebooksService: EbooksService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new ebook' })

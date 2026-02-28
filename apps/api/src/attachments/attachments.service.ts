@@ -10,7 +10,7 @@ export class AttachmentsService {
   constructor(
     @InjectRepository(Attachment)
     private attachmentsRepository: Repository<Attachment>,
-  ) { }
+  ) {}
 
   async uploadFile(
     file: Express.Multer.File,

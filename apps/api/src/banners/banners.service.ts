@@ -4,7 +4,7 @@ import {
   BadRequestException,
   ConflictException,
   InternalServerErrorException,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, Like, FindManyOptions } from 'typeorm';
@@ -62,7 +62,7 @@ export class BannersService {
   constructor(
     @InjectRepository(Banner)
     private bannersRepository: Repository<Banner>,
-  ) { }
+  ) {}
 
   /**
    * Create a new banner
@@ -86,8 +86,11 @@ export class BannersService {
     } catch (error) {
       this.logger.error(`Error creating banner: ${error.message}`, error.stack);
 
-      if (error.code === '23505') { // Unique constraint violation
-        throw new ConflictException('Banner with similar details already exists');
+      if (error.code === '23505') {
+        // Unique constraint violation
+        throw new ConflictException(
+          'Banner with similar details already exists',
+        );
       }
 
       throw new InternalServerErrorException('Failed to create banner');
@@ -99,11 +102,7 @@ export class BannersService {
    * @param options - Pagination and filtering options
    * @returns Paginated list of banners
    */
-  async findAll({
-    page = 1,
-    limit = 10,
-    search,
-  }) {
+  async findAll({ page = 1, limit = 10, search }) {
     try {
       this.logger.log(`Fetching banners - Page: ${page}, Limit: ${limit}`);
 
@@ -143,7 +142,10 @@ export class BannersService {
         hasPreviousPage: page > 1,
       };
     } catch (error) {
-      this.logger.error(`Error fetching banners: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error fetching banners: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Failed to fetch banners');
     }
   }
@@ -177,7 +179,10 @@ export class BannersService {
       return banner;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      this.logger.error(`Error finding banner ${id}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error finding banner ${id}: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Failed to retrieve banner');
     }
   }
@@ -211,7 +216,10 @@ export class BannersService {
       return savedBanner;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      this.logger.error(`Error updating banner ${id}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error updating banner ${id}: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Failed to update banner');
     }
   }
@@ -235,7 +243,10 @@ export class BannersService {
       this.logger.log(`Banner with ID ${id} soft deleted successfully`);
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      this.logger.error(`Error deleting banner ${id}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error deleting banner ${id}: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Failed to delete banner');
     }
   }
@@ -281,7 +292,9 @@ export class BannersService {
       const result = await this.bannersRepository.restore(id);
 
       if (result.affected === 0) {
-        throw new NotFoundException(`Banner with ID ${id} not found or already active`);
+        throw new NotFoundException(
+          `Banner with ID ${id} not found or already active`,
+        );
       }
 
       const restoredBanner = await this.findOne(id, true);
@@ -290,7 +303,10 @@ export class BannersService {
       return restoredBanner;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      this.logger.error(`Error restoring banner ${id}: ${error.message}`, error.stack);
+      this.logger.error(
+        `Error restoring banner ${id}: ${error.message}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Failed to restore banner');
     }
   }

@@ -17,35 +17,35 @@ export class CreateEbookDto {
   @IsOptional()
   author?: string;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'Categories of the ebook',
     type: [String],
-    example: ['Fiction', 'Science']
+    example: ['Fiction', 'Science'],
   })
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   categories?: string[];
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'URL of the ebook file (handled by file upload)',
-    readOnly: true
+    readOnly: true,
   })
   @IsString()
   @IsOptional()
   ebookFileUrl?: string;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'URL of the cover image (handled by file upload)',
-    readOnly: true
+    readOnly: true,
   })
   @IsString()
   @IsOptional()
   coverImageUrl?: string;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'Publication date of the ebook (ISO 8601 format)',
-    example: '2023-01-01T00:00:00.000Z'
+    example: '2023-01-01T00:00:00.000Z',
   })
   @IsDateString()
   @IsOptional()
