@@ -88,7 +88,7 @@ export default function ImageUpload({
         setUploading(false);
       }
     },
-    [maxSizeMB, onChange, uploadUrl]
+    [maxSizeMB, onChange, uploadUrl],
   );
 
   const onDrop = (e: any) => {
@@ -129,7 +129,7 @@ export default function ImageUpload({
           dragOver
             ? "border-blue-400 bg-blue-50"
             : "border-gray-200 bg-white hover:border-gray-300",
-          "transition"
+          "transition",
         )}
         style={{ minHeight: 160 }}
       >

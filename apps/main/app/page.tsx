@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import { Article, Category, Quiz } from "./types/api.types";
 import { categoryService } from "./services/category.service";
@@ -12,7 +12,6 @@ import Physics from "./components/home/Physics";
 import ArticlesSectionSkeleton from "./components/skeleton/homeArticleSkeleton";
 import ArticlesSection from "./components/card/QuzzyCard";
 // import { serverApi } from "@/lib/serverApi";
-
 
 export default function Home() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -39,7 +38,9 @@ export default function Home() {
       setCategories(data.result || []);
     } catch (e: unknown) {
       console.error("Error loading categories:", e);
-      setCategoryError(e instanceof Error ? e.message : "Failed to load categories");
+      setCategoryError(
+        e instanceof Error ? e.message : "Failed to load categories",
+      );
     } finally {
       setIsLoadingCategories(false);
     }
@@ -54,7 +55,9 @@ export default function Home() {
       setArticles(response.result || []);
     } catch (e: unknown) {
       console.error("Error loading articles:", e);
-      setArticleError(e instanceof Error ? e.message : "Failed to load articles");
+      setArticleError(
+        e instanceof Error ? e.message : "Failed to load articles",
+      );
     } finally {
       setIsLoadingArticles(false);
     }
@@ -77,7 +80,7 @@ export default function Home() {
         <FeaturedCategory category={categories}></FeaturedCategory>
       )}
 
-      <QuizSection  ></QuizSection>
+      <QuizSection></QuizSection>
       <Physics></Physics>
 
       {/* Articles Section */}

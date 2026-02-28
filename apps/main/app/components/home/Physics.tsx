@@ -1,6 +1,6 @@
-'use client';
-import Image from 'next/image';
-import { FiStar } from 'react-icons/fi';
+"use client";
+import Image from "next/image";
+import { FiStar } from "react-icons/fi";
 
 export default function Physics() {
   return (
@@ -32,7 +32,7 @@ export default function Physics() {
             <FiStar className="text-yellow-400" size={16} />
             <span>4.8</span>
             <span className="mx-1">•</span>
-            <span>1,238  Sold</span>
+            <span>1,238 Sold</span>
             <span className="mx-1">•</span>
             <span>15 MCQs + PDF</span>
           </div>

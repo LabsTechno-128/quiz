@@ -5,7 +5,11 @@ import Select from "react-select";
 import { useState } from "react";
 import { publicRequest } from "@/app/config/axios.config";
 
-export default function CreateEbookForm({ onSuccess }: { onSuccess: (data: any) => void }) {
+export default function CreateEbookForm({
+  onSuccess,
+}: {
+  onSuccess: (data: any) => void;
+}) {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -98,7 +102,7 @@ export default function CreateEbookForm({ onSuccess }: { onSuccess: (data: any) 
           onChange={(option: any) =>
             setValue(
               "categories",
-              option ? option.map((o: any) => o.value) : []
+              option ? option.map((o: any) => o.value) : [],
             )
           }
         />

@@ -13,7 +13,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-
   const {
     register,
     handleSubmit,
@@ -23,9 +22,9 @@ export default function LoginPage() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      console.log(data)
+      console.log(data);
       const response = await publicRequest.post("auth/login", data);
-      console.log(response)
+      console.log(response);
       const resData = response.data;
 
       if (resData?.accessToken && resData?.refreshToken) {
@@ -43,7 +42,8 @@ export default function LoginPage() {
     } catch (error: any) {
       console.error("Login error:", error);
       Toastify.Error(
-        error?.response?.data?.message || "Invalid credentials. Please try again."
+        error?.response?.data?.message ||
+          "Invalid credentials. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -87,10 +87,11 @@ export default function LoginPage() {
                     },
                   })}
                   type="email"
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${errors.email
-                    ? "border-red-500"
-                    : "border-slate-200 focus:border-indigo-500"
-                    }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${
+                    errors.email
+                      ? "border-red-500"
+                      : "border-slate-200 focus:border-indigo-500"
+                  }`}
                   placeholder="admin@thinkhive.com"
                 />
               </div>
@@ -127,10 +128,11 @@ export default function LoginPage() {
                     },
                   })}
                   type={showPassword ? "text" : "password"}
-                  className={`block w-full pl-10 pr-10 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${errors.password
-                    ? "border-red-500"
-                    : "border-slate-200 focus:border-indigo-500"
-                    }`}
+                  className={`block w-full pl-10 pr-10 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${
+                    errors.password
+                      ? "border-red-500"
+                      : "border-slate-200 focus:border-indigo-500"
+                  }`}
                   placeholder="••••••••"
                 />
                 <button

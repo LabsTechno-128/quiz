@@ -1,8 +1,8 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-import { FiPlus, FiMinus, FiTrash2 } from 'react-icons/fi';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 
 type Product = {
   id: number;
@@ -17,43 +17,43 @@ type Product = {
 const initialProducts: Product[] = [
   {
     id: 1,
-    name: 'Geography Mastery',
-    category: 'Geography',
+    name: "Geography Mastery",
+    category: "Geography",
     price: 15,
-    img: '/assets/card-quzzy.png'
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 2,
-    name: 'Grammar Essentials',
-    category: 'English',
+    name: "Grammar Essentials",
+    category: "English",
     price: 20,
-    img: '/assets/card-quzzy.png'
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 3,
-    name: 'Human Body System',
-    category: 'Science',
+    name: "Human Body System",
+    category: "Science",
     price: 46,
-    img: '/assets/card-quzzy.png'
-  }
+    img: "/assets/card-quzzy.png",
+  },
 ];
 
 export default function CartPage() {
   const [products, setProducts] = useState<Product[]>(
-    initialProducts.map((p) => ({ ...p, qty: 1, selected: false }))
+    initialProducts.map((p) => ({ ...p, qty: 1, selected: false })),
   );
 
   const toggleSelect = (id: number) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, selected: !p.selected } : p))
+      prev.map((p) => (p.id === id ? { ...p, selected: !p.selected } : p)),
     );
   };
 
   const changeQty = (id: number, delta: number) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, qty: Math.max(1, (p.qty || 1) + delta) } : p
-      )
+        p.id === id ? { ...p, qty: Math.max(1, (p.qty || 1) + delta) } : p,
+      ),
     );
   };
 
@@ -64,7 +64,7 @@ export default function CartPage() {
   const selectedProducts = products.filter((p) => p.selected);
   const totalPrice = selectedProducts.reduce(
     (sum, p) => sum + p.price * (p.qty || 1),
-    0
+    0,
   );
 
   return (
@@ -218,6 +218,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-
-

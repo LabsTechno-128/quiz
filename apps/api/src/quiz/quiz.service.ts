@@ -7,13 +7,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Quiz } from './entities/quiz.entity';
 import { CreateQuizDto } from './dto/create-quiz.dto';
-import { UpdateQuizDto } from './dto/update-quiz.dto';  
+import { UpdateQuizDto } from './dto/update-quiz.dto';
 
 @Injectable()
 export class QuizService {
   constructor(
     @InjectRepository(Quiz)
-    private quizRepository: Repository<Quiz>,  
+    private quizRepository: Repository<Quiz>,
   ) {}
 
   async create(createQuizDto: CreateQuizDto): Promise<Quiz> {
@@ -35,7 +35,7 @@ export class QuizService {
     totalPage: number;
   }> {
     const [data, total] = await this.quizRepository.findAndCount({
-      relations:   ['questions','questions.option' ]  ,
+      relations: ['questions', 'questions.option'],
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: 'DESC' },
@@ -53,8 +53,8 @@ export class QuizService {
 
   async findOne(id: string): Promise<Quiz> {
     const quiz = await this.quizRepository.findOne({
-      where: { id }, 
-      relations:   ['questions','questions.option' ]  ,
+      where: { id },
+      relations: ['questions', 'questions.option'],
       withDeleted: false,
     });
 
@@ -96,8 +96,4 @@ export class QuizService {
       throw new NotFoundException(`Quiz with ID ${id} not found`);
     }
   }
-
-   
-
- 
 }

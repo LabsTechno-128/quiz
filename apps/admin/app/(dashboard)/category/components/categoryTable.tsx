@@ -4,7 +4,15 @@ import DataTable from "react-data-table-component";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useDelete } from "@/app/hooks/useDelete";
 
-export default function CategoryTable({ data, refetch, onEdit }: { data: any, refetch: any, onEdit: any }) {
+export default function CategoryTable({
+  data,
+  refetch,
+  onEdit,
+}: {
+  data: any;
+  refetch: any;
+  onEdit: any;
+}) {
   const { remove, loading } = useDelete();
 
   const handleDelete = async (id: any) => {

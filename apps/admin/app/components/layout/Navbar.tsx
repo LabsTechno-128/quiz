@@ -1,17 +1,37 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X, LayoutDashboard, Users, Settings, LogOut, ChevronDown } from 'lucide-react';
+import Link from "next/link";
+import { useState } from "react";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Users,
+  Settings,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
-    { name: 'Categories', href: '/category', icon: <Users className="w-5 h-5" /> },
-    { name: 'Settings', href: '/settings', icon: <Settings className="w-5 h-5" /> },
+    {
+      name: "Dashboard",
+      href: "/dashboard",
+      icon: <LayoutDashboard className="w-5 h-5" />,
+    },
+    {
+      name: "Categories",
+      href: "/category",
+      icon: <Users className="w-5 h-5" />,
+    },
+    {
+      name: "Settings",
+      href: "/settings",
+      icon: <Settings className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -37,7 +57,7 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-          
+
           <div className="hidden md:ml-4 md:flex md:items-center">
             <div className="ml-3 relative">
               <div>
@@ -81,7 +101,7 @@ export default function Navbar() {
               )}
             </div>
           </div>
-          
+
           <div className="-mr-2 flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -121,8 +141,12 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="ml-3">
-                <div className="text-base font-medium text-gray-800">Admin User</div>
-                <div className="text-sm font-medium text-gray-500">admin@example.com</div>
+                <div className="text-base font-medium text-gray-800">
+                  Admin User
+                </div>
+                <div className="text-sm font-medium text-gray-500">
+                  admin@example.com
+                </div>
               </div>
             </div>
             <div className="mt-3 space-y-1">

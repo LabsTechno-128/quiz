@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { FaCheckCircle } from "react-icons/fa";
 
-
 export default function SuccessPage() {
   return (
     <div className="flex flex-col items-center justify-center  bg-white text-center px-6 py-10">
@@ -19,7 +18,8 @@ export default function SuccessPage() {
       {/* Description */}
       <p className="text-gray-500 text-sm max-w-md mb-8">
         Your payment will be processed in 30 minutes. If any problem occurs,
-        please chat with customer service. Detailed information will include below.
+        please chat with customer service. Detailed information will include
+        below.
       </p>
 
       {/* Buttons */}

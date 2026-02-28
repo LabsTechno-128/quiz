@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import {
   FiMenu,
   FiSearch,
@@ -8,14 +8,14 @@ import {
   FiUser,
   FiX,
   FiLogOut,
-  FiShoppingBag
-} from 'react-icons/fi';
-import { FaRegHeart } from 'react-icons/fa';
-import { GiPodiumWinner } from 'react-icons/gi';
-import Link from 'next/link';
-import Image from 'next/image';
-import NavbarSkeleton from '../skeleton/navskeleton';
-import { publicRequest } from '@/app/lib/axios';
+  FiShoppingBag,
+} from "react-icons/fi";
+import { FaRegHeart } from "react-icons/fa";
+import { GiPodiumWinner } from "react-icons/gi";
+import Link from "next/link";
+import Image from "next/image";
+import NavbarSkeleton from "../skeleton/navskeleton";
+import { publicRequest } from "@/app/lib/axios";
 // import { clientApi } from '@/lib/clientApi';
 // import { serverApi } from '@/lib/serverApi';
 
@@ -30,25 +30,24 @@ export default function Navbar() {
 
   const menuItems = [
     {
-      label: 'Purchase List',
+      label: "Purchase List",
       icon: <FiShoppingBag className="text-gray-600" />,
-      href: '/purchase-list'
+      href: "/purchase-list",
     },
     {
-      label: 'My Quiz',
+      label: "My Quiz",
       icon: <FaRegHeart className="text-gray-600" />,
-      href: '/my-quiz'
+      href: "/my-quiz",
     },
     {
-      label: 'Leaderboard',
+      label: "Leaderboard",
       icon: <GiPodiumWinner className="text-gray-600" />,
-      href: '/leaderboard'
-    }
+      href: "/leaderboard",
+    },
   ];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -63,9 +62,8 @@ export default function Navbar() {
     };
   }, []);
 
-
-  // api implement 
-  const [category, setCategory] = useState([{ id: 0, name: 'Loading...' }]);
+  // api implement
+  const [category, setCategory] = useState([{ id: 0, name: "Loading..." }]);
 
   useEffect(() => {
     async function loadData() {
@@ -84,163 +82,173 @@ export default function Navbar() {
   console.log("Category State:", category);
   return (
     <>
-      {loading ? <NavbarSkeleton /> : <nav className="w-full bg-white border-b border-gray-200 relative z-50">
-        <div className="mx-auto flex items-center justify-between py-4 px-6 md:px-24">
-          {/* Left - Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="hidden lg:flex relative">
-              <Image
-                src="/logo/Logo.png"
-                alt="Quizzy Logo"
-                className="object-contain rounded-md"
-                width={150}
-                height={50}
-              />
-            </div>
-            <button
-              className="text-gray-600 hover:text-indigo-600 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <FiMenu className="w-6 h-6" />
-            </button>
-          </Link>
-
-          {/* Middle - Search */}
-
-          <div className="hidden lg:flex items-center bg-gray-50 rounded-md overflow-visible w-[500px] xl:w-[800px] relative">
-            <div>
+      {loading ? (
+        <NavbarSkeleton />
+      ) : (
+        <nav className="w-full bg-white border-b border-gray-200 relative z-50">
+          <div className="mx-auto flex items-center justify-between py-4 px-6 md:px-24">
+            {/* Left - Logo */}
+            <Link href="/" className="flex items-center gap-2">
+              <div className="hidden lg:flex relative">
+                <Image
+                  src="/logo/Logo.png"
+                  alt="Quizzy Logo"
+                  className="object-contain rounded-md"
+                  width={150}
+                  height={50}
+                />
+              </div>
               <button
-                className="px-3 py-3 cursor-pointer hover:bg-gray-100 text-sm text-gray-600 text-nowrap"
-                onClick={() => setCategoryOpen(!categoryOpen)}
+                className="text-gray-600 hover:text-indigo-600 lg:hidden"
+                onClick={() => setSidebarOpen(true)}
               >
-                All Categories <span className="ml-1">▾</span>
-              </button>
-            </div>
-
-            {/* Dropdown */}
-            <div ref={dropdownRef} className="absolute top-14 left- w-40 z-50">
-              <ul
-                className={`shadow-lg mt-1 rounded-md bg-white transform transition-all duration-300 origin-top ${categoryOpen
-                  ? 'opacity-100 scale-100 visible'
-                  : 'opacity-0 scale-95 invisible'
-                  }`}
-              >
-                {category?.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href={`/category/${item.name.toLowerCase()}`}
-                      className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
-                      onClick={() => setCategoryOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <p className="border border-gray-300 h-5"></p>
-
-            <div className="flex items-center justify-between w-[650px]">
-              <input
-                type="text"
-                placeholder="Search on quizzy..."
-                className="px-3 py-2 focus:outline-none text-sm w-[90%] bg-gray-50"
-              />
-              <button className="px-3 text-gray-500 hover:text-indigo-600">
-                <FiSearch className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Right - Icons */}
-          <div className="flex items-center gap-5 relative">
-            <Link href="/cart">
-              <button className="text-gray-600 hover:text-indigo-600 cursor-pointer">
-                <FiShoppingCart className="w-6 h-6" />
+                <FiMenu className="w-6 h-6" />
               </button>
             </Link>
 
-            <p className="border border-gray-300 h-5"></p>
+            {/* Middle - Search */}
 
-            {/* Profile Button */}
-            <button
-              className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-full p-1.5 cursor-pointer relative"
-              onClick={() => setProfileOpen(!profileOpen)}
-            >
-              <FiUser className="w-5 h-5" />
-            </button>
-
-            {/* Profile Popup */}
-            <div
-              className={`absolute top-10 right-0 w-64 md:w-80 bg-white rounded-xl shadow-lg border border-gray-100 p-4 transform transition-all duration-300 z-[99999] ${profileOpen
-                ? 'opacity-100 scale-100 visible'
-                : 'opacity-0 scale-95 invisible'
-                }`}
-            >
-              {/* Profile Info */}
-              <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
-                <div className="w-12 h-12 relative rounded-full overflow-hidden">
-                  <Image
-                    src="/assets/card-quzzy.png"
-                    alt="User"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800 text-sm">
-                    Abdul Malek Sarkar
-                  </h3>
-                  <p className="text-gray-500 text-xs">abdul.malek@gmail.com</p>
-                </div>
+            <div className="hidden lg:flex items-center bg-gray-50 rounded-md overflow-visible w-[500px] xl:w-[800px] relative">
+              <div>
+                <button
+                  className="px-3 py-3 cursor-pointer hover:bg-gray-100 text-sm text-gray-600 text-nowrap"
+                  onClick={() => setCategoryOpen(!categoryOpen)}
+                >
+                  All Categories <span className="ml-1">▾</span>
+                </button>
               </div>
 
-              {/* Menu Items */}
-              <div className="py-3">
-                <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
-                  Menu
-                </p>
-                <ul className="space-y-2">
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
+              {/* Dropdown */}
+              <div
+                ref={dropdownRef}
+                className="absolute top-14 left- w-40 z-50"
+              >
+                <ul
+                  className={`shadow-lg mt-1 rounded-md bg-white transform transition-all duration-300 origin-top ${
+                    categoryOpen
+                      ? "opacity-100 scale-100 visible"
+                      : "opacity-0 scale-95 invisible"
+                  }`}
+                >
+                  {category?.map((item) => (
+                    <li key={item.id}>
                       <Link
-                        href={item.href}
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 cursor-pointer transition"
+                        href={`/category/${item.name.toLowerCase()}`}
+                        className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                        onClick={() => setCategoryOpen(false)}
                       >
-                        {item.icon}
-                        <span className="text-sm">{item.label}</span>
+                        {item.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Divider */}
-              <div className="border-t border-gray-200 my-2"></div>
+              <p className="border border-gray-300 h-5"></p>
 
-              {/* Sign Out */}
+              <div className="flex items-center justify-between w-[650px]">
+                <input
+                  type="text"
+                  placeholder="Search on quizzy..."
+                  className="px-3 py-2 focus:outline-none text-sm w-[90%] bg-gray-50"
+                />
+                <button className="px-3 text-gray-500 hover:text-indigo-600">
+                  <FiSearch className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right - Icons */}
+            <div className="flex items-center gap-5 relative">
+              <Link href="/cart">
+                <button className="text-gray-600 hover:text-indigo-600 cursor-pointer">
+                  <FiShoppingCart className="w-6 h-6" />
+                </button>
+              </Link>
+
+              <p className="border border-gray-300 h-5"></p>
+
+              {/* Profile Button */}
               <button
-                onClick={() => setProfileOpen(false)}
-                className="flex items-center gap-2 text-red-500 text-sm font-medium hover:text-red-600 transition"
+                className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-full p-1.5 cursor-pointer relative"
+                onClick={() => setProfileOpen(!profileOpen)}
               >
-                <FiLogOut /> Sign Out
+                <FiUser className="w-5 h-5" />
               </button>
+
+              {/* Profile Popup */}
+              <div
+                className={`absolute top-10 right-0 w-64 md:w-80 bg-white rounded-xl shadow-lg border border-gray-100 p-4 transform transition-all duration-300 z-[99999] ${
+                  profileOpen
+                    ? "opacity-100 scale-100 visible"
+                    : "opacity-0 scale-95 invisible"
+                }`}
+              >
+                {/* Profile Info */}
+                <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+                  <div className="w-12 h-12 relative rounded-full overflow-hidden">
+                    <Image
+                      src="/assets/card-quzzy.png"
+                      alt="User"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 text-sm">
+                      Abdul Malek Sarkar
+                    </h3>
+                    <p className="text-gray-500 text-xs">
+                      abdul.malek@gmail.com
+                    </p>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-3">
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">
+                    Menu
+                  </p>
+                  <ul className="space-y-2">
+                    {menuItems.map((item, index) => (
+                      <li key={index}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setProfileOpen(false)}
+                          className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 cursor-pointer transition"
+                        >
+                          {item.icon}
+                          <span className="text-sm">{item.label}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 my-2"></div>
+
+                {/* Sign Out */}
+                <button
+                  onClick={() => setProfileOpen(false)}
+                  className="flex items-center gap-2 text-red-500 text-sm font-medium hover:text-red-600 transition"
+                >
+                  <FiLogOut /> Sign Out
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Background Blur (when popup open) */}
-        {profileOpen && (
-          <div
-            className="fixed inset-0 bg-black/50  z-40"
-            onClick={() => setProfileOpen(false)}
-          ></div>
-        )}
+          {/* Background Blur (when popup open) */}
+          {profileOpen && (
+            <div
+              className="fixed inset-0 bg-black/50  z-40"
+              onClick={() => setProfileOpen(false)}
+            ></div>
+          )}
 
-        {/* Category Dropdown */}
-        {/* <div className="absolute top-14 left-[25%] w-40 bg-amber-500">
+          {/* Category Dropdown */}
+          {/* <div className="absolute top-14 left-[25%] w-40 bg-amber-500">
         <ul
           className={`shadow-lg mt-1 rounded-md bg-white z-[999] transform transition-all duration-300 origin-top ${
             categoryOpen
@@ -262,46 +270,54 @@ export default function Navbar() {
         </ul>
       </div> */}
 
-        {/* Sidebar for Small Devices */}
-        <div
-          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          {/* Sidebar for Small Devices */}
+          <div
+            className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transform transition-transform duration-300 ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
-        >
-          <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold">Menu</h2>
-            <button
-              className="text-gray-600 hover:text-indigo-600"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <FiX className="w-6 h-6" />
-            </button>
-          </div>
+          >
+            <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold">Menu</h2>
+              <button
+                className="text-gray-600 hover:text-indigo-600"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <FiX className="w-6 h-6" />
+              </button>
+            </div>
 
-          <div className="flex flex-col p-5 gap-4 text-gray-700">
-            <Link href="/" onClick={() => setSidebarOpen(false)}>
-              Home
-            </Link>
-            <Link href="/category/science" onClick={() => setSidebarOpen(false)}>
-              Science
-            </Link>
-            <Link href="/category/math" onClick={() => setSidebarOpen(false)}>
-              Math
-            </Link>
-            <Link href="/category/history" onClick={() => setSidebarOpen(false)}>
-              History
-            </Link>
-            <Link href="/category/tech" onClick={() => setSidebarOpen(false)}>
-              Tech
-            </Link>
-            {/* <Link href="/cart" onClick={() => setSidebarOpen(false)}>
+            <div className="flex flex-col p-5 gap-4 text-gray-700">
+              <Link href="/" onClick={() => setSidebarOpen(false)}>
+                Home
+              </Link>
+              <Link
+                href="/category/science"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Science
+              </Link>
+              <Link href="/category/math" onClick={() => setSidebarOpen(false)}>
+                Math
+              </Link>
+              <Link
+                href="/category/history"
+                onClick={() => setSidebarOpen(false)}
+              >
+                History
+              </Link>
+              <Link href="/category/tech" onClick={() => setSidebarOpen(false)}>
+                Tech
+              </Link>
+              {/* <Link href="/cart" onClick={() => setSidebarOpen(false)}>
             Cart
           </Link>
           <Link href="/account" onClick={() => setSidebarOpen(false)}>
             My Account
           </Link> */}
+            </div>
           </div>
-        </div>
-      </nav>}
+        </nav>
+      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { privateRequest } from "@/app/config/axios.config";
 import {
   Plus,
@@ -10,7 +10,7 @@ import {
   Calendar,
   MoreHorizontal,
   Loader2,
-  X
+  X,
 } from "lucide-react";
 import { Toastify } from "@/app/components/ui/toastify";
 import { useState, useEffect } from "react";
@@ -58,8 +58,15 @@ export default function CategoryPage() {
     setIsSubmitting(true);
     try {
       if (editingCategory) {
-        const response = await privateRequest.patch(`/categories/${editingCategory.id}`, formData);
-        setCategories(categories.map((c: any) => c.id === editingCategory.id ? response.data : c));
+        const response = await privateRequest.patch(
+          `/categories/${editingCategory.id}`,
+          formData,
+        );
+        setCategories(
+          categories.map((c: any) =>
+            c.id === editingCategory.id ? response.data : c,
+          ),
+        );
         Toastify.Success("Category updated");
       } else {
         const response = await privateRequest.post("/categories", formData);
@@ -91,19 +98,28 @@ export default function CategoryPage() {
     setFormData({ name: "", slug: "" });
   };
 
-  const filteredCategories = categories.length > 0 && categories?.filter((c: any) =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.slug.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const filteredCategories =
+    (categories.length > 0 &&
+      categories?.filter(
+        (c: any) =>
+          c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          c.slug.toLowerCase().includes(searchTerm.toLowerCase()),
+      )) ||
+    [];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 font-sans tracking-tight">Category Management</h1>
-          <p className="text-sm text-slate-500 font-medium">Organize your content with intuitive categories.</p>
+          <h1 className="text-2xl font-bold text-slate-900 font-sans tracking-tight">
+            Category Management
+          </h1>
+          <p className="text-sm text-slate-500 font-medium">
+            Organize your content with intuitive categories.
+          </p>
         </div>
-        <Link href="/category/create"
+        <Link
+          href="/category/create"
           className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
         >
           <Plus className="h-4 w-4" />
@@ -127,28 +143,48 @@ export default function CategoryPage() {
 
         <div className="overflow-x-auto">
           {loading ? (
-            <div className="p-20 text-center text-slate-400 font-medium">Loading categories...</div>
+            <div className="p-20 text-center text-slate-400 font-medium">
+              Loading categories...
+            </div>
           ) : (
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-slate-50/50">
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Name & info</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">Resources</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Slug</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Name & info
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">
+                    Resources
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Slug
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {filteredCategories.map((category: any) => (
-                  <tr key={category.id} className="hover:bg-slate-50/50 transition-colors group">
+                  <tr
+                    key={category.id}
+                    className="hover:bg-slate-50/50 transition-colors group"
+                  >
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        <div className={`h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-100`}>
+                        <div
+                          className={`h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-100`}
+                        >
                           <Layers className="h-5 w-5" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-900">{category.name}</p>
-                          <p className="text-[10px] font-medium text-slate-400">Created: {new Date(category.createdAt).toLocaleDateString()}</p>
+                          <p className="text-sm font-bold text-slate-900">
+                            {category.name}
+                          </p>
+                          <p className="text-[10px] font-medium text-slate-400">
+                            Created:{" "}
+                            {new Date(category.createdAt).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -160,7 +196,9 @@ export default function CategoryPage() {
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <code className="px-2 py-1 bg-slate-100 rounded text-[11px] font-mono text-slate-600">/{category.slug}</code>
+                      <code className="px-2 py-1 bg-slate-100 rounded text-[11px] font-mono text-slate-600">
+                        /{category.slug}
+                      </code>
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">

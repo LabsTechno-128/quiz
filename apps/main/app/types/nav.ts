@@ -1,9 +1,9 @@
-import { LucideIcon } from "lucide-react"
+import { LucideIcon } from "lucide-react";
 
 export interface NavItem {
-  title: string
-  href: string
-  icon: LucideIcon
-  label?: string
-  variant?: "default" | "ghost"
+  title: string;
+  href: string;
+  icon: LucideIcon;
+  label?: string;
+  variant?: "default" | "ghost";
 }

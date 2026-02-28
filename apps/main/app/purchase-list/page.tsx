@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { FC } from 'react';
+import Image from "next/image";
+import { FC } from "react";
 
 interface PurchaseItem {
   id: number;
@@ -13,40 +13,40 @@ interface PurchaseItem {
 const purchaseData: PurchaseItem[] = [
   {
     id: 1,
-    title: 'Geography Mastery',
-    subject: 'Geography',
-    icon: '/assets/card-quzzy.png'
+    title: "Geography Mastery",
+    subject: "Geography",
+    icon: "/assets/card-quzzy.png",
   },
   {
     id: 2,
-    title: 'Grammar Essentials',
-    subject: 'English',
-    icon: '/assets/card-quzzy.png'
+    title: "Grammar Essentials",
+    subject: "English",
+    icon: "/assets/card-quzzy.png",
   },
   {
     id: 3,
-    title: 'Geography Mastery',
-    subject: 'Geography',
-    icon: '/assets/card-quzzy.png'
+    title: "Geography Mastery",
+    subject: "Geography",
+    icon: "/assets/card-quzzy.png",
   },
   {
     id: 4,
-    title: 'Geography Mastery',
-    subject: 'Geography',
-    icon: '/assets/card-quzzy.png'
+    title: "Geography Mastery",
+    subject: "Geography",
+    icon: "/assets/card-quzzy.png",
   },
   {
     id: 5,
-    title: 'Grammar Essentials',
-    subject: 'English',
-    icon: '/assets/card-quzzy.png'
+    title: "Grammar Essentials",
+    subject: "English",
+    icon: "/assets/card-quzzy.png",
   },
   {
     id: 6,
-    title: 'Geography Mastery',
-    subject: 'Geography',
-    icon: '/assets/card-quzzy.png'
-  }
+    title: "Geography Mastery",
+    subject: "Geography",
+    icon: "/assets/card-quzzy.png",
+  },
 ];
 
 const PurchaseList: FC = () => {
@@ -57,12 +57,9 @@ const PurchaseList: FC = () => {
           <h1 className="text-3xl font-bold">Purchase List</h1>
           <p className="text-normal pt-2">Here is your all pruchase list</p>
         </div>
-
       </div>
       <div className="bg-white flex justify-center max-w-[1440px]  px-4 lg:px-24 mx-auto w-full ">
         <div className=" shadow-sm rounded-xl w-full -mt-9">
-
-
           <div className="space-y-3 ">
             {purchaseData.map((item) => (
               <div

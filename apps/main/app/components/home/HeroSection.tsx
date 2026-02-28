@@ -31,12 +31,13 @@ export default function HeroSection() {
   };
 
   const getDefaultBanner = (): Banner => ({
-    id: 'default',
-    name: 'Boost Your Brainpower',
-    subname: 'With Daily Quizzes',
-    description: 'Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!',
-    image: '/assets/hero.png',
-    buttonText: 'Take Quiz Now',
+    id: "default",
+    name: "Boost Your Brainpower",
+    subname: "With Daily Quizzes",
+    description:
+      "Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!",
+    image: "/assets/hero.png",
+    buttonText: "Take Quiz Now",
     isActive: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -45,9 +46,7 @@ export default function HeroSection() {
   const banner = banners[currentBanner] || getDefaultBanner();
 
   if (isLoading) {
-    return (
-      <HeroSectionSkeleton />
-    );
+    return <HeroSectionSkeleton />;
   }
 
   return (
@@ -56,15 +55,22 @@ export default function HeroSection() {
         {/* Left Text Section */}
         <div className="lg:w-[50%] pb-10">
           <h1 className="text-xl md:text-5xl font-extrabold text-title leading-tight">
-            {banner.name} {banner.subname && <><br />{banner.subname}</>}
+            {banner.name}{" "}
+            {banner.subname && (
+              <>
+                <br />
+                {banner.subname}
+              </>
+            )}
           </h1>
           <p className="text-normal mt-5">
-            {banner.description || 'Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!'}
+            {banner.description ||
+              "Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!"}
           </p>
 
           <div className="flex flex-wrap items-center gap-4 mt-8">
             <button className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary transition">
-              {banner.buttonText || 'Take Quiz Now'}
+              {banner.buttonText || "Take Quiz Now"}
             </button>
             {banner.link && (
               <a href={banner.link}>
@@ -78,13 +84,15 @@ export default function HeroSection() {
 
         {/* Right Image Section */}
         <div className="relative py-10">
-          { banner.image ? <Image
-            src={banner.image}
-            alt={banner.name}
-            width={490}
-            height={500}
-            className="object-contain w-96 lg:w-full"
-          /> : null}
+          {banner.image ? (
+            <Image
+              src={banner.image}
+              alt={banner.name}
+              width={490}
+              height={500}
+              className="object-contain w-96 lg:w-full"
+            />
+          ) : null}
         </div>
       </div>
     </section>

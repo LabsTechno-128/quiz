@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
 export default function NavbarSkeleton() {
   return (
     <nav className="w-full bg-white border-b border-gray-200 relative z-50">
       <div className="mx-auto flex items-center justify-between py-4 px-6 md:px-24 animate-pulse">
-        
         {/* Left - Logo */}
         <div className="flex items-center gap-3">
           <div className="hidden lg:block w-[150px] h-[40px] bg-gray-200 rounded-md"></div>
@@ -13,7 +12,6 @@ export default function NavbarSkeleton() {
 
         {/* Middle - Search */}
         <div className="hidden lg:flex items-center bg-gray-50 rounded-md w-[500px] xl:w-[800px] h-[44px] overflow-hidden">
-          
           {/* Category */}
           <div className="w-28 h-full bg-gray-200"></div>
 

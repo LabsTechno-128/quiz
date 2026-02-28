@@ -21,7 +21,7 @@ export class QuestionController {
   @Post()
   @ApiResponse({ status: 201, description: 'Question created', type: Question })
   create(@Body() dto: CreateQuestionDto) {
-    console.log(dto)
+    console.log(dto);
     return this.questionService.create(dto);
   }
 
@@ -32,13 +32,19 @@ export class QuestionController {
     description: 'List of questions',
     type: [Question],
   })
-  findAll(): Promise<{result:Question[],total:number,page:number,limit:number,totalPage:number}> {
+  findAll(): Promise<{
+    result: Question[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPage: number;
+  }> {
     return this.questionService.findAll();
   }
 
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Single question', type: Question })
-  findOne(@Param('id') id: string)  {
+  findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
   }
 

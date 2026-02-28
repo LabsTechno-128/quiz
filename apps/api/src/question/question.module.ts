@@ -6,12 +6,12 @@ import { Option } from './entities/option.entity';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { QuestionService } from './question.service';
 import { AnswerService } from './answer.service';
-import { QuestionController } from './question.controller'; 
+import { QuestionController } from './question.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Question, Answer,Option,Quiz])],
+  imports: [TypeOrmModule.forFeature([Question, Answer, Option, Quiz])],
   providers: [QuestionService, AnswerService],
-  controllers: [QuestionController ],
+  controllers: [QuestionController],
   exports: [QuestionService, AnswerService],
 })
 export class QuestionModule {}

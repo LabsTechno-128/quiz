@@ -29,10 +29,11 @@ export class Quiz {
   @Column({ type: 'varchar', length: 255, nullable: true })
   image: string;
 
-    @OneToMany(() => Question, (question) => question.quiz, {
-      cascade: true,  nullable: true
-    })
-    questions: Question[];
+  @OneToMany(() => Question, (question) => question.quiz, {
+    cascade: true,
+    nullable: true,
+  })
+  questions: Question[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

@@ -4,7 +4,6 @@ export function QuizSectionSkeleton() {
   return (
     <section className="pt-16 text-center">
       <div className="mx-auto px-4 md:px-10 lg:px-24 animate-pulse">
-
         {/* Heading */}
         <div className="h-8 md:h-10 w-72 bg-gray-300 rounded mx-auto mb-3"></div>
         <div className="h-4 w-[420px] max-w-full bg-gray-200 rounded mx-auto mb-10"></div>

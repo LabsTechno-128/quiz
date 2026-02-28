@@ -1,10 +1,16 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { useState } from "react";
-import { Loader2, ChevronRight, Layers, Tag, FileText, Globe } from "lucide-react";
+import {
+  Loader2,
+  ChevronRight,
+  Layers,
+  Tag,
+  FileText,
+  Globe,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import useFetch from "@/app/hooks/useFetch";
 import { privateRequest } from "@/app/config/axios.config";
@@ -14,7 +20,8 @@ import ImageUpload from "@/app/components/ui/input/imageUpload";
 
 export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
   const [loading, setLoading] = useState(false);
-  const { data: categoryData, loading: categoryFetchLoading } = useFetch("/categories");
+  const { data: categoryData, loading: categoryFetchLoading } =
+    useFetch("/categories");
   const router = useRouter();
   const {
     register,
@@ -69,7 +76,11 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
     }),
     option: (provided: any, state: any) => ({
       ...provided,
-      backgroundColor: state.isSelected ? "#6366f1" : state.isFocused ? "#eef2ff" : "white",
+      backgroundColor: state.isSelected
+        ? "#6366f1"
+        : state.isFocused
+          ? "#eef2ff"
+          : "white",
       color: state.isSelected ? "white" : "#1e293b",
       padding: "0.75rem 1.25rem",
       borderRadius: "0.75rem",
@@ -81,7 +92,8 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
       ...provided,
       borderRadius: "1.5rem",
       padding: "0.5rem",
-      boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+      boxShadow:
+        "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
       border: "1px solid #f1f5f9",
     }),
     placeholder: (provided: any) => ({
@@ -118,7 +130,7 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
                 </label>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  className={`w-full px-6 py-4 bg-slate-50 border ${errors.name ? 'border-red-200 ring-red-50' : 'border-slate-100'} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
+                  className={`w-full px-6 py-4 bg-slate-50 border ${errors.name ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
                   placeholder="e.g. Technology"
                 />
                 {errors.name && (
@@ -136,7 +148,7 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
                 </label>
                 <input
                   {...register("slug", { required: "Slug is required" })}
-                  className={`w-full px-6 py-4 bg-slate-50 border ${errors.slug ? 'border-red-200 ring-red-50' : 'border-slate-100'} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
+                  className={`w-full px-6 py-4 bg-slate-50 border ${errors.slug ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
                   placeholder="e.g. technology-news"
                 />
                 {errors.slug && (
@@ -161,17 +173,21 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
                   isClearable
                   placeholder="Select a parent category"
                   styles={customSelectStyles}
-                  onChange={(option: any) => setValue("parent_id", option ? option.value : null)}
+                  onChange={(option: any) =>
+                    setValue("parent_id", option ? option.value : null)
+                  }
                 />
               </div>
 
               {/* Status */}
               <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-[1.5rem] border border-slate-100 transition-all hover:bg-slate-100/50">
                 <div
-                  className={`w-12 h-6 rounded-full relative cursor-pointer transition-colors duration-300 ${status ? 'bg-indigo-600' : 'bg-slate-300'}`}
+                  className={`w-12 h-6 rounded-full relative cursor-pointer transition-colors duration-300 ${status ? "bg-indigo-600" : "bg-slate-300"}`}
                   onClick={() => setValue("status", !status)}
                 >
-                  <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 shadow-sm ${status ? 'translate-x-6' : ''}`} />
+                  <div
+                    className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform duration-300 shadow-sm ${status ? "translate-x-6" : ""}`}
+                  />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-700">Status</p>
@@ -179,7 +195,11 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
                     {status ? "Visible to public" : "Hidden from public"}
                   </p>
                 </div>
-                <input type="checkbox" {...register("status")} className="hidden" />
+                <input
+                  type="checkbox"
+                  {...register("status")}
+                  className="hidden"
+                />
               </div>
             </div>
 
@@ -201,9 +221,13 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
 
               {/* Image Upload */}
               <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-700 ml-1">Category Image</label>
+                <label className="text-sm font-bold text-slate-700 ml-1">
+                  Category Image
+                </label>
                 <div className="p-1 bg-slate-50 rounded-[1.5rem] border border-slate-100">
-                  <ImageUpload onChange={(url) => setValue("image", url || "")} />
+                  <ImageUpload
+                    onChange={(url) => setValue("image", url || "")}
+                  />
                 </div>
               </div>
             </div>
@@ -233,4 +257,3 @@ export default function CreateCategoryForm({ onSuccess }: { onSuccess: any }) {
     </div>
   );
 }
-

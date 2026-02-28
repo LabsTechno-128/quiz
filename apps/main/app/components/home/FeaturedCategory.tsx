@@ -29,7 +29,7 @@ export default function FeaturedCategory({
             >
               <div className="w-16 h-16 mb-3">
                 <Image
-                  src={cat.image || cat.icon || '/assets/card.png'}
+                  src={cat.image || cat.icon || "/assets/card.png"}
                   alt={cat.name}
                   width={64}
                   height={64}

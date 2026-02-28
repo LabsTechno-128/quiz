@@ -1,7 +1,13 @@
- 
-import { IsArray, ValidateNested, IsOptional,IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsArray,
+  ValidateNested,
+  IsOptional,
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateAnswerDto } from './create-answer.dto'; 
+import { CreateAnswerDto } from './create-answer.dto';
 
 export class CreateOptionDto {
   @IsString()
@@ -35,7 +41,7 @@ export class CreateQuestionDto {
   @IsString()
   @IsOptional()
   description: string;
- 
+
   @IsString()
   @IsOptional()
   quizId: string;

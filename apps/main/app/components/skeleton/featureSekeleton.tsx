@@ -4,7 +4,6 @@ export default function FeaturedCategorySkeleton() {
   return (
     <section className="pt-16 bg-white">
       <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-24 animate-pulse">
-
         {/* Header Skeleton */}
         <div className="flex items-center justify-between mb-10">
           <div className="h-8 md:h-10 w-56 bg-gray-300 rounded"></div>
@@ -29,7 +28,6 @@ export default function FeaturedCategorySkeleton() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

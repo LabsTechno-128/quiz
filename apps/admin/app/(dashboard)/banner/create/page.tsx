@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { publicRequest } from "@/app/config/axios.config";
 
-export default function CreateBannerForm({ onSuccess }: { onSuccess: (data: any) => void }) {
+export default function CreateBannerForm({
+  onSuccess,
+}: {
+  onSuccess: (data: any) => void;
+}) {
   const [loading, setLoading] = useState(false);
 
   const {

@@ -14,7 +14,7 @@ import {
   Settings,
   Bell,
   Search,
-  X
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getUser, removeToken } from "@/app/utils/helpers";
@@ -31,7 +31,11 @@ const navigation = [
   { name: "Profile", href: "/profile", icon: User },
 ];
 
-export default function Sidebar({ setIsSidebarOpen }: { setIsSidebarOpen: (open: boolean) => void }) {
+export default function Sidebar({
+  setIsSidebarOpen,
+}: {
+  setIsSidebarOpen: (open: boolean) => void;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
@@ -75,20 +79,25 @@ export default function Sidebar({ setIsSidebarOpen }: { setIsSidebarOpen: (open:
           Main Menu
         </p>
         {navigation.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/dashboard" && pathname.startsWith(item.href));
           const Icon = item.icon;
 
           return (
             <Link
               key={item.name}
               href={item.href}
-              className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 ${isActive
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
-                : "hover:bg-slate-800 hover:text-white"
-                }`}
+              className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
+                  : "hover:bg-slate-800 hover:text-white"
+              }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`h-5 w-5 transition-transform duration-200 group-hover:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover:text-indigo-400"}`} />
+                <Icon
+                  className={`h-5 w-5 transition-transform duration-200 group-hover:scale-110 ${isActive ? "text-white" : "text-slate-400 group-hover:text-indigo-400"}`}
+                />
                 <span>{item.name}</span>
               </div>
               {isActive && (
@@ -111,8 +120,12 @@ export default function Sidebar({ setIsSidebarOpen }: { setIsSidebarOpen: (open:
             />
             <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#1e293b] bg-green-500"></div>
           </div>
-          <p className="text-sm font-bold text-white">{userData?.name || "Admin User"}</p>
-          <p className="text-[11px] text-slate-500 font-medium">{userData?.email || "admin@thinkhive.com"}</p>
+          <p className="text-sm font-bold text-white">
+            {userData?.name || "Admin User"}
+          </p>
+          <p className="text-[11px] text-slate-500 font-medium">
+            {userData?.email || "admin@thinkhive.com"}
+          </p>
         </div>
 
         <button

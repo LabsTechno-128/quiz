@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 type User = {
   id: number;
@@ -14,75 +14,75 @@ type User = {
 const users: User[] = [
   {
     id: 1,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 1200,
-    rank: '#01',
-    img: '/assets/card-quzzy.png',
-    isMe: true
+    rank: "#01",
+    img: "/assets/card-quzzy.png",
+    isMe: true,
   },
   {
     id: 2,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 1200,
-    rank: '#01',
-    img: '/assets/card-quzzy.png'
+    rank: "#01",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 3,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 1000,
-    rank: '#02',
-    img: '/assets/card-quzzy.png'
+    rank: "#02",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 4,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 850,
-    rank: '#03',
-    img: '/assets/card-quzzy.png'
+    rank: "#03",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 5,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 800,
-    rank: '#04',
-    img: '/assets/card-quzzy.png'
+    rank: "#04",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 6,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 700,
-    rank: '#05',
-    img: '/assets/card-quzzy.png'
+    rank: "#05",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 7,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 700,
-    rank: '#06',
-    img: '/assets/card-quzzy.png'
+    rank: "#06",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 8,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 700,
-    rank: '#07',
-    img: '/assets/card-quzzy.png'
+    rank: "#07",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 9,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 700,
-    rank: '#08',
-    img: '/assets/card-quzzy.png'
+    rank: "#08",
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 10,
-    name: 'Abdul Malek Sarkar',
+    name: "Abdul Malek Sarkar",
     points: 700,
-    rank: '#09',
-    img: '/assets/card-quzzy.png'
-  }
+    rank: "#09",
+    img: "/assets/card-quzzy.png",
+  },
 ];
 
 export default function LeaderboardPage() {

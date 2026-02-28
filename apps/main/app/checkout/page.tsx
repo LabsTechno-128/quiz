@@ -1,8 +1,7 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 type Product = {
   id: number;
@@ -17,43 +16,41 @@ type Product = {
 const initialProducts: Product[] = [
   {
     id: 1,
-    name: 'Bkash',
-    category: 'Geography',
+    name: "Bkash",
+    category: "Geography",
     price: +8801712131343,
-    img: '/assets/card-quzzy.png'
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 2,
-    name: 'Rocket',
-    category: 'English',
+    name: "Rocket",
+    category: "English",
     price: +8801712131343,
-    img: '/assets/card-quzzy.png'
+    img: "/assets/card-quzzy.png",
   },
   {
     id: 3,
-    name: 'Human Body System',
-    category: 'Science',
+    name: "Human Body System",
+    category: "Science",
     price: +8801712131343,
-    img: '/assets/card-quzzy.png'
-  }
+    img: "/assets/card-quzzy.png",
+  },
 ];
 
 export default function ChackOutPage() {
   const [products, setProducts] = useState<Product[]>(
-    initialProducts.map((p) => ({ ...p, qty: 1, selected: false }))
+    initialProducts.map((p) => ({ ...p, qty: 1, selected: false })),
   );
 
   const toggleSelect = (id: number) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, selected: !p.selected } : p))
+      prev.map((p) => (p.id === id ? { ...p, selected: !p.selected } : p)),
     );
   };
-;
-
   const selectedProducts = products.filter((p) => p.selected);
   const totalPrice = selectedProducts.reduce(
     (sum, p) => sum + p.price * (p.qty || 1),
-    0
+    0,
   );
 
   return (
@@ -64,7 +61,6 @@ export default function ChackOutPage() {
           <h1 className="text-3xl font-bold">Checkout</h1>
           <p className="text-normal pt-2">Showing your choices product</p>
         </div>
-
       </div>
 
       {/* Main */}
@@ -75,7 +71,6 @@ export default function ChackOutPage() {
             <h2 className="font-semibold text-gray-800 text-lg">
               Payment Method
             </h2>
-         
           </div>
 
           <div>
@@ -105,13 +100,13 @@ export default function ChackOutPage() {
                     className="w-16 h-12 rounded-lg object-cover"
                   />
                   <div>
-                    <h4 className="font-bold text-xl text-gray-800">{p.name}</h4>
-               
+                    <h4 className="font-bold text-xl text-gray-800">
+                      {p.name}
+                    </h4>
+
                     <p className=" text-normal">{p.price}</p>
                   </div>
                 </div>
-
-
               </div>
             ))}
           </div>

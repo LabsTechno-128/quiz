@@ -4,7 +4,6 @@ export default function ArticlesSectionSkeleton() {
   return (
     <section className="mx-auto px-4 md:px-10 lg:px-24 pt-16">
       <div className="animate-pulse">
-
         {/* Header Skeleton */}
         <div className="flex items-center justify-between mb-10">
           <div className="h-7 w-48 bg-gray-300 rounded"></div>
@@ -14,10 +13,7 @@ export default function ArticlesSectionSkeleton() {
         {/* Articles Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={index}
-              className="rounded-xl overflow-hidden"
-            >
+            <div key={index} className="rounded-xl overflow-hidden">
               {/* Image */}
               <div className="relative h-48 w-full bg-gray-300"></div>
 
@@ -39,7 +35,6 @@ export default function ArticlesSectionSkeleton() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

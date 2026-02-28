@@ -1,10 +1,10 @@
-'use client';
-import { useState, useEffect } from 'react';
-import QuizCard from '../card/QuizCard';
-import ErrorMessage from '../common/ErrorMessage';
-import { QuizSectionSkeleton } from '../skeleton/homeQuizSkeleton';
-import { Quiz } from '@/app/types/api.types';
-import { quizService } from '@/app/services/quiz.service';
+"use client";
+import { useState, useEffect } from "react";
+import QuizCard from "../card/QuizCard";
+import ErrorMessage from "../common/ErrorMessage";
+import { QuizSectionSkeleton } from "../skeleton/homeQuizSkeleton";
+import { Quiz } from "@/app/types/api.types";
+import { quizService } from "@/app/services/quiz.service";
 
 export default function QuizSection() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -32,9 +32,7 @@ export default function QuizSection() {
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
-      prev.includes(id)
-        ? prev.filter((fid) => fid !== id)
-        : [...prev, id]
+      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id],
     );
   };
 
@@ -51,8 +49,8 @@ export default function QuizSection() {
             Available Quiz on Quzzy
           </h2>
           <p className="text-normal mb-10">
-            Choose from a variety of topics. Buy now and get a free PDF guide with
-            each quiz!
+            Choose from a variety of topics. Buy now and get a free PDF guide
+            with each quiz!
           </p>
           <ErrorMessage message={error} onRetry={loadQuizzes} />
         </div>

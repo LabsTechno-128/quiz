@@ -1,4 +1,4 @@
-// import { FaQ } from "react-icons/fa"; 
+// import { FaQ } from "react-icons/fa";
 
 import Image from "next/image";
 
@@ -9,16 +9,15 @@ export default function Footer() {
         {/* Logo and description */}
         <div className="col-span-1 md:col-span-2">
           <div className="flex items-center gap-2 mb-3">
-          <div className=" relative">
-            <Image
-              src="/logo/Logo.png"
-              alt="Quizzy Logo"
-              className="object-contain rounded-md"
-              width={150}
-              height={50}
-            />
-          </div>
-            
+            <div className=" relative">
+              <Image
+                src="/logo/Logo.png"
+                alt="Quizzy Logo"
+                className="object-contain rounded-md"
+                width={150}
+                height={50}
+              />
+            </div>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
             The biggest marketplace managed by Ideologist Corp, which provides

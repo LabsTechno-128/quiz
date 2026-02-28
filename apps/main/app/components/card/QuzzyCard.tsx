@@ -2,13 +2,7 @@
 import Image from "next/image";
 import type { Article } from "@/app/types/api.types";
 
-
-
-export default function ArticlesSection({
-  articles,
-}: {
-  articles: Article[];
-}) {
+export default function ArticlesSection({ articles }: { articles: Article[] }) {
   return (
     <section className=" mx-auto px-4 md:px-10 lg:px-24 pt-16">
       {/* Header */}
@@ -30,7 +24,11 @@ export default function ArticlesSection({
           >
             <div className="relative h-48 w-full">
               <Image
-                src={article.thumbnail || article.coverImage || "/assets/card-quzzy.png"}
+                src={
+                  article.thumbnail ||
+                  article.coverImage ||
+                  "/assets/card-quzzy.png"
+                }
                 alt={article.title || "Article Image"}
                 fill
                 className=""
@@ -40,23 +38,22 @@ export default function ArticlesSection({
             <div className="py-5 px-2">
               <p className="text-sm text-gray-500 mb-2">
                 {article.publishedAt
-                  ? new Date(article.publishedAt).toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                  })
-                  : new Date(article.createdAt).toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                  })
-                }
+                  ? new Date(article.publishedAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : new Date(article.createdAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
               </p>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {article.title}
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                {article.excerpt || article.content?.substring(0, 150) + '...'}
+                {article.excerpt || article.content?.substring(0, 150) + "..."}
               </p>
             </div>
           </div>

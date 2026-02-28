@@ -1,32 +1,32 @@
-'use client';
-import { useState } from 'react';
-import { FaStar, FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
+"use client";
+import { useState } from "react";
+import { FaStar, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 
 const reviews = [
   {
     id: 1,
-    name: 'Mr. Lopez',
-    date: 'July 2, 2020 03:29 PM',
+    name: "Mr. Lopez",
+    date: "July 2, 2020 03:29 PM",
     rating: 5,
-    text: 'This quiz was super helpful for my biology exam! It covered all the major body systems and asked questions that really made me think. I loved how it mixed easy and tricky ones. Totally recommend it for students!',
-    likes: 128
+    text: "This quiz was super helpful for my biology exam! It covered all the major body systems and asked questions that really made me think. I loved how it mixed easy and tricky ones. Totally recommend it for students!",
+    likes: 128,
   },
   {
     id: 2,
-    name: 'Darlene Robertson',
-    date: 'July 2, 2020 1:04 PM',
+    name: "Darlene Robertson",
+    date: "July 2, 2020 1:04 PM",
     rating: 5,
     text: "Great quiz to use as a classroom activity or homework. The questions are clear and relevant, and it encourages critical thinking. I'd love to see a version with images or diagrams for visual learners.",
-    likes: 82
+    likes: 82,
   },
   {
     id: 3,
-    name: 'Student User',
-    date: 'July 2, 2020 12:45 PM',
+    name: "Student User",
+    date: "July 2, 2020 12:45 PM",
     rating: 4,
-    text: 'It was a little hard for me, but I still learned a lot. I wish it had hints or explanations after each question. Still cool though!',
-    likes: 45
-  }
+    text: "It was a little hard for me, but I still learned a lot. I wish it had hints or explanations after each question. Still cool though!",
+    likes: 45,
+  },
 ];
 
 const ratingStats = [
@@ -34,13 +34,13 @@ const ratingStats = [
   { stars: 4, count: 38 },
   { stars: 3, count: 4 },
   { stars: 2, count: 0 },
-  { stars: 1, count: 0 }
+  { stars: 1, count: 0 },
 ];
 
 export default function ReviewsPage() {
   const [filter, setFilter] = useState(5);
-  const rating = 4.8; 
-  const percentage = (rating / 5) * 100; 
+  const rating = 4.8;
+  const percentage = (rating / 5) * 100;
 
   const filtered = reviews.filter((r) => r.rating === filter);
 
@@ -54,22 +54,21 @@ export default function ReviewsPage() {
           <div className="flex items-center gap-4">
             {/* Rating Circle */}
             <div className="relative flex items-center justify-center w-20 h-20">
-             
               <svg className="w-full h-full -rotate-90">
                 <circle
                   cx="40"
                   cy="40"
                   r="35"
-                  stroke="#E5E7EB" 
+                  stroke="#E5E7EB"
                   strokeWidth="6"
                   fill="transparent"
                 />
-                
+
                 <circle
                   cx="40"
                   cy="40"
                   r="35"
-                  stroke="#FACC15" 
+                  stroke="#FACC15"
                   strokeWidth="6"
                   fill="transparent"
                   strokeDasharray={2 * Math.PI * 35}

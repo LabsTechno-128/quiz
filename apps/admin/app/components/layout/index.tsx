@@ -3,16 +3,23 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "./Sidebar";
-import { Search, Bell, Menu, User, Settings, LogOut, ChevronDown, LogIn } from "lucide-react";
+import {
+  Search,
+  Bell,
+  Menu,
+  User,
+  Settings,
+  LogOut,
+  ChevronDown,
+  LogIn,
+} from "lucide-react";
 import { getAccessToken, getUser } from "@/app/utils/helpers";
 
 type userData = {
   name: string;
   email: string;
-}
-const Layout = ({ children }: {
-  children: React.ReactNode;
-}) => {
+};
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -44,7 +51,9 @@ const Layout = ({ children }: {
   return (
     <div className="flex h-screen bg-[#f8fafc] overflow-hidden font-sans">
       {/* Sidebar - Desktop */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
         <Sidebar setIsSidebarOpen={setIsSidebarOpen} />
       </aside>
 
@@ -82,7 +91,6 @@ const Layout = ({ children }: {
               </button> */}
             </button>
 
-
             <div className="h-8 w-[1px] bg-slate-200 mx-2 hidden sm:block"></div>
 
             <div className="relative">
@@ -101,13 +109,17 @@ const Layout = ({ children }: {
                     {userData?.email || "admin@thinkhive.com"}
                   </p>
                 </div>
-                <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`h-4 w-4 text-slate-400 transition-transform ${isProfileOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               {isProfileOpen && (
                 <div className="absolute right-0 mt-3 w-56 rounded-2xl bg-white shadow-2xl shadow-indigo-500/10 border border-slate-100 p-2 z-50 animate-in fade-in zoom-in duration-200">
                   <div className="px-4 py-3 border-b border-slate-50 mb-2">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">User Profile</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      User Profile
+                    </p>
                   </div>
                   <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all">
                     <User className="h-4 w-4" />
@@ -129,7 +141,10 @@ const Layout = ({ children }: {
         </header>
 
         {/* Dynamic Content */}
-        <main className="flex-1 overflow-y-auto p-8 lg:p-10 space-y-8" onClick={() => setIsSidebarOpen(false)}>
+        <main
+          className="flex-1 overflow-y-auto p-8 lg:p-10 space-y-8"
+          onClick={() => setIsSidebarOpen(false)}
+        >
           {children}
         </main>
       </div>

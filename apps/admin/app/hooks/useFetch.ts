@@ -1,46 +1,41 @@
-
-import { useState, useEffect, useCallback } from 'react';
-import { publicRequest } from '../config/axios.config';
+import { useState, useEffect, useCallback } from "react";
+import { publicRequest } from "../config/axios.config";
 
 const useFetch = (url: string, options = {}) => {
-    const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const fetchData = useCallback(async () => {
-        try {
-            setLoading(true);
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
 
-            const response = await publicRequest.get(url, {
-                ...options, // important!
-            });
+      const response = await publicRequest.get(url, {
+        ...options, // important!
+      });
 
-            setData(response.data);
-            setError(null);
+      setData(response.data);
+      setError(null);
 
-            return response.data;
+      return response.data;
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message || err?.message || "Something went wrong!";
 
-        } catch (err: any) {
-            const message =
-                err?.response?.data?.message ||
-                err?.message ||
-                'Something went wrong!';
+      setError(message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, [url]); // remove options to avoid infinite loop
 
-            setError(message);
-            return null;
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-        } finally {
-            setLoading(false);
-        }
-    }, [url]); // remove options to avoid infinite loop
+  const refetch = () => fetchData();
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    const refetch = () => fetchData();
-
-    return { data, loading, error, refetch };
+  return { data, loading, error, refetch };
 };
 
 export default useFetch;

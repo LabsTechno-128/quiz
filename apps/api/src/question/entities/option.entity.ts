@@ -14,22 +14,21 @@ import { v4 as uuidv4 } from 'uuid';
 @Entity('options')
 export class Option {
   @PrimaryGeneratedColumn('uuid')
-   id:string;
- 
+  id: string;
 
   @Column({ type: 'text' })
   name: string;
 
   @ManyToOne(() => Question, (question) => question.option, {
-    onDelete: 'CASCADE', nullable: true
+    onDelete: 'CASCADE',
+    nullable: true,
   })
-  @JoinColumn(  )
+  @JoinColumn()
   question: Question;
 
-  @Column({ type: 'boolean' , default: false  })
+  @Column({ type: 'boolean', default: false })
   isCorrect: boolean;
 
-   
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
@@ -42,6 +41,4 @@ export class Option {
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt: Date | null;
-
-  
 }

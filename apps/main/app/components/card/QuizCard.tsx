@@ -1,8 +1,8 @@
-'use client';
-import Image from 'next/image';
-import { FiHeart, FiStar } from 'react-icons/fi';
-import Link from 'next/link';
-import { QuizQuestion } from '@/app/types/api.types';
+"use client";
+import Image from "next/image";
+import { FiHeart, FiStar } from "react-icons/fi";
+import Link from "next/link";
+import { QuizQuestion } from "@/app/types/api.types";
 type Product = {
   id: string;
   title: string;
@@ -19,7 +19,7 @@ type Product = {
   categoryId?: string;
   duration?: number; // in minutes
 
-  difficulty?: 'easy' | 'medium' | 'hard';
+  difficulty?: "easy" | "medium" | "hard";
 
   isPublished?: boolean;
   startDate?: string;
@@ -31,7 +31,7 @@ type Product = {
 export default function QuizCard({
   quiz,
   isFavorite,
-  onToggleFavorite
+  onToggleFavorite,
 }: {
   quiz: Product;
   isFavorite: boolean;
@@ -47,7 +47,7 @@ export default function QuizCard({
         >
           <FiHeart
             size={22}
-            fill={isFavorite ? 'red' : 'none'}
+            fill={isFavorite ? "red" : "none"}
             strokeWidth={1.5}
           />
         </button>
@@ -56,7 +56,7 @@ export default function QuizCard({
       {/* Image */}
       <div className="flex justify-center pt-14 mb-4 bg-[#F6F6F6] pb-14 rounded-xl ">
         <Image
-          src={quiz.image || '/assets/card.png'}
+          src={quiz.image || "/assets/card.png"}
           alt={quiz.name || "image"}
           width={100}
           height={100}
@@ -71,7 +71,9 @@ export default function QuizCard({
       </div>
 
       {/* Category */}
-      <p className="text-gray-500 text-sm mb-3 text-left px-2">{quiz.category || 'General'}</p>
+      <p className="text-gray-500 text-sm mb-3 text-left px-2">
+        {quiz.category || "General"}
+      </p>
 
       {/* Rating + Info */}
       <div className="flex items-center gap-1  text-gray-500 mb-5 text-[14px] px-2">
@@ -84,7 +86,9 @@ export default function QuizCard({
       </div>
 
       {/* Button */}
-      <Link href={`/category/${(quiz.category || 'general').toLowerCase()}/${quiz.id}`}>
+      <Link
+        href={`/category/${(quiz.category || "general").toLowerCase()}/${quiz.id}`}
+      >
         <button className="mt-auto bg-primary hover:bg-secondary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-all w-full">
           View Details
         </button>

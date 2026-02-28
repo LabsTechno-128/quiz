@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { FaBrain } from 'react-icons/fa';
+import { useEffect, useState } from "react";
+import { FaBrain } from "react-icons/fa";
 
 interface TimeLeft {
   days: number;
@@ -11,12 +11,12 @@ interface TimeLeft {
 }
 
 export default function QuizCountdown() {
-  const targetDate = new Date('2025-11-17T22:00:00').getTime();
+  const targetDate = new Date("2025-11-17T22:00:00").getTime();
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
     minutes: 0,
-    seconds: 0
+    seconds: 0,
   });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function QuizCountdown() {
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -71,17 +71,17 @@ export default function QuizCountdown() {
           {/* Countdown */}
           <div className="flex justify-center flex-wrap gap-4">
             {[
-              { label: 'DAYS', value: timeLeft.days },
-              { label: 'HOUR', value: timeLeft.hours },
-              { label: 'MINUTE', value: timeLeft.minutes },
-              { label: 'SECOND', value: timeLeft.seconds }
+              { label: "DAYS", value: timeLeft.days },
+              { label: "HOUR", value: timeLeft.hours },
+              { label: "MINUTE", value: timeLeft.minutes },
+              { label: "SECOND", value: timeLeft.seconds },
             ].map((item, i) => (
               <div
                 key={i}
                 className="w-24 h-24 bg-indigo-50 rounded-lg flex flex-col justify-center items-center"
               >
                 <span className="text-3xl font-bold text-indigo-600">
-                  {String(item.value).padStart(2, '0')}
+                  {String(item.value).padStart(2, "0")}
                 </span>
                 <span className="text-xs font-medium text-gray-600 mt-1">
                   {item.label}

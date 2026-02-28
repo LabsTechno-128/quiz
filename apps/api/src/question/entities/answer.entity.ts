@@ -14,8 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Entity('answers')
 export class Answer {
   @PrimaryGeneratedColumn('uuid')
-   id:string;
- 
+  id: string;
 
   @Column({ type: 'text' })
   name: string;
@@ -25,7 +24,7 @@ export class Answer {
   // })
   // @JoinColumn({ name: 'questionId' })
   // question: Question;
-   
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
@@ -38,6 +37,4 @@ export class Answer {
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt: Date | null;
-
-  
 }

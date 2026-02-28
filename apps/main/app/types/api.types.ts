@@ -3,26 +3,26 @@
 // ============================================
 
 export interface PaginationParams {
-    page?: number;
-    limit?: number;
-    search?: string;
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
 export interface PaginatedResponse<T> {
-    result: T[];
-    items?: T[]; // Some endpoints use 'items' instead of 'data'
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+  result: T[];
+  items?: T[]; // Some endpoints use 'items' instead of 'data'
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
 }
 
 export interface ApiError {
-    message: string;
-    statusCode: number;
-    error?: string;
+  message: string;
+  statusCode: number;
+  error?: string;
 }
 
 // ============================================
@@ -30,38 +30,38 @@ export interface ApiError {
 // ============================================
 
 export interface User {
-    id: string;
-    email: string;
-    name: string;
-    firstName?: string;
-    lastName?: string;
-    avatar?: string;
-    role?: 'user' | 'admin';
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  email: string;
+  name: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  role?: "user" | "admin";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
-    expiresIn: number;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
 }
 
 export interface LoginDto {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 export interface SignupDto {
-    email: string;
-    password: string;
-    name: string;
-    firstName?: string;
-    lastName?: string;
+  email: string;
+  password: string;
+  name: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface AuthResponse extends AuthTokens {
-    user?: User;
+  user?: User;
 }
 
 // ============================================
@@ -69,59 +69,59 @@ export interface AuthResponse extends AuthTokens {
 // ============================================
 
 export interface QuizOption {
-    id: string;
-    text: string;
-    isCorrect?: boolean;
-    questionId: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  text: string;
+  isCorrect?: boolean;
+  questionId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface QuizQuestion {
-    id: string;
-    text: string;
-    type: 'multiple-choice' | 'true-false' | 'short-answer';
-    points: number;
-    quizId: string;
-    options?: QuizOption[];
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  text: string;
+  type: "multiple-choice" | "true-false" | "short-answer";
+  points: number;
+  quizId: string;
+  options?: QuizOption[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Quiz {
-    id: string;
-    title: string;
-    description?: string;
-    category?: string;
-    categoryId?: string;
-    price?: number;
-    duration?: number; // in minutes
-    totalQuestions?: number;
-    difficulty?: 'easy' | 'medium' | 'hard';
-    thumbnail?: string;
-    image?: string;
-    isPublished?: boolean;
-    startDate?: string;
-    endDate?: string;
-    questions: QuizQuestion[];
-    sold?: number;
-    rating?: number;
-    createdAt: string;
-    updatedAt?: string; 
+  id: string;
+  title: string;
+  description?: string;
+  category?: string;
+  categoryId?: string;
+  price?: number;
+  duration?: number; // in minutes
+  totalQuestions?: number;
+  difficulty?: "easy" | "medium" | "hard";
+  thumbnail?: string;
+  image?: string;
+  isPublished?: boolean;
+  startDate?: string;
+  endDate?: string;
+  questions: QuizQuestion[];
+  sold?: number;
+  rating?: number;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export interface CreateQuizDto {
-    title: string;
-    description?: string;
-    category?: string;
-    categoryId?: string;
-    price: number;
-    duration?: number;
-    difficulty?: 'easy' | 'medium' | 'hard';
-    thumbnail?: string;
-    isPublished?: boolean;
-    startDate?: string;
-    endDate?: string;
+  title: string;
+  description?: string;
+  category?: string;
+  categoryId?: string;
+  price: number;
+  duration?: number;
+  difficulty?: "easy" | "medium" | "hard";
+  thumbnail?: string;
+  isPublished?: boolean;
+  startDate?: string;
+  endDate?: string;
 }
 
 /**
@@ -131,26 +131,26 @@ export interface CreateQuizDto {
 export type UpdateQuizDto = Partial<CreateQuizDto>;
 
 export interface QuizSubmission {
-    quizId: string;
-    answers: {
-        questionId: string;
-        answer: string | string[];
-    }[];
+  quizId: string;
+  answers: {
+    questionId: string;
+    answer: string | string[];
+  }[];
 }
 
 export interface QuizResult {
-    quizId: string;
-    userId: string;
-    score: number;
-    totalPoints: number;
-    percentage: number;
-    answers: {
-        questionId: string;
-        answer: string | string[];
-        isCorrect: boolean;
-        points: number;
-    }[];
-    completedAt: string;
+  quizId: string;
+  userId: string;
+  score: number;
+  totalPoints: number;
+  percentage: number;
+  answers: {
+    questionId: string;
+    answer: string | string[];
+    isCorrect: boolean;
+    points: number;
+  }[];
+  completedAt: string;
 }
 
 // ============================================
@@ -158,25 +158,25 @@ export interface QuizResult {
 // ============================================
 
 export interface Category {
-    id: string;
-    name: string;
-    slug?: string;
-    description?: string;
-    icon?: string;
-    image?: string;
-    color?: string;
-    quizCount?: number;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  name: string;
+  slug?: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  color?: string;
+  quizCount?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateCategoryDto {
-    name: string;
-    slug?: string;
-    description?: string;
-    icon?: string;
-    image?: string;
-    color?: string;
+  name: string;
+  slug?: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  color?: string;
 }
 
 /**
@@ -190,38 +190,38 @@ export type UpdateCategoryDto = Partial<CreateCategoryDto>;
 // ============================================
 
 export interface Article {
-    id: string;
-    title: string;
-    slug?: string;
-    content: string;
-    excerpt?: string;
-    author?: string;
-    authorId?: string;
-    category?: string;
-    categoryId?: string;
-    thumbnail?: string;
-    coverImage?: string;
-    tags?: string[];
-    isPublished: boolean;
-    publishedAt?: string;
-    viewCount?: number;
-    readTime?: number; // in minutes
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  title: string;
+  slug?: string;
+  content: string;
+  excerpt?: string;
+  author?: string;
+  authorId?: string;
+  category?: string;
+  categoryId?: string;
+  thumbnail?: string;
+  coverImage?: string;
+  tags?: string[];
+  isPublished: boolean;
+  publishedAt?: string;
+  viewCount?: number;
+  readTime?: number; // in minutes
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateArticleDto {
-    title: string;
-    slug?: string;
-    content: string;
-    excerpt?: string;
-    author?: string;
-    category?: string;
-    thumbnail?: string;
-    coverImage?: string;
-    tags?: string[];
-    isPublished?: boolean;
-    publishedAt?: string;
+  title: string;
+  slug?: string;
+  content: string;
+  excerpt?: string;
+  author?: string;
+  category?: string;
+  thumbnail?: string;
+  coverImage?: string;
+  tags?: string[];
+  isPublished?: boolean;
+  publishedAt?: string;
 }
 
 /**
@@ -231,9 +231,9 @@ export interface CreateArticleDto {
 export type UpdateArticleDto = Partial<CreateArticleDto>;
 
 export interface ArticleQueryParams extends PaginationParams {
-    category?: string;
-    author?: string;
-    isPublished?: boolean;
+  category?: string;
+  author?: string;
+  isPublished?: boolean;
 }
 
 // ============================================
@@ -241,33 +241,33 @@ export interface ArticleQueryParams extends PaginationParams {
 // ============================================
 
 export interface Banner {
-    id: string;
-    name: string;
-    subname?: string;
-    description?: string;
-    image: string;
-    imageUrl?: string;
-    link?: string;
-    buttonText?: string;
-    isActive?: boolean;
-    order?: number;
-    startDate?: string;
-    endDate?: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  name: string;
+  subname?: string;
+  description?: string;
+  image: string;
+  imageUrl?: string;
+  link?: string;
+  buttonText?: string;
+  isActive?: boolean;
+  order?: number;
+  startDate?: string;
+  endDate?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateBannerDto {
-    title: string;
-    subtitle?: string;
-    description?: string;
-    image: string;
-    link?: string;
-    buttonText?: string;
-    isActive?: boolean;
-    order?: number;
-    startDate?: string;
-    endDate?: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  image: string;
+  link?: string;
+  buttonText?: string;
+  isActive?: boolean;
+  order?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 /**
@@ -281,37 +281,37 @@ export type UpdateBannerDto = Partial<CreateBannerDto>;
 // ============================================
 
 export interface Ebook {
-    id: string;
-    title: string;
-    description?: string;
-    author?: string;
-    category?: string;
-    categoryId?: string;
-    coverImage?: string;
-    fileUrl?: string;
-    price: number;
-    pages?: number;
-    language?: string;
-    publishedDate?: string;
-    isbn?: string;
-    rating?: number;
-    downloadCount?: number;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  title: string;
+  description?: string;
+  author?: string;
+  category?: string;
+  categoryId?: string;
+  coverImage?: string;
+  fileUrl?: string;
+  price: number;
+  pages?: number;
+  language?: string;
+  publishedDate?: string;
+  isbn?: string;
+  rating?: number;
+  downloadCount?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreateEbookDto {
-    title: string;
-    description?: string;
-    author?: string;
-    category?: string;
-    coverImage?: string;
-    fileUrl?: string;
-    price: number;
-    pages?: number;
-    language?: string;
-    publishedDate?: string;
-    isbn?: string;
+  title: string;
+  description?: string;
+  author?: string;
+  category?: string;
+  coverImage?: string;
+  fileUrl?: string;
+  price: number;
+  pages?: number;
+  language?: string;
+  publishedDate?: string;
+  isbn?: string;
 }
 
 /**
@@ -331,13 +331,13 @@ export type EbookResponseDto = Ebook;
 // ============================================
 
 export interface CartItem {
-    quiz: Quiz;
-    quantity: number;
+  quiz: Quiz;
+  quantity: number;
 }
 
 export interface Cart {
-    items: CartItem[];
-    total: number;
+  items: CartItem[];
+  total: number;
 }
 
 // ============================================
@@ -345,17 +345,17 @@ export interface Cart {
 // ============================================
 
 export interface LeaderboardEntry {
-    id: string;
-    userId: string;
-    userName: string;
-    userAvatar?: string;
-    points: number;
-    rank: number;
-    quizzesCompleted: number;
-    isMe?: boolean;
+  id: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  points: number;
+  rank: number;
+  quizzesCompleted: number;
+  isMe?: boolean;
 }
 
 export interface LeaderboardResponse {
-    entries: LeaderboardEntry[];
-    myRank?: LeaderboardEntry;
+  entries: LeaderboardEntry[];
+  myRank?: LeaderboardEntry;
 }
