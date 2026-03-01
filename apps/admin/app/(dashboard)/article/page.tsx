@@ -246,7 +246,7 @@ export default function ArticlePage() {
                 <div className="flex items-center gap-3 mb-5">
                   <div className="px-4 py-1.5 bg-indigo-50/50 text-indigo-600 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] flex items-center gap-2 border border-indigo-100/50">
                     <Tag className="h-3 w-3" />
-                    {article.category || "Uncategorized"}
+                    {article.category || "Uncategorized"}  { JSON.stringify(article)}
                   </div>
                 </div>
 

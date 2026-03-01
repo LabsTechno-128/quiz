@@ -200,7 +200,7 @@ export interface Article {
   category?: string;
   categoryId?: string;
   thumbnail?: string;
-  coverImage?: string;
+  image?: string;
   tags?: string[];
   isPublished: boolean;
   publishedAt?: string;

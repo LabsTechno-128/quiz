@@ -25,8 +25,7 @@ export default function ArticlesSection({ articles }: { articles: Article[] }) {
             <div className="relative h-48 w-full">
               <Image
                 src={
-                  article.thumbnail ||
-                  article.coverImage ||
+                  article.image || 
                   "/assets/card-quzzy.png"
                 }
                 alt={article.title || "Article Image"}

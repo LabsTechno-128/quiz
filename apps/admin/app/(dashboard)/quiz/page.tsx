@@ -44,7 +44,7 @@ export default function QuizPage() {
   const handleDelete = async (id: any) => {
     if (confirm("Are you sure you want to delete this quiz?")) {
       try {
-        await privateRequest.delete(`/quizzes/${id}`);
+        await privateRequest.delete(`/quiz/${id}`);
         setQuizzes(quizzes.filter((q: any) => q.id !== id));
         Toastify.Success("Quiz deleted successfully");
       } catch (error) {

@@ -117,7 +117,7 @@ export default function BannerPage() {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this article?")) {
       try {
-        await privateRequest.delete(`/articles/${id}`);
+        await privateRequest.delete(`/banners/${id}`);
         Toastify.Success("Article deleted successfully");
         fetchArticles(pagination.page);
       } catch (error) {

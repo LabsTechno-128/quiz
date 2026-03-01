@@ -55,7 +55,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true);
-
+      console.log(values,"-------->>");
       const payload = {
         ...values,
         readingTime: values.readingTime ? parseInt(values.readingTime) : null,
