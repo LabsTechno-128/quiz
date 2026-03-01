@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Category } from "@/app/types/api.types";
+import Link from "next/link";
 
 export default function FeaturedCategory({
   category,
@@ -23,8 +24,9 @@ export default function FeaturedCategory({
         {/* Category Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {category.map((cat) => (
-            <div
+            <Link
               key={cat.id}
+              href={`/category/general/${cat.id}`}
               className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex flex-col items-center text-center"
             >
               <div className="w-16 h-16 mb-3">
@@ -40,7 +42,7 @@ export default function FeaturedCategory({
               {cat.quizCount !== undefined && (
                 <p className="text-sm text-gray-500">{cat.quizCount} Quizzes</p>
               )}
-            </div>
+            </Link>
           ))}
         </div>
       </div>

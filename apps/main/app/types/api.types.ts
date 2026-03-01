@@ -224,6 +224,14 @@ export interface CreateArticleDto {
   publishedAt?: string;
 }
 
+export interface CreateAnswerDto {
+  quizId: string;
+  questionAnswerDto: {
+    questionId?: string;
+    optionId?: string;
+  }[];
+}
+
 /**
  * UpdateArticleDto represents the data transfer object for updating an article.
  * All properties are optional as it extends Partial<CreateArticleDto>.

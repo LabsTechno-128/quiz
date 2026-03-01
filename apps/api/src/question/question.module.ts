@@ -7,11 +7,12 @@ import { Quiz } from 'src/quiz/entities/quiz.entity';
 import { QuestionService } from './question.service';
 import { AnswerService } from './answer.service';
 import { QuestionController } from './question.controller';
+import { AnswerController } from './answer.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Question, Answer, Option, Quiz])],
   providers: [QuestionService, AnswerService],
-  controllers: [QuestionController],
+  controllers: [QuestionController, AnswerController],
   exports: [QuestionService, AnswerService],
 })
 export class QuestionModule {}

@@ -1,11 +1,23 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer'; 
+export class questionAnswerDto {
+  @IsUUID()
+  @IsNotEmpty()
+  @IsOptional()
+  optionId: string;
 
-export class CreateAnswerDto {
   @IsUUID()
   @IsNotEmpty()
   questionId: string;
-
-  @IsString()
+}
+export class CreateAnswerDto {
+  @IsUUID()
   @IsNotEmpty()
-  text: string;
+  quizId: string;
+
+  @Type(() => questionAnswerDto)
+  @ValidateNested()
+  @IsNotEmpty()
+  questionAnswerDto: questionAnswerDto[];
+  
 }

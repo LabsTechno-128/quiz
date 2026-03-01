@@ -1,3 +1,4 @@
+import { Answer } from 'src/question/entities/answer.entity';
 import { Question } from 'src/question/entities/question.entity';
 import {
   Entity,
@@ -34,6 +35,12 @@ export class Quiz {
     nullable: true,
   })
   questions: Question[];
+
+   @OneToMany(() => Answer, (answer) => answer.quiz, {
+      cascade: true,
+      nullable: true,
+    })
+    answers: Answer[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

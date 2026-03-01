@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Option } from './option.entity';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { Answer } from './answer.entity';
 
 @Entity('questions')
 export class Question {
@@ -41,6 +42,12 @@ export class Question {
   })
   @JoinColumn()
   quiz: Quiz;
+ 
+  @ManyToOne(() => Answer, (answer) => answer.question_answer, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  question_answer: Answer;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
