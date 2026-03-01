@@ -7,6 +7,7 @@ import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { Option } from './entities/option.entity';
 import { Question } from './entities/question.entity';
 import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { User } from 'src/user/entities/user.entity';
 
 
 @Injectable()
@@ -20,9 +21,11 @@ export class AnswerService {
     private questionRepository: Repository<Question>,
     @InjectRepository(Quiz)
     private quizRepository: Repository<Quiz>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>, 
   ) { }
 
-  async create(createDto: CreateAnswerDto) {
+  async create(id:string, createDto: CreateAnswerDto) {
     const quizRepo = await this.quizRepository.findOne({ where: { id: createDto.quizId } });
     if (!quizRepo) {
       throw new NotFoundException(`Quiz with ID ${createDto.quizId} not found`);
@@ -55,6 +58,12 @@ export class AnswerService {
     answer.correctScore = totalCorrectCount;
     answer.correctOptionId = correctOptionIds;
     answer.question_answer = questionRepo;
+    if(id){
+      const user = await this.userRepository.findOne({ where: { id } });
+      if (user) {
+        answer.users = [user];
+      }
+    }
     return this.answerRepository.save(answer);
 
   }
@@ -62,7 +71,7 @@ export class AnswerService {
   async findAll(questionId?: string): Promise<Answer[]> {
 
     return this.answerRepository.find({
-      relations: ['quiz'],
+      relations: ['quiz','user'],
       withDeleted: false,
     });
   }

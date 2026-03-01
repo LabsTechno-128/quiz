@@ -15,7 +15,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (data: LoginDto) => Promise<void>;
+  login: (data: { email_or_phone: string }) => Promise<void>;
   signup: (data: SignupDto) => Promise<void>;
   logout: () => void;
   loginWithGoogle: () => void;
@@ -46,11 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, []);
 
-  const login = async (data: LoginDto) => {
+  const login = async (data: { email_or_phone: string }) => {
     setIsLoading(true);
     try {
-      const response = await authService.login(data);
+      const response = await authService.loginWithPhoneOrEmail(data);
       // Fetch user profile after login
+      console.log(response)
       const currentUser = await userService.getCurrentUser();
       setUser(currentUser);
     } catch (error) {

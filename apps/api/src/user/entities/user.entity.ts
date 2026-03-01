@@ -5,16 +5,22 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Roles } from '../enums/user-roles.enum';
 import { RefreshToken } from 'src/auth/entities/refresh-token.entity';
+import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { Answer } from 'src/question/entities/answer.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true , nullable:true})
   email: string;
 
   @Column({ nullable: true })
@@ -68,6 +74,10 @@ export class User {
   })
   refreshTokens: RefreshToken[];
 
+ @ManyToMany(() => Answer, (answer) => answer.users, { cascade: true })
+  @JoinTable() // ✅ JoinTable শুধুমাত্র একপাশে
+  answers: Answer[];
+ 
   @CreateDateColumn()
   createdAt: Date;
 

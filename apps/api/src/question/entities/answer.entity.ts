@@ -8,9 +8,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { Question } from './question.entity'; 
 import { Quiz } from 'src/quiz/entities/quiz.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity('answers')
 export class Answer {
@@ -34,6 +36,8 @@ export class Answer {
   })
   question_answer: Question[];
     
+ @ManyToMany(() => User, (user) => user.answers)
+  users: User[];
 
   @Column({ type: 'int', nullable: true })
   totalScore: number;

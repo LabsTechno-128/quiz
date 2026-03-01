@@ -16,6 +16,8 @@ import Link from "next/link";
 import Image from "next/image";
 import NavbarSkeleton from "../skeleton/navskeleton";
 import { publicRequest } from "@/app/lib/axios";
+import { useAuth } from "@/app/contexts/AuthContext";
+import LoginModal from "./LoginModal";
 // import { clientApi } from '@/lib/clientApi';
 // import { serverApi } from '@/lib/serverApi';
 
@@ -27,7 +29,7 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-
+ const [loginModalOpen, setLoginModalOpen] = useState(false);
   const menuItems = [
     {
       label: "Purchase List",
@@ -79,7 +81,8 @@ export default function Navbar() {
     }
     loadData();
   }, []);
-  console.log("Category State:", category);
+  const { user,logout } = useAuth();
+  console.log(user)
   return (
     <>
       {loading ? (
@@ -124,11 +127,10 @@ export default function Navbar() {
                 className="absolute top-14 left- w-40 z-50"
               >
                 <ul
-                  className={`shadow-lg mt-1 rounded-md bg-white transform transition-all duration-300 origin-top ${
-                    categoryOpen
-                      ? "opacity-100 scale-100 visible"
-                      : "opacity-0 scale-95 invisible"
-                  }`}
+                  className={`shadow-lg mt-1 rounded-md bg-white transform transition-all duration-300 origin-top ${categoryOpen
+                    ? "opacity-100 scale-100 visible"
+                    : "opacity-0 scale-95 invisible"
+                    }`}
                 >
                   {category?.map((item) => (
                     <li key={item.id}>
@@ -159,30 +161,33 @@ export default function Navbar() {
             </div>
 
             {/* Right - Icons */}
-            <div className="flex items-center gap-5 relative">
-              <Link href="/cart">
-                <button className="text-gray-600 hover:text-indigo-600 cursor-pointer">
-                  <FiShoppingCart className="w-6 h-6" />
+            <div className=" relative">
+              {user ? <div className="flex items-center gap-5  ">
+                <Link href="/cart">
+                  <button className="text-gray-600 hover:text-indigo-600 cursor-pointer">
+                    <FiShoppingCart className="w-6 h-6" />
+                  </button>
+                </Link>
+
+                <p className="border border-gray-300 h-5"></p>
+
+                {/* Profile Button */}
+                <button
+                  className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-full p-1.5 cursor-pointer relative"
+                  onClick={() => setProfileOpen(!profileOpen)}
+                >
+                  <FiUser className="w-5 h-5" />
                 </button>
-              </Link>
-
-              <p className="border border-gray-300 h-5"></p>
-
-              {/* Profile Button */}
-              <button
-                className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-full p-1.5 cursor-pointer relative"
-                onClick={() => setProfileOpen(!profileOpen)}
-              >
-                <FiUser className="w-5 h-5" />
-              </button>
+              </div> :
+                <button onClick={() => setLoginModalOpen(true)} className="text-gray-600 hover:text-indigo-600 border border-gray-200 rounded-full py-1 px-4 cursor-pointer">Login</button>}
+              <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
 
               {/* Profile Popup */}
               <div
-                className={`absolute top-10 right-0 w-64 md:w-80 bg-white rounded-xl shadow-lg border border-gray-100 p-4 transform transition-all duration-300 z-[99999] ${
-                  profileOpen
-                    ? "opacity-100 scale-100 visible"
-                    : "opacity-0 scale-95 invisible"
-                }`}
+                className={`absolute top-10 right-0 w-64 md:w-80 bg-white rounded-xl shadow-lg border border-gray-100 p-4 transform transition-all duration-300 z-[99999] ${profileOpen
+                  ? "opacity-100 scale-100 visible"
+                  : "opacity-0 scale-95 invisible"
+                  }`}
               >
                 {/* Profile Info */}
                 <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
@@ -230,7 +235,10 @@ export default function Navbar() {
 
                 {/* Sign Out */}
                 <button
-                  onClick={() => setProfileOpen(false)}
+                  onClick={() => {
+                    setProfileOpen(false);
+                    logout();
+                  }}
                   className="flex items-center gap-2 text-red-500 text-sm font-medium hover:text-red-600 transition"
                 >
                   <FiLogOut /> Sign Out
@@ -272,9 +280,8 @@ export default function Navbar() {
 
           {/* Sidebar for Small Devices */}
           <div
-            className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transform transition-transform duration-300 ${
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+            className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
           >
             <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200">
               <h2 className="text-lg font-semibold">Menu</h2>

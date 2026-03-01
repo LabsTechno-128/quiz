@@ -99,7 +99,49 @@ export class AuthService {
 
     return { ...tokens, user };
   }
+  async signinWithPhoneOrEmail(dto:{
+    email_or_phone:string
+  }) {
+    const { email_or_phone } = dto;
+    if(email_or_phone.includes('@')) {
+      console.log(dto)
+      // email
+      const user = await this.userRepository.findOne({
+        where: { email: email_or_phone },
+      });
+      if (!user) {
+        const userCreate =  this.userRepository.create({
+          email: email_or_phone,
+          availToSetPassword: true,
+        });
+      const result =  await this.userRepository.save(userCreate);
+        const tokens = await this.generateTokens(result);
+        return { ...tokens, user: result };
+      }else{
+        const tokens = await this.generateTokens(user);
+        return { ...tokens, user };
+      } 
+    } else {
+      // phone
+      const user = await this.userRepository.findOne({
+        where: { phone: email_or_phone },
+      });
+      if (!user) {
+        const userCreate =  this.userRepository.create({
+          phone: email_or_phone,
+          availToSetPassword: true,
+        });
+        const result =  await this.userRepository.save(userCreate);
+         const tokens = await this.generateTokens(result);
+        return { ...tokens, user: result };
+      }
+       else{
+        const tokens = await this.generateTokens(user);
+        return { ...tokens, user };
+       }
+    }
 
+  }
   async refreshTokens(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken);

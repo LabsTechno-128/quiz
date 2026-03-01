@@ -36,4 +36,15 @@ export class UserService {
     user.isActive = !user.isActive;
     return await this.userRepository.save(user);
   }
+  
+  async getCurrentUser(id: string) {
+    //  const result = await this.userRepository.findOne({ where: { id },relations:["answers"] });
+    const qb = await this.userRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.answers', 'answers')
+      .leftJoinAndSelect('answers.quiz', 'quiz')
+      .leftJoinAndSelect('answers.question_answer', 'question_answer')
+      .where('user.id = :id', { id })
+      .getOne();
+    return qb;
+  }
 }

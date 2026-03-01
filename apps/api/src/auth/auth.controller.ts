@@ -35,7 +35,13 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-
+  
+  @Post('login-with-phone-or-email')
+  async loginWithPhoneOrEmail(@Body() loginDto: { email_or_phone: string }) {
+    return this.authService.signinWithPhoneOrEmail(loginDto);
+  }
+  
+// auth/login-with-phone-or-email
   @Post('refresh-token')
   async refreshTokens(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshTokens(refreshToken);

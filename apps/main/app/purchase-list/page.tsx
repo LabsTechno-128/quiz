@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { userService } from "../services/user.service";
 
 interface PurchaseItem {
   id: number;
@@ -50,6 +51,13 @@ const purchaseData: PurchaseItem[] = [
 ];
 
 const PurchaseList: FC = () => {
+  useEffect(()=>{
+     const user = async () => {
+      const user = await userService.getCurrentUser();
+      console.log(user);
+     };
+     user();
+  },[])
   return (
     <>
       <div className="flex gap-4 justify-between bg-[#F7F7F7] py-14 px-4 lg:px-24 max-w-[1440px] mx-auto ">

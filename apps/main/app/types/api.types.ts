@@ -48,8 +48,9 @@ export interface AuthTokens {
 }
 
 export interface LoginDto {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  email_or_phone?:string;
 }
 
 export interface SignupDto {

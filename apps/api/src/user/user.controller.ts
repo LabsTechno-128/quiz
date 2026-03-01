@@ -28,7 +28,12 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
-
+   @Get("me")
+   @UseGuards(JwtAuthGuard)
+   getCurrentUser(@Req() req: any) {
+    console.log("user,s")
+    return this.userService.getCurrentUser(req.user.id);
+   }
   @Get(':id')
   @Roles(RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN)
   findOne(@Param('id') id: string) {
@@ -52,10 +57,13 @@ export class UserController {
   toggleStatus(@Param('id') id: string) {
     return this.userService.toggleStatus(id);
   }
+  
 
+ 
   @Patch('profile/update')
   @UseGuards(JwtAuthGuard)
   updateProfile(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(req.user.id, updateUserDto);
   }
+
 }
