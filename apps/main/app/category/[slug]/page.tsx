@@ -1,6 +1,8 @@
 "use client";
 import QuizCard from "@/app/components/card/QuizCard";
-import React, { useState } from "react";
+import { quizService } from "@/app/services/quiz.service";
+import { Quiz } from "@/app/types/api.types";
+import React, { useEffect, useState } from "react";
 import {
   FiChevronDown,
   FiChevronUp,
@@ -19,35 +21,7 @@ type Product = {
   type: string;
 };
 
-const products: Product[] = [
-  {
-    id: "23432",
-    title: "Geography Mastery",
-    category: "Geography",
-    price: 10,
-    rating: 4.9,
-    image: "/geo.png",
-    type: "Science",
-  },
-  {
-    id: "sdfsf",
-    title: "Grammar Essentials",
-    category: "English",
-    price: 20,
-    rating: 4.8,
-    image: "/eng.png",
-    type: "Language",
-  },
-  {
-    id: "sdfdsf",
-    title: "Human Body System",
-    category: "Science",
-    price: 15,
-    rating: 4.7,
-    image: "/human.png",
-    type: "Biology",
-  },
-];
+ 
 
 export default function CategoryPage({
   params,
@@ -65,7 +39,7 @@ export default function CategoryPage({
   const [maxPrice, setMaxPrice] = useState("");
   const [selected, setSelected] = useState<string>("");
   const [active, setActive] = useState("grid");
-
+  const[quiz,setQuiz] = useState<Quiz[]>([]);
   const handleToggleFavorite = (id: string) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id],
@@ -73,7 +47,17 @@ export default function CategoryPage({
   };
 
   const options = ["$0 – $100", "$100 – $200", "$200 – $300", "$300 – $400"];
-
+  useEffect(()=>{
+    // fetch quiz by category
+    // setQuiz(products);
+    const asyncFetch = async () => {
+      const response = await  quizService.getByCategory(slug);
+      const data = response ;
+      setQuiz(data.result);
+      console.log("quiz",data);
+    };
+    asyncFetch();
+  },[])
   return (
     <div className="max-w-[1440px] mx-auto py-10 px-4 md:px-8 lg:px-24">
       {/* Breadcrumb */}
@@ -251,7 +235,7 @@ export default function CategoryPage({
 
         {/* Product Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {products.map((p) => (
+          {quiz.length>=1 && quiz.map((p) => (
             <QuizCard
               key={p.id}
               quiz={p}
@@ -259,6 +243,7 @@ export default function CategoryPage({
               onToggleFavorite={handleToggleFavorite}
             />
           ))}
+         
         </section>
       </div>
     </div>

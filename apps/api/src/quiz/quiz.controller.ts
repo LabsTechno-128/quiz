@@ -124,4 +124,16 @@ export class QuizController {
   async remove(@Param('id') id: string): Promise<void> {
     await this.quizService.remove(id);
   }
+  
+  @Get('category/:categoryId')
+  @ApiOperation({ summary: 'Get quizzes by category ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns quizzes for the specified category',
+    type: [Quiz],
+  })
+  @ApiResponse({ status: 404, description: 'Category not found' })
+  findByCategory(@Param('categoryId') categoryId: string) {
+    return this.quizService.findByCategory(categoryId);
+  }
 }

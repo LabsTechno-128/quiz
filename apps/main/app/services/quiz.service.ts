@@ -72,9 +72,8 @@ class QuizService {
 
     if (params?.page) queryParams.append("page", params.page.toString());
     if (params?.limit) queryParams.append("limit", params.limit.toString());
-    queryParams.append("category", categoryId);
 
-    return clientApi.get(`${this.BASE_PATH}?${queryParams.toString()}`);
+    return clientApi.get(`${this.BASE_PATH}/category/${categoryId}?${queryParams.toString()}`);
   }
 }
 

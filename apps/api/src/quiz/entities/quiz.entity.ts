@@ -8,8 +8,11 @@ import {
   UpdateDateColumn,
   OneToMany,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { Category } from 'src/category/entities/category.entity';
 
 // Using string literal for relation to avoid circular dependency
 
@@ -42,6 +45,10 @@ export class Quiz {
     })
     answers: Answer[];
 
+    @ManyToOne(() => Category, (category) => category.quizs)
+    @JoinColumn()
+    category: Category;
+    
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

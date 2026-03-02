@@ -8,17 +8,28 @@ import { Repository, In } from 'typeorm';
 import { Quiz } from './entities/quiz.entity';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class QuizService {
   constructor(
     @InjectRepository(Quiz)
     private quizRepository: Repository<Quiz>,
-  ) {}
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+  ) { }
 
   async create(createQuizDto: CreateQuizDto): Promise<Quiz> {
-    console.log(createQuizDto);
     const quiz = this.quizRepository.create(createQuizDto);
+    if (createQuizDto.categoryId) {
+      const findCategory = await this.categoryRepository.findOne({
+        where: { id: createQuizDto.categoryId },
+      });
+      if (findCategory) {
+        quiz.category = findCategory;
+      }
+
+    }
     const savedQuiz = await this.quizRepository.save(quiz);
     return this.findOne(savedQuiz.id);
   }
@@ -67,25 +78,6 @@ export class QuizService {
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
     const quiz = await this.findOne(id);
-
-    // if (updateQuizDto.questions) {
-    //   // Remove existing questions and options
-    //   await this.removeQuestions(quiz.id);
-
-    //   // Add new questions
-    //   await this.addQuestionsToQuiz(quiz.id, updateQuizDto.questions);
-
-    //   // Remove questions from DTO to avoid updating them directly
-    //   const { questions, ...updateData } = updateQuizDto;
-
-    //   // Only update if there are other fields to update
-    //   if (Object.keys(updateData).length > 0) {
-    //     await this.quizRepository.update(id, updateData as any);
-    //   }
-    // } else {
-    //   await this.quizRepository.update(id, updateQuizDto as any);
-    // }
-
     return this.findOne(id);
   }
 
@@ -95,5 +87,16 @@ export class QuizService {
     if (result.affected === 0) {
       throw new NotFoundException(`Quiz with ID ${id} not found`);
     }
+  }
+  // catgory wise quiz fetch 
+  async findByCategory(categoryId: string): Promise<{ result: Quiz[] }> {
+    const quizzes = await this.quizRepository.find({
+      where: { category: { id: categoryId } },
+      relations: ['category', 'questions', 'questions.option'],
+      withDeleted: false,
+    });
+    return {
+      result:quizzes
+    };
   }
 }

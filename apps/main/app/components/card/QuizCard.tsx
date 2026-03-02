@@ -2,38 +2,14 @@
 import Image from "next/image";
 import { FiHeart, FiStar } from "react-icons/fi";
 import Link from "next/link";
-import { QuizQuestion } from "@/app/types/api.types";
-type Product = {
-  id: string;
-  title: string;
-  name?: string;
-  category?: string;
-  price?: number;
-  rating?: number;
-  image?: string;
-  type?: string;
-  thumbnail?: string;
-  sold?: number;
-  totalQuestions?: number;
-  description?: string;
-  categoryId?: string;
-  duration?: number; // in minutes
-
-  difficulty?: "easy" | "medium" | "hard";
-
-  isPublished?: boolean;
-  startDate?: string;
-  endDate?: string;
-  questions?: QuizQuestion[];
-  createdAt?: string;
-  updatedAt?: string;
-};
+import { Quiz, QuizQuestion } from "@/app/types/api.types";
+ 
 export default function QuizCard({
   quiz,
   isFavorite,
   onToggleFavorite,
 }: {
-  quiz: Product;
+  quiz: Quiz;
   isFavorite: boolean;
   onToggleFavorite: (id: string) => void;
 }) {
@@ -66,13 +42,13 @@ export default function QuizCard({
 
       {/* Title + Price */}
       <div className="flex justify-between items-center mb-1 px-2">
-        <h3 className="font-bold text-gray-800 text-base">{quiz.title}</h3>
+        <h3 className="font-bold text-gray-800 text-base">{quiz.name}</h3>
         <span className="text-green-600 font-semibold">${quiz.price}</span>
       </div>
 
       {/* Category */}
       <p className="text-gray-500 text-sm mb-3 text-left px-2">
-        {quiz.category || "General"}
+        {quiz?.category?.name || "General"}
       </p>
 
       {/* Rating + Info */}
@@ -85,9 +61,10 @@ export default function QuizCard({
         <span>{quiz.totalQuestions || 15} MCQs + PDF</span>
       </div>
 
+
       {/* Button */}
       <Link
-        href={`/category/${(quiz.category || "general").toLowerCase()}/${quiz.id}`}
+        href={`/category/general/${quiz.id}`}
       >
         <button className="mt-auto bg-primary hover:bg-secondary text-white py-2 rounded-lg font-medium hover:opacity-90 transition-all w-full">
           View Details

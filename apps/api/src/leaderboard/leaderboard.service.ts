@@ -48,6 +48,7 @@ export class LeaderboardService {
     const userRankingQuery = this.userRepository
       .createQueryBuilder('user')
       .leftJoin('user.answers', 'answers')
+      .leftJoin('answers.quiz', 'quiz')
       .where('user.isActive = :isActive', { isActive: true })
       .groupBy('user.id')
       .orderBy('SUM(answers.correctScore)', 'DESC')
@@ -82,6 +83,7 @@ export class LeaderboardService {
         name: user.name,
         email: user.email,
         avatar: user.avatar,
+        answers: user.answers,
       },
       totalScore,
       totalQuizzes,

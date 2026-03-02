@@ -41,6 +41,8 @@ export interface User {
   updatedAt: string;
   totalCorrectScore?: number;
   rank?: string;
+  answers?: any[];
+  user?: User;
 }
 
 export interface AuthTokens {
@@ -93,9 +95,8 @@ export interface QuizQuestion {
 
 export interface Quiz {
   id: string;
-  title: string;
-  description?: string;
-  category?: string;
+  name: string;
+  description?: string; 
   categoryId?: string;
   price?: number;
   duration?: number; // in minutes
@@ -111,6 +112,7 @@ export interface Quiz {
   rating?: number;
   createdAt: string;
   updatedAt?: string;
+  category?: Category;
 }
 
 export interface CreateQuizDto {

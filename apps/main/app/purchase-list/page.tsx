@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { userService } from "../services/user.service";
+import { User } from "../types/api.types";
+import { leaderboardService } from "../services/leaderboard.service";
 
 interface PurchaseItem {
   id: number;
@@ -51,13 +53,26 @@ const purchaseData: PurchaseItem[] = [
 ];
 
 const PurchaseList: FC = () => {
-  useEffect(()=>{
-     const user = async () => {
-      const user = await userService.getCurrentUser();
-      console.log(user);
-     };
-     user();
-  },[])
+  // useEffect(()=>{
+  //    const user = async () => {
+  //     const user = await userService.getCurrentUser();
+  //     console.log(user);
+  //    };
+  //    user();
+  // },[])
+
+    const [me, setMe] = useState<User | null>(null); 
+  
+    useEffect(() => {
+        const fetchUserRanking = async () => {
+          const response = await leaderboardService.getUserRanking();
+          console.log(response)
+            setMe(response);   
+        };
+       
+        fetchUserRanking(); 
+    }, []);
+    console.log(me?.user?.answers )
   return (
     <>
       <div className="flex gap-4 justify-between bg-[#F7F7F7] py-14 px-4 lg:px-24 max-w-[1440px] mx-auto ">
@@ -69,7 +84,7 @@ const PurchaseList: FC = () => {
       <div className="bg-white flex justify-center max-w-[1440px]  px-4 lg:px-24 mx-auto w-full ">
         <div className=" shadow-sm rounded-xl w-full -mt-9">
           <div className="space-y-3 ">
-            {purchaseData.map((item) => (
+            { Array.isArray(me?.user?.answers) && me?.user?.answers?.length>0 && me?.user?.answers?.map((item) => (
               <div
                 key={item.id}
                 className="flex flex-col md:flex-row md:items-center justify-between bg-white border-b border-[#E4E9EE]  p-4 hover:shadow-sm transition-shadow gap-5 md:gap-0 "
@@ -77,17 +92,17 @@ const PurchaseList: FC = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={item.icon}
-                      alt={item.title}
+                      src={item.quiz?.image || '/'}
+                      alt={item.quiz?.name || '/'}
                       fill
                       className="object-contain"
                     />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800">
-                      {item.title}
+                      {item.quiz?.name}
                     </h3>
-                    <p className="text-sm text-gray-500">{item.subject}</p>
+                    <p className="text-sm text-gray-500 truncate">{item.quiz?.description}</p>
                   </div>
                 </div>
 

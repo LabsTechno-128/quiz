@@ -16,8 +16,8 @@ import useFetch from "@/app/hooks/useFetch";
 import { privateRequest } from "@/app/config/axios.config";
 import { Toastify } from "@/app/components/ui/toastify";
 import PageHeader from "@/app/components/ui/pageHeader";
-import ImageUpload from "@/app/components/ui/input/imageUpload";
-
+import ImageUpload from "@/app/components/ui/input/imageUpload"; 
+import { customSelectStyles } from "@/utils/variable";
 export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
   const [loading, setLoading] = useState(false);
   const { data: categoryData, loading: categoryFetchLoading } =
@@ -37,6 +37,7 @@ export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
       description: "",
       image: "",
       status: true,
+      categoryId: "",
     },
   });
 
@@ -47,7 +48,7 @@ export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
       setLoading(true);
       console.log(values);
       const res = await privateRequest.post("/quiz", values);
-      Toastify.Success("Category created successfully!");
+      Toastify.Success("Quiz created successfully!");
       reset();
       onSuccess?.(res.data);
       router.push("/quiz");
@@ -59,48 +60,7 @@ export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
     }
   };
 
-  const customSelectStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: "#f8fafc", // slate-50
-      borderColor: state.isFocused ? "#6366f1" : "#f1f5f9", // indigo-500 : slate-100
-      borderRadius: "1.5rem",
-      padding: "0.5rem 1rem",
-      boxShadow: state.isFocused ? "0 0 0 4px #e0e7ff" : "none", // indigo-100
-      "&:hover": {
-        borderColor: "#6366f1",
-      },
-      transition: "all 0.2s ease",
-    }),
-    option: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: state.isSelected
-        ? "#6366f1"
-        : state.isFocused
-          ? "#eef2ff"
-          : "white",
-      color: state.isSelected ? "white" : "#1e293b",
-      padding: "0.75rem 1.25rem",
-      borderRadius: "0.75rem",
-      margin: "0.25rem 0.5rem",
-      cursor: "pointer",
-      width: "auto",
-    }),
-    menu: (provided: any) => ({
-      ...provided,
-      borderRadius: "1.5rem",
-      padding: "0.5rem",
-      boxShadow:
-        "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
-      border: "1px solid #f1f5f9",
-    }),
-    placeholder: (provided: any) => ({
-      ...provided,
-      color: "#94a3b8",
-      fontSize: "0.875rem",
-      fontWeight: "500",
-    }),
-  };
+  console.log(categoryData?.result,"---")
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -134,6 +94,34 @@ export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
                 {errors.name && (
                   <p className="text-red-500 text-xs font-bold ml-2 animate-in fade-in duration-300">
                     {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              {/* add select for category id set 
+               */}
+               <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
+                  <Tag className="h-3.5 w-3.5 text-indigo-500" />
+                  Category
+                </label>
+                <Select
+                   options={categoryData?.result?.map((p: any) => ({
+                    value: p.id,
+                    label: p.name,
+                  }))}
+                  isLoading={categoryFetchLoading}
+                  isClearable
+                  placeholder="Select a parent category"
+                  styles={customSelectStyles}
+                  onChange={(option: any) =>
+                    setValue("categoryId", option ? option.value : null)
+                  }
+                />
+                 
+                {errors.categoryId && (
+                  <p className="text-red-500 text-xs font-bold ml-2 animate-in fade-in duration-300">
+                    {errors.categoryId.message}
                   </p>
                 )}
               </div>
@@ -179,6 +167,7 @@ export default function CreateQuizzForm({ onSuccess }: { onSuccess: any }) {
                 />
               </div>
             </div>
+
 
             {/* Right Column */}
             <div className="space-y-6">

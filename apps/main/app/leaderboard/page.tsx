@@ -16,11 +16,11 @@ export default function LeaderboardPage() {
       const fetchUserRanking = async () => {
         const response = await leaderboardService.getUserRanking();
           setMe(response);
-          console.log(response,"----------->>");  
+          // console.log(response,"----------->>");  
       };
        const fetchOverAllRanking = async () => {
         const response = await leaderboardService.getOverAllRanking();
-        //  console.log(response,"----------->>");
+         console.log(response,"----------->>");
          setUserRankings(response.result);
       };
       fetchUserRanking();
@@ -42,8 +42,8 @@ export default function LeaderboardPage() {
           <div className="flex flex-col md:flex-row justify-between md:items-center p-4 rounded-2xl shadow-sm bg-gradient-to-r from-violet-600 to-purple-500 text-white -mt-9 gap-5 md:gap-0">
             <div className="flex items-center gap-3">
               <Image
-                src={me.avatar??""}
-                alt={me.name}
+                src={me.avatar??"/"}
+                alt={me.name || "Loading"}
                 width={40}
                 height={40}
                 className="rounded"
@@ -70,8 +70,8 @@ export default function LeaderboardPage() {
             >
               <div className="flex items-center gap-3">
                 <Image
-                  src={user?.avatar ?? ""}
-                  alt={user.name}
+                  src={user?.avatar ?? "/"}
+                  alt={user.name || "Loading"}
                   width={40}
                   height={40}
                   className="rounded"

@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity('categories')
@@ -35,6 +36,10 @@ export class Category {
   // Children categories relation
   @OneToMany(() => Category, (category) => category.parent)
   children?: Category[];
+
+  @OneToMany(() => Category, (category) => category.quizs)
+  @JoinColumn()
+  quizs?: Category[];
 
   //    here also relation two model
   // book list and quizz and question model

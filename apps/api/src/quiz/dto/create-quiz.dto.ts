@@ -10,4 +10,9 @@ export class CreateQuizDto {
   @IsString()
   @IsOptional()
   description?: string;
+  
+  @ApiPropertyOptional({ description: 'Category ID' })
+  @IsString()
+  @IsOptional()
+  categoryId?: string;
 }

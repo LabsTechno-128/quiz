@@ -26,12 +26,12 @@ export default function FeaturedCategory({
           {category.map((cat) => (
             <Link
               key={cat.id}
-              href={`/category/general/${cat.id}`}
+              href={`/category/${cat.id}`}
               className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex flex-col items-center text-center"
             >
               <div className="w-16 h-16 mb-3">
                 <Image
-                  src={cat.image || cat.icon || "/assets/card.png"}
+                  src={cat.image || "/assets/card.png"}
                   alt={cat.name}
                   width={64}
                   height={64}

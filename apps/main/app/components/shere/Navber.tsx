@@ -81,8 +81,7 @@ export default function Navbar() {
     }
     loadData();
   }, []);
-  const { user,logout } = useAuth();
-  console.log(user)
+  const { user,logout } = useAuth(); 
   return (
     <>
       {loading ? (
@@ -135,11 +134,11 @@ export default function Navbar() {
                   {category?.map((item) => (
                     <li key={item.id}>
                       <Link
-                        href={`/category/${item.name.toLowerCase()}`}
+                        href={`/category/${item.id}`}
                         className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
                         onClick={() => setCategoryOpen(false)}
                       >
-                        {item.name}
+                        {item.name} 
                       </Link>
                     </li>
                   ))}
@@ -163,13 +162,13 @@ export default function Navbar() {
             {/* Right - Icons */}
             <div className=" relative">
               {user ? <div className="flex items-center gap-5  ">
-                <Link href="/cart">
+                {/* <Link href="/cart">
                   <button className="text-gray-600 hover:text-indigo-600 cursor-pointer">
                     <FiShoppingCart className="w-6 h-6" />
                   </button>
-                </Link>
+                </Link> */}
 
-                <p className="border border-gray-300 h-5"></p>
+                {/* <p className="border border-gray-300 h-5"></p> */}
 
                 {/* Profile Button */}
                 <button
@@ -193,18 +192,18 @@ export default function Navbar() {
                 <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
                   <div className="w-12 h-12 relative rounded-full overflow-hidden">
                     <Image
-                      src="/assets/card-quzzy.png"
-                      alt="User"
+                      src={user?.avatar || "/assets/card-quzzy.png"}
+                      alt="loading"
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 text-sm">
-                      Abdul Malek Sarkar
+                     { user ? (user.name || "Unknown"): "Abdul Malek Sarkar"}
                     </h3>
                     <p className="text-gray-500 text-xs">
-                      abdul.malek@gmail.com
+                      {user ? user.email : "unknown@gmail.com"}
                     </p>
                   </div>
                 </div>
