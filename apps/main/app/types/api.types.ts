@@ -39,6 +39,8 @@ export interface User {
   role?: "user" | "admin";
   createdAt: string;
   updatedAt: string;
+  totalCorrectScore?: number;
+  rank?: string;
 }
 
 export interface AuthTokens {

@@ -11,6 +11,7 @@ import { EbooksModule } from './ebooks/ebooks.module';
 import { QuizModule } from './quiz/quiz.module';
 import { BannersModule } from './banners/banners.module';
 import { QuestionModule } from './question/question.module';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { QuestionModule } from './question/question.module';
     QuizModule,
     BannersModule,
     QuestionModule,
+    LeaderboardModule,
   ],
 })
 export class AppModule {}
