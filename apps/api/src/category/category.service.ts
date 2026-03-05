@@ -29,6 +29,9 @@ export class CategoryService {
     return {
       result: await this.categoryRepo.find({
         relations: ['parent', 'children'],
+        order: {
+          createdAt: 'DESC',
+        },
       }),
       message: 'Categories retrieved successfully',
     };
@@ -45,7 +48,8 @@ export class CategoryService {
 
   async update(id: string, dto: UpdateCategoryDto): Promise<Category> {
     const category = await this.findOne(id);
-    Object.assign(category, dto);
+    Object.assign(category.result, dto);
+    console.log(category,dto);
     return this.categoryRepo.save(category.result);
   }
 

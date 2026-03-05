@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "./components/layout";
 import { ToastContainer } from "react-toastify";
+import { DeleteModalProvider } from "./context/DeleteModalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="  min-h-screen">
-          <Layout>
-            <ToastContainer />
-            {children}
-          </Layout>
+          <DeleteModalProvider>
+            <Layout>
+              <ToastContainer />
+              {children}
+            </Layout>
+          </DeleteModalProvider>
         </div>
       </body>
     </html>

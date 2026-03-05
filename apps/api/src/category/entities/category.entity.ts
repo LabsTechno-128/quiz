@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity('categories')
@@ -47,9 +48,16 @@ export class Category {
   @Column({ default: true })
   status: boolean;
 
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
+ @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+   createdAt: Date;
+ 
+   @UpdateDateColumn({
+     type: 'timestamptz',
+     default: () => 'CURRENT_TIMESTAMP',
+     onUpdate: 'CURRENT_TIMESTAMP',
+   })
+   updatedAt: Date;
+ 
+   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+   deletedAt: Date | null;
 }
