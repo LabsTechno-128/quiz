@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Toastify } from "@/app/components/ui/toastify";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function QuizPage() {
   const [quizzes, setQuizzes] = useState([]);
@@ -99,15 +100,16 @@ export default function QuizPage() {
             >
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
-                    <HelpCircle className="h-6 w-6" />
+                  <div className="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 overflow-hidden">
+                    {/* <HelpCircle className="h-6 w-6" />  */}
+                    <Image src={quiz.image || "/logo.png"} alt="Logo" width={48} height={48} />
                   </div>
                   <div>
                     <span className="inline-block px-2.5 py-0.5 rounded-lg bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                       {quiz.category?.name || "Uncategorized"}
                     </span>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                      {quiz.title}
+                      {quiz.name}
                     </h3>
                   </div>
                 </div>

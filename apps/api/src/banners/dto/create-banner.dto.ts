@@ -28,10 +28,10 @@ export class CreateBannerDto {
   @IsString()
   @IsOptional()
   @MaxLength(255)
-  title?: string | null;
+  name?: string | null;
 
   @ApiProperty({
-    description: 'Subtitle of the banner',
+    description: '  Subtitle of the banner',
     required: false,
     nullable: true,
     example: 'Up to 50% off',
@@ -39,7 +39,7 @@ export class CreateBannerDto {
   @IsString()
   @IsOptional()
   @MaxLength(255)
-  subtitle?: string | null;
+  subName?: string | null;
 
   @ApiProperty({
     description: 'Detailed description of the banner',
@@ -50,4 +50,14 @@ export class CreateBannerDto {
   @IsString()
   @IsOptional()
   description?: string | null;
+  
+  @ApiProperty({
+    description: 'Status of the banner',
+    required: false,
+    nullable: true,
+    example: true,
+  })
+  @IsBoolean()
+  @IsOptional()
+  status?: boolean  ;
 }

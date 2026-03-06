@@ -27,6 +27,10 @@ export class Banner {
   @Column({ type: 'text', nullable: true })
   description: string | null;
 
+  // status add 
+  @Column({ type: 'boolean', default: true })
+  status: boolean;
+
   @Column({ type: 'boolean', default: false })
   isDeleted: boolean;
 
