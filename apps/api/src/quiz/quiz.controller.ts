@@ -45,7 +45,7 @@ export class QuizController {
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
   // @HttpCode(HttpStatus.CREATED)
-  create(@Body() createQuizDto: any): Promise<Quiz> {
+  create(@Body() createQuizDto: CreateQuizDto)  {
     console.log(createQuizDto);
     return this.quizService.create(createQuizDto);
   }
@@ -95,7 +95,8 @@ export class QuizController {
     type: Quiz,
   })
   @ApiResponse({ status: 404, description: 'Quiz not found' })
-  findOne(@Param('id') id: string): Promise<Quiz> {
+  findOne(@Param('id') id: string)  {
+   
     return this.quizService.findOne(id);
   }
 
@@ -112,6 +113,7 @@ export class QuizController {
     @Param('id') id: string,
     @Body() updateQuizDto: UpdateQuizDto,
   ): Promise<Quiz> {
+    console.log("update me")
     return this.quizService.update(id, updateQuizDto);
   }
 

@@ -19,7 +19,7 @@ export default function ImageUpload({
   onChange,
   uploadUrl = "/attachments/upload",
   maxSizeMB = 5,
-  accept = "image/*",
+  accept="image/*,.pdf"
 }: {
   value?: string | null;
   onChange: (url: string | null) => any;

@@ -11,11 +11,14 @@ import {
   LogOut,
   ChevronDown,
 } from "lucide-react";
+import { removeToken } from "@/app/utils/helpers";
+import { Toastify } from "../ui/toastify"; 
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-
+ const router = useRouter();
   const navigation = [
     {
       name: "Dashboard",
@@ -33,7 +36,11 @@ export default function Navbar() {
       icon: <Settings className="w-5 h-5" />,
     },
   ];
-
+ const handleLogout = () => {
+    removeToken();
+    Toastify.Success("Logged out successfully");
+    router.push("/login");
+  };
   return (
     <nav className="bg-white border-b border-gray-200   w-full z-10 mb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,15 +94,15 @@ export default function Navbar() {
                     >
                       Settings
                     </Link>
-                    <Link
-                      href="/logout"
+                    <button
+                        onClick={handleLogout}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       <div className="flex items-center">
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign out
                       </div>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               )}
@@ -162,15 +169,15 @@ export default function Navbar() {
               >
                 Settings
               </Link>
-              <Link
-                href="/logout"
-                className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+              <button
+                onClick={handleLogout}
+                className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 w-full text-left"
               >
                 <div className="flex items-center">
                   <LogOut className="mr-2 h-5 w-5" />
                   Sign out
                 </div>
-              </Link>
+              </button>
             </div>
           </div>
         </div>

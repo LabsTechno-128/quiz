@@ -33,6 +33,25 @@ export class Quiz {
   @Column({ type: 'varchar', length: 255, nullable: true })
   image: string;
 
+  @Column({type:'int', default: 10})
+  totalQuestions: number;
+
+
+  @Column({type:'int', default: 15})
+  duration: number;
+
+  @Column({type:'timestamp', nullable:true })
+  startDate: Date;
+  
+  @Column({type:'timestamp', nullable: true})
+  endDate: Date  ;
+
+  @Column({type: 'enum', enum: ['pending', 'active', 'completed'], default: 'pending'})
+  isPublished: string;
+ 
+  @Column({type:'int', default: 0})
+  participantCount: number;
+
   @OneToMany(() => Question, (question) => question.quiz, {
     cascade: true,
     nullable: true,

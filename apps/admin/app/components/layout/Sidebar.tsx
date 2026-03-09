@@ -9,11 +9,7 @@ import {
   HelpCircle,
   User,
   Users,
-  LogOut,
-  ChevronRight,
-  Settings,
-  Bell,
-  Search,
+  LogOut, 
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -29,6 +25,7 @@ const navigation = [
   { name: "Blogs", href: "/article", icon: FileText },
   { name: "Users", href: "/users", icon: Users },
   { name: "Profile", href: "/profile", icon: User },
+  { name: "Ebook", href: "/ebook", icon: FileText },
 ];
 
 export default function Sidebar({

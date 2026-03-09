@@ -33,7 +33,7 @@ class QuizService {
   /**
    * Get a single quiz by ID
    */
-  async getById(id: string, includeQuestions = false): Promise<Quiz> {
+  async getById(id: string, includeQuestions = false): Promise<{result: Quiz}> {
     const url = includeQuestions
       ? `${this.BASE_PATH}/${id}?includeRelations=true`
       : `${this.BASE_PATH}/${id}`;

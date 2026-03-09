@@ -53,7 +53,7 @@ export default function QuizPage() {
       }
     }
   };
-
+console.log(quizzes,"------------->")
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -137,7 +137,7 @@ export default function QuizPage() {
                 <div className="bg-slate-50/50 p-3 rounded-2xl text-center">
                   <Clock className="h-4 w-4 text-pink-500 mx-auto mb-1.5" />
                   <p className="text-xs font-bold text-slate-900">
-                    {quiz.timeLimit ? `${quiz.timeLimit}m` : "No limit"}
+                    {quiz.duration ? `${quiz.duration}m` : "No limit"}
                   </p>
                   <p className="text-[10px] font-medium text-slate-500">
                     Duration
@@ -155,9 +155,9 @@ export default function QuizPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="p-2.5 rounded-xl text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all">
+                  <Link href={`/quiz/create?id=${quiz.id}`} className="p-2.5 rounded-xl text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 transition-all">
                     <Edit2 className="h-4 w-4" />
-                  </button>
+                  </Link>
                   <button
                     onClick={() => handleDelete(quiz.id)}
                     className="p-2.5 rounded-xl text-slate-400 hover:bg-red-50 hover:text-red-600 transition-all"

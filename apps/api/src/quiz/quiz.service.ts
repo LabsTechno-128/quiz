@@ -19,7 +19,7 @@ export class QuizService {
     private categoryRepository: Repository<Category>,
   ) { }
 
-  async create(createQuizDto: CreateQuizDto): Promise<Quiz> {
+  async create(createQuizDto: CreateQuizDto): Promise<{ result: Quiz }> {
     const quiz = this.quizRepository.create(createQuizDto);
     if (createQuizDto.categoryId) {
       const findCategory = await this.categoryRepository.findOne({
@@ -31,7 +31,10 @@ export class QuizService {
 
     }
     const savedQuiz = await this.quizRepository.save(quiz);
-    return this.findOne(savedQuiz.id);
+    return {
+      result: (await this.findOne(savedQuiz.id)).result,
+
+    }
   }
 
   async findAll(
@@ -46,7 +49,7 @@ export class QuizService {
     totalPage: number;
   }> {
     const [data, total] = await this.quizRepository.findAndCount({
-      relations: ['questions', 'questions.option'],
+      relations: ['questions', 'questions.option','answers','answers.users'],
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: 'DESC' },
@@ -62,23 +65,28 @@ export class QuizService {
     };
   }
 
-  async findOne(id: string): Promise<Quiz> {
+  async findOne(id: string): Promise<{ result: Quiz }> {
     const quiz = await this.quizRepository.findOne({
-      where: { id },
-      relations: ['questions', 'questions.option'],
+      where: { id }, 
       withDeleted: false,
+      relations: ['category','questions','questions.option','answers','answers.users'],
     });
+    console.log("idsi ci","welcom home")
 
     if (!quiz) {
       throw new NotFoundException(`Quiz with ID ${id} not found`);
     }
 
-    return quiz;
+    return {
+      result:quiz
+    };
   }
 
   async update(id: string, updateQuizDto: UpdateQuizDto): Promise<Quiz> {
     const quiz = await this.findOne(id);
-    return this.findOne(id);
+     Object.assign(quiz.result, updateQuizDto);
+    await this.quizRepository.save(quiz.result);
+    return this.findOne(id).then(res => res.result);
   }
 
   async remove(id: string): Promise<void> {

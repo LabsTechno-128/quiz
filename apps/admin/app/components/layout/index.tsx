@@ -13,7 +13,8 @@ import {
   ChevronDown,
   LogIn,
 } from "lucide-react";
-import { getAccessToken, getUser } from "@/app/utils/helpers";
+import { getAccessToken, getUser, removeToken } from "@/app/utils/helpers";
+import { Toastify } from "../ui/toastify";
 
 type userData = {
   name: string;
@@ -26,7 +27,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [userData, setUserData] = useState<userData | null>(null);
-
+ 
   useEffect(() => {
     setIsMounted(true);
     const token = getAccessToken();
@@ -47,7 +48,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   if (pathname === "/login") {
     return <main className="min-h-screen bg-slate-50">{children}</main>;
   }
-
+  const handleLogout = () => {
+    removeToken();
+    Toastify.Success("Logged out successfully");
+    router.push("/login");
+  };
   return (
     <div className="flex h-screen bg-[#f8fafc] overflow-hidden font-sans">
       {/* Sidebar - Desktop */}
@@ -121,16 +126,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                       User Profile
                     </p>
                   </div>
-                  <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all">
+                  <button onClick={()=>router.push("/profile")}  className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all">
                     <User className="h-4 w-4" />
                     <span>My Profile</span>
                   </button>
-                  <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all">
+                  {/* <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 transition-all">
                     <Settings className="h-4 w-4" />
                     <span>Account Settings</span>
-                  </button>
+                  </button> */}
                   <div className="h-[1px] bg-slate-50 my-2"></div>
-                  <button className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 rounded-xl hover:bg-red-50 transition-all">
+                  <button  onClick={handleLogout}className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 rounded-xl hover:bg-red-50 transition-all">
                     <LogOut className="h-4 w-4" />
                     <span>Sign Out</span>
                   </button>

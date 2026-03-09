@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class EbookResponseDto {
+export class  EbookResponseDto {
   @ApiProperty({ description: 'Unique identifier of the ebook' })
   id: string;
 
@@ -47,7 +47,5 @@ export class EbookResponseDto {
   })
   updatedAt: Date;
 
-  constructor(partial: Partial<EbookResponseDto>) {
-    Object.assign(this, partial);
-  }
+  
 }

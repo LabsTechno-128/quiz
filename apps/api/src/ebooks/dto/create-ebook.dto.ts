@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, IsDateString } from 'class-validator';
 
 export class CreateEbookDto {
@@ -18,36 +18,25 @@ export class CreateEbookDto {
   author?: string;
 
   @ApiPropertyOptional({
-    description: 'Categories of the ebook',
+    description: 'Categories',
     type: [String],
-    example: ['Fiction', 'Science'],
   })
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   categories?: string[];
 
-  @ApiPropertyOptional({
-    description: 'URL of the ebook file (handled by file upload)',
-    readOnly: true,
-  })
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   ebookFileUrl?: string;
 
-  @ApiPropertyOptional({
-    description: 'URL of the cover image (handled by file upload)',
-    readOnly: true,
-  })
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   coverImageUrl?: string;
 
-  @ApiPropertyOptional({
-    description: 'Publication date of the ebook (ISO 8601 format)',
-    example: '2023-01-01T00:00:00.000Z',
-  })
-  @IsDateString()
+  @ApiPropertyOptional() 
   @IsOptional()
-  publishedAt?: Date;
+  publishedAt?: string;
 }

@@ -13,25 +13,25 @@ export class Ebook {
   id: string = uuidv4();
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  title: string | null;
+  title: string ;
 
   @Column({ type: 'text', nullable: true })
-  description: string | null;
+  description: string ;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  author: string | null;
+  author: string ;
 
   @Column('varchar', { array: true, nullable: true })
-  categories: string[] | null;
+  categories: string[]  ;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
-  ebookFileUrl: string | null;
+  ebookFileUrl: string ;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
-  coverImageUrl: string | null;
+  coverImageUrl: string  ;
 
-  @Column({ type: 'timestamptz', nullable: true })
-  publishedAt: Date | null;
+  @Column({ type: 'text', nullable: true })
+  publishedAt:string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -42,8 +42,5 @@ export class Ebook {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
-
-  constructor(partial: Partial<Ebook> = {}) {
-    Object.assign(this, partial);
-  }
+ 
 }

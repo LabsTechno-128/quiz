@@ -13,17 +13,18 @@ export class EbooksService {
     private readonly ebookRepository: Repository<Ebook>,
   ) {}
 
-  async create(createEbookDto: CreateEbookDto): Promise<EbookResponseDto> {
+  async create(createEbookDto: CreateEbookDto): Promise<Ebook> {
     const ebook = this.ebookRepository.create(createEbookDto);
+
     const savedEbook = await this.ebookRepository.save(ebook);
-    return this.mapToResponseDto(savedEbook);
+    return savedEbook;
   }
 
   async findAll(
     page = 1,
     limit = 10,
     search?: string,
-  ): Promise<{ data: EbookResponseDto[]; total: number }> {
+  ): Promise<{ data: Ebook[]; total: number }> {
     try {
       const options: any = {
         skip: (page - 1) * limit,
@@ -41,7 +42,7 @@ export class EbooksService {
 
       const [result, total] = await this.ebookRepository.findAndCount(options);
       return {
-        data: result.map((ebook) => this.mapToResponseDto(ebook)),
+        data: result,
         total,
       };
     } catch (error) {
@@ -49,18 +50,18 @@ export class EbooksService {
     }
   }
 
-  async findOne(id: string): Promise<EbookResponseDto> {
+  async findOne(id: string)  {
     const ebook = await this.ebookRepository.findOne({ where: { id } });
     if (!ebook) {
       throw new NotFoundException(`Ebook with ID ${id} not found`);
     }
-    return this.mapToResponseDto(ebook);
+    return ebook;
   }
 
   async update(
     id: string,
     updateEbookDto: UpdateEbookDto,
-  ): Promise<EbookResponseDto> {
+  )  {
     const ebook = await this.ebookRepository.findOne({ where: { id } });
     if (!ebook) {
       throw new NotFoundException(`Ebook with ID ${id} not found`);
@@ -71,7 +72,7 @@ export class EbooksService {
     if (!updatedEbook) {
       throw new NotFoundException(`Ebook with ID ${id} not found after update`);
     }
-    return this.mapToResponseDto(updatedEbook);
+    return  updatedEbook;
   }
 
   async remove(id: string): Promise<void> {
@@ -86,20 +87,7 @@ export class EbooksService {
       this.handleDatabaseError(error);
     }
   }
-
-  private mapToResponseDto(ebook: Ebook): EbookResponseDto {
-    return new EbookResponseDto({
-      id: ebook.id,
-      title: ebook.title,
-      description: ebook.description,
-      author: ebook.author,
-      categories: ebook.categories,
-      publishedAt: ebook.publishedAt,
-      createdAt: ebook.createdAt,
-      updatedAt: ebook.updatedAt,
-    });
-  }
-
+ 
   private handleDatabaseError(error: any): never {
     console.error('Database error:', error);
     if (error instanceof NotFoundException) {

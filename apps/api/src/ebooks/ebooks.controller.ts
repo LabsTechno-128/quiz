@@ -30,7 +30,8 @@ export class EbooksController {
     type: EbookResponseDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
-  create(@Body() createEbookDto: CreateEbookDto): Promise<EbookResponseDto> {
+  create(@Body() createEbookDto: CreateEbookDto) {
+        console.log(createEbookDto, "----------->>")
     return this.ebooksService.create(createEbookDto);
   }
 
