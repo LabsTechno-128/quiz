@@ -19,5 +19,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
 
           script: |
-            cd /root/quiz
+            echo "🚀 Starting deploy..."
             /root/deploy.sh
