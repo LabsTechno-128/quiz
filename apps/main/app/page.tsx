@@ -65,7 +65,7 @@ export default function Home() {
 
   return (
     <div className="max-w-[1440px] mx-auto">
-      <h1>shariar is my frsdfdsiend</h1>
+      <h1>shariar is my sdfdsfdsffrsdfdsiend</h1>
       <HeroSection></HeroSection>
 
       {/* Categories Section */}
