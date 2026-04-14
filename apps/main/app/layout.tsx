@@ -27,20 +27,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          crossOrigin="anonymous"
+          src="https://tweakcn.com/embed.js"
+        ></script>
+        <link rel="icon" href="/logo.ico" sizes="any" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* seo add where  */}
-   <AuthProvider>
-    <div className="max-w-[1440px] mx-auto">
-          <Navbar></Navbar>
-        </div>
-        {children}
-        <div className="max-w-[1440px] mx-auto">
-          <Footer></Footer>
-        </div>
-   </AuthProvider>
-        
+        <AuthProvider>
+          <div className="max-w-[1440px] mx-auto">
+            <Navbar></Navbar>
+          </div>
+          {children}
+          <div className="max-w-[1440px] mx-auto">
+            <Footer></Footer>
+          </div>
+        </AuthProvider>
+
       </body>
       {/* <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
