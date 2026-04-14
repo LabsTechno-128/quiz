@@ -20,4 +20,4 @@ jobs:
 
           script: |
             cd /root/quiz
-            ./deploy.sh
+            /root/deploy.sh
