@@ -32,7 +32,19 @@ async function bootstrap() {
   //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   //   // credentials: true,
   // });
-  app.enableCors(); // Allow all origins for development; adjust in production
+  // app.enableCors(); // Allow all origins for development; adjust in production
+  app.enableCors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Accept",
+      "Origin",
+      "X-Requested-With"
+    ],
+    credentials: true,
+  });
   await app.listen(PORT);
   console.log(`🚀 App running on http://localhost:${PORT}`);
 }
