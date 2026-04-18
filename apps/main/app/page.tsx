@@ -65,7 +65,6 @@ export default function Home() {
 
   return (
     <div className="max-w-[1440px] mx-auto">
-      <h1>this is best line never ever</h1>
       <HeroSection></HeroSection>
 
       {/* Categories Section */}

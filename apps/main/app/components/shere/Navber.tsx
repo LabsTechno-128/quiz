@@ -29,7 +29,7 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
- const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const menuItems = [
     {
       label: "Purchase List",
@@ -81,7 +81,7 @@ export default function Navbar() {
     }
     loadData();
   }, []);
-  const { user,logout } = useAuth(); 
+  const { user, logout } = useAuth();
   return (
     <>
       {loading ? (
@@ -90,30 +90,31 @@ export default function Navbar() {
         <nav className="w-full bg-white border-b border-gray-200 relative z-50">
           <div className="mx-auto flex items-center justify-between py-4 px-6 md:px-24">
             {/* Left - Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="hidden lg:flex relative">
-                <Image
-                  src="/logo/Logo.png"
-                  alt="Quizzy Logo"
-                  className="object-contain rounded-md"
-                  width={150}
-                  height={50}
-                />
-              </div>
-              <button
-                className="text-gray-600 hover:text-indigo-600 lg:hidden"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <FiMenu className="w-6 h-6" />
-              </button>
-            </Link>
+
 
             {/* Middle - Search */}
 
             <div className="hidden lg:flex items-center bg-gray-50 rounded-md overflow-visible w-[500px] xl:w-[800px] relative">
+              <Link href="/" className="flex items-center gap-2 ml-3">
+                <div className="hidden lg:flex relative">
+                  <Image
+                    src="/free.png"
+                    alt="Quizzy Logo"
+                    className="object-contain rounded-md"
+                    width={20}
+                    height={30}
+                  />
+                </div>
+                <button
+                  className="text-gray-600 hover:text-indigo-600 lg:hidden"
+                  onClick={() => setSidebarOpen(true)}
+                >
+                  <FiMenu className="w-6 h-6" />
+                </button>
+              </Link>
               <div>
                 <button
-                  className="px-3 py-3 cursor-pointer hover:bg-gray-100 text-sm text-gray-600 text-nowrap"
+                  className="px-3 py-3 cursor-pointer hover:bg-gray-100 text-sm text-gray-600 text-nowrap ml-2"
                   onClick={() => setCategoryOpen(!categoryOpen)}
                 >
                   All Categories <span className="ml-1">▾</span>
@@ -138,7 +139,7 @@ export default function Navbar() {
                         className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
                         onClick={() => setCategoryOpen(false)}
                       >
-                        {item.name} 
+                        {item.name}
                       </Link>
                     </li>
                   ))}
@@ -200,7 +201,7 @@ export default function Navbar() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 text-sm">
-                     { user ? (user.name || "Unknown"): "Abdul Malek Sarkar"}
+                      {user ? (user.name || "Unknown") : "Abdul Malek Sarkar"}
                     </h3>
                     <p className="text-gray-500 text-xs">
                       {user ? user.email : "unknown@gmail.com"}

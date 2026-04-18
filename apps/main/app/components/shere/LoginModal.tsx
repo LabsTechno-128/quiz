@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/app/contexts/AuthContext";
 import { publicRequest } from "@/app/lib/axios";
-import { useState } from "react"; 
+import { useState } from "react";
 
 interface Props {
   isOpen: boolean;
@@ -43,10 +43,13 @@ export default function LoginModal({ isOpen, onClose }: Props) {
     try {
       setLoading(true);
 
-    //   await publicRequest.post("/auth/login", {
-    //     email_or_phone: identifier,
-    //   });
-
+      //   await publicRequest.post("/auth/login", {
+      //     email_or_phone: identifier,
+      //   });
+      if (!identifier || identifier.length < 8) {
+        setError("Please enter a valid phone number or email.");
+        return;
+      }
       await login({
         email_or_phone: identifier,
       });

@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "../common/LoadingSpinner";
 import HeroSectionSkeleton from "../skeleton/homeHeroSkeleton";
 import { Banner } from "@/app/types/api.types";
 import { bannerService } from "@/app/services/banner.service";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroSection() {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -19,81 +19,96 @@ export default function HeroSection() {
     try {
       setIsLoading(true);
       const data = await bannerService.getAll();
-      setBanners(data.result?.length > 0 ? data.result : [getDefaultBanner()]);
-      // console.log(data,"---------");
+      setBanners(data.result?.length > 0 ? data.result : []);
     } catch (e) {
       console.error("Error loading banners:", e);
-      // Use default banner on error
-      setBanners([getDefaultBanner()]);
+      setBanners([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getDefaultBanner = (): Banner => ({
-    id: "default",
-    name: "Boost Your Brainpower",
-    subname: "With Daily Quizzes",
-    description:
-      "Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!",
-    image: "/assets/hero.png",
-    buttonText: "Take Quiz Now",
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
+  // 👉 Auto slide (optional)
+  useEffect(() => {
+    if (banners.length === 0) return;
 
-  const banner = banners[currentBanner] || getDefaultBanner();
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [banners]);
+
+  const nextSlide = () => {
+    setCurrentBanner((prev) => (prev + 1) % banners.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentBanner((prev) =>
+      prev === 0 ? banners.length - 1 : prev - 1
+    );
+  };
 
   if (isLoading) {
     return <HeroSectionSkeleton />;
   }
 
+  if (banners.length === 0) {
+    return <div className="text-center py-10">No banners found</div>;
+  }
+
   return (
-    <section className="bg-[#F7F7F7] ">
-      <div className=" mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10 px-4 md:px-10 lg:px-24">
-        {/* Left Text Section */}
-        <div className="lg:w-[50%] pb-10">
-          <h1 className="text-xl md:text-5xl font-extrabold text-title leading-tight">
-            {banner.name}{" "}
-            {banner.subname && (
-              <>
-                <br />
-                {banner.subname}
-              </>
-            )}
-          </h1>
-          <p className="text-normal mt-5">
-            {banner.description ||
-              "Challenge yourself with daily quizzes designed to sharpen your skills and boost your rankings. Master topics, win badges, and rise to the top!"}
-          </p>
+    <section className="bg-[#F7F7F7]">
+      <div className="relative overflow-hidden">
 
-          <div className="flex flex-wrap items-center gap-4 mt-8">
-            <button className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary transition">
-              {banner.buttonText || "Take Quiz Now"}
-            </button>
-            {banner.link && (
-              <a href={banner.link}>
-                <button className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50 transition">
-                  View Detail
-                </button>
-              </a>
-            )}
-          </div>
+        {/* Slides */}
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{
+            transform: `translateX(-${currentBanner * 100}%)`,
+          }}
+        >
+          {banners.map((ban) => (
+            <Link key={ban.id} className="min-w-full" href={'/'}>
+              <Image
+                width={1440}
+                height={400}
+                src={ban.image}
+                alt={ban.name}
+                className="w-full  object-cover"
+              />
+            </Link>
+          ))}
         </div>
 
-        {/* Right Image Section */}
-        <div className="relative py-10">
-          {banner.image ? (
-            <Image
-              src={banner.image}
-              alt={banner.name}
-              width={490}
-              height={500}
-              className="object-contain w-96 lg:w-full"
+        {/* ⬅️ Prev Arrow */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-1 rounded-full"
+        >
+          ❮
+        </button>
+
+        {/* ➡️ Next Arrow */}
+        <button
+          onClick={nextSlide}
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-1 rounded-full"
+        >
+          ❯
+        </button>
+
+        {/* 🔘 Dots */}
+        <div className="absolute bottom-3 w-full flex justify-center gap-2">
+          {banners.map((_, i) => (
+            <span
+              key={i}
+              onClick={() => setCurrentBanner(i)}
+              className={`h-2 w-2 rounded-full cursor-pointer ${currentBanner === i ? "bg-white" : "bg-gray-400"
+                }`}
             />
-          ) : null}
+          ))}
         </div>
+
       </div>
     </section>
   );
