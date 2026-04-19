@@ -55,7 +55,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true);
-      console.log(values,"-------->>");
+      console.log(values, "-------->>");
       const payload = {
         ...values,
         readingTime: values.readingTime ? parseInt(values.readingTime) : null,
@@ -148,7 +148,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   </label>
                   <input
                     {...register("title", { required: "Title is required" })}
-                    className={`w-full px-8 py-5 bg-slate-50 border ${errors.title ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.75rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-semibold text-lg placeholder:text-slate-300 placeholder:font-medium`}
+                    className={`text-black w-full px-8 py-5 bg-slate-50 border ${errors.title ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.75rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-semibold text-lg placeholder:text-slate-300 placeholder:font-medium`}
                     placeholder="Enter a compelling title..."
                   />
                   {errors.title && (
@@ -166,7 +166,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   </label>
                   <input
                     {...register("subtitle")}
-                    className="w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-[1.75rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-300"
+                    className="text-black w-full px-8 py-5 bg-slate-50 border border-slate-100 rounded-[1.75rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-300"
                     placeholder="Briefly describe what this article is about..."
                   />
                 </div>
@@ -179,7 +179,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   </label>
                   <input
                     {...register("slug", { required: "Slug is required" })}
-                    className={`w-full px-6 py-4 bg-slate-50 border ${errors.slug ? "border-red-200" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium text-sm placeholder:text-slate-300`}
+                    className={`text-black w-full px-6 py-4 bg-slate-50 border ${errors.slug ? "border-red-200" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium text-sm placeholder:text-slate-300`}
                     placeholder="e.g. how-to-build-apps"
                   />
                 </div>
@@ -266,7 +266,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   <input
                     type="checkbox"
                     {...register("isPublished")}
-                    className="hidden"
+                    className="hidden text-black "
                   />
                 </div>
 
@@ -278,7 +278,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   </label>
                   <input
                     {...register("author")}
-                    className="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
+                    className="text-black w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
                     placeholder="e.g. John Doe"
                   />
                 </div>
@@ -292,7 +292,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   <input
                     {...register("readingTime")}
                     type="number"
-                    className="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
+                    className="text-black w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
                     placeholder="e.g. 5"
                   />
                 </div>
@@ -305,7 +305,7 @@ export default function CreateArticleForm({ onSuccess }: { onSuccess: any }) {
                   </label>
                   <input
                     {...register("keywords")}
-                    className="w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
+                    className="text-black w-full px-5 py-3.5 bg-white border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-sm font-bold text-slate-700"
                     placeholder="tech, news, guide"
                   />
                 </div>

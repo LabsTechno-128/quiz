@@ -171,7 +171,7 @@ export default function ArticlePage() {
           <input
             type="text"
             placeholder="Search title, author, category..."
-            className="w-full pl-12 pr-6 py-3.5 rounded-[1.5rem] bg-white border border-slate-100 text-sm focus:ring-4 focus:ring-indigo-50/50 focus:border-indigo-500 transition-all outline-none shadow-sm placeholder:text-slate-300 font-medium"
+            className="text-black w-full pl-12 pr-6 py-3.5 rounded-[1.5rem] bg-white border border-slate-100 text-sm focus:ring-4 focus:ring-indigo-50/50 focus:border-indigo-500 transition-all outline-none shadow-sm placeholder:text-slate-300 font-medium"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -246,7 +246,7 @@ export default function ArticlePage() {
                 <div className="flex items-center gap-3 mb-5">
                   <div className="px-4 py-1.5 bg-indigo-50/50 text-indigo-600 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] flex items-center gap-2 border border-indigo-100/50">
                     <Tag className="h-3 w-3" />
-                    {article.category || "Uncategorized"}  { JSON.stringify(article)}
+                    {article.category || "Uncategorized"}  {JSON.stringify(article)}
                   </div>
                 </div>
 
