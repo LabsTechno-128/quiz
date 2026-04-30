@@ -21,6 +21,9 @@ export class Attachment {
   secureUrl: string;
 
   @Column({ nullable: true })
+  downloadUrl: string;
+
+  @Column({ nullable: true })
   format: string;
 
   @Column({ type: 'int', nullable: true })

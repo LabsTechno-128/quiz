@@ -6,7 +6,10 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  ManyToOne,
 } from 'typeorm';
+import { Category } from '../../category/entities/category.entity';
+
 
 @Entity('banners')
 // @Index(['isDeleted']) // Add index for better query performance
@@ -26,6 +29,14 @@ export class Banner {
 
   @Column({ type: 'text', nullable: true })
   description: string | null;
+
+  @ManyToOne(() => Category, (category) => category.banners, {
+    onDelete: 'SET NULL',
+    nullable: true,
+  })
+  @Index()
+  category: Category;
+
 
   // status add 
   @Column({ type: 'boolean', default: true })

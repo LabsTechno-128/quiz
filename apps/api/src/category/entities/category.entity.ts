@@ -9,6 +9,9 @@ import {
   JoinColumn,
   DeleteDateColumn,
 } from 'typeorm';
+import { Product } from '../../product/entities/product.entity';
+import { Banner } from '../../banners/entities/banner.entity';
+
 
 @Entity('categories')
 export class Category {
@@ -41,6 +44,13 @@ export class Category {
   @OneToMany(() => Category, (category) => category.quizs)
   @JoinColumn()
   quizs?: Category[];
+
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
+
+  @OneToMany(() => Banner, (banner) => banner.category)
+  banners: Banner[];
+
 
   //    here also relation two model
   // book list and quizz and question model

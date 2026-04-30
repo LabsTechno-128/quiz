@@ -12,6 +12,8 @@ import { QuizModule } from './quiz/quiz.module';
 import { BannersModule } from './banners/banners.module';
 import { QuestionModule } from './question/question.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { BookModule } from './book/book.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
     BannersModule,
     QuestionModule,
     LeaderboardModule,
+    BookModule,
+    ProductModule
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,75 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: quiz_db
+    restart: always
+    environment:
+      POSTGRES_DB: thinkhive
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - quiz-network
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: quiz_api
+    restart: always
+    environment:
+      - PORT=8000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=thinkhive
+      - JWT_SECRET=your_secret_key_setup_bro
+      - JWT_EXPIRATION=3600s
+      # Add other env vars as needed from apps/api/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - quiz-network
+
+  main:
+    build:
+      context: .
+      dockerfile: apps/main/Dockerfile
+    container_name: quiz_main
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - quiz-network
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    container_name: quiz_admin
+    restart: always
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+    networks:
+      - quiz-network
+
+networks:
+  quiz-network:
+    driver: bridge
+
+volumes:
+  pgdata:

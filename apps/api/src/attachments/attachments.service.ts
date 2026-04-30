@@ -1,45 +1,44 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v2 as cloudinary } from 'cloudinary';
 import { Attachment } from './entities/attachment.entity';
-import { UploadFileDto } from './dto/upload-file.dto';
 
 @Injectable()
 export class AttachmentsService {
   constructor(
     @InjectRepository(Attachment)
     private attachmentsRepository: Repository<Attachment>,
-  ) {}
+  ) { }
 
   async uploadFile(
     file: Express.Multer.File,
     folder?: string,
-  ): Promise<Attachment> {
-    console.log(
-      'Received file for upload:',
-      file ? file.originalname : 'No file',
-      file,
-    );
+  ) {
     if (!file) {
       throw new NotFoundException('No file provided');
     }
-
+    var results: any;
     try {
-      console.log('Uploading file:', file.originalname);
-
       const result = await new Promise<any>((resolve, reject) => {
+        const isPdf = file.mimetype === 'application/pdf';
+
         const uploadStream = cloudinary.uploader.upload_stream(
           {
             folder: folder || 'attachments',
-            resource_type: 'auto',
-            public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
+
+            // 🔥 important: pdf = raw, image = auto
+            resource_type: isPdf ? 'raw' : 'image',
+            use_filename: true,
+            unique_filename: true,
+            // keep filename
+            public_id: `attachments/${Date.now()}-${file.originalname.split('.')[0]}`,
+            filename_override: `${Date.now()}-${file.originalname}`,
           },
           (error, result) => {
-            if (error) {
-              console.error('Cloudinary upload error:', error);
-              return reject(error);
-            }
+            if (error) return reject(error);
+            console.log(result);
+            results = result
             resolve(result);
           },
         );
@@ -48,15 +47,26 @@ export class AttachmentsService {
       });
 
       const attachment = new Attachment();
+
       attachment.publicId = result.public_id;
-      attachment.url = result.url;
+
+      // 🔥 normal preview URL
+      attachment.url = result.secure_url;
+
+      // 🔥 force download URL (IMPORTANT FIX)
+      attachment.downloadUrl = result.secure_url.replace(
+        '/upload/',
+        '/upload/fl_attachment/',
+      );
+
       attachment.secureUrl = result.secure_url;
+
       attachment.format = result.format;
       attachment.width = result.width;
       attachment.height = result.height;
       attachment.bytes = result.bytes;
 
-      // Determine file type
+      // file type detect
       if (
         ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(result.format)
       ) {
@@ -73,7 +83,10 @@ export class AttachmentsService {
         attachment.type = 'other';
       }
 
-      return this.attachmentsRepository.save(attachment);
+      return {
+        result: results,
+        attachment: await this.attachmentsRepository.save(attachment)
+      };
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`);
     }
