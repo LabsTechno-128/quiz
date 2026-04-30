@@ -27,9 +27,14 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - DB_NAME=thinkhive
-      - JWT_SECRET=your_secret_key_setup_bro
-      - JWT_EXPIRATION=3600s
-      # Add other env vars as needed from apps/api/.env
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
     ports:
       - "8000:8000"
     depends_on:
@@ -44,7 +49,7 @@ services:
     container_name: quiz_main
     restart: always
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/
     ports:
       - "3000:3000"
     depends_on:
@@ -59,9 +64,9 @@ services:
     container_name: quiz_admin
     restart: always
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/
     ports:
-      - "3001:3001"
+      - "3001:3000"
     depends_on:
       - api
     networks:

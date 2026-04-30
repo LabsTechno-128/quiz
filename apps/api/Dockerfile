@@ -29,14 +29,16 @@ RUN pnpm run build --filter=api
 FROM base AS runner
 WORKDIR /app
 
-# Copy the built files
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
+ENV NODE_ENV=production
 
-# Add packages/ shared dependencies if any (api might depend on @repo/ui etc)
-# In this specific repo, api seems to be independent but let's be safe
-COPY --from=builder /app/packages ./packages
+# Use pnpm deploy to create a standalone production bundle
+# We need the full builder context to resolve workspace deps
+COPY --from=builder /app /app
+RUN pnpm --filter=api --prod deploy /app/deployed
 
+# Copy the built dist into the deployed folder
+COPY --from=builder /app/apps/api/dist /app/deployed/dist
+
+WORKDIR /app/deployed
 EXPOSE 8000
 CMD ["node", "dist/main"]
