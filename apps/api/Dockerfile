@@ -23,7 +23,6 @@ RUN pnpm install
 
 # Build the project
 COPY --from=pruner /app/out/full/ .
-COPY turbo.json turbo.json
 RUN pnpm run build --filter=api
 
 FROM base AS runner
