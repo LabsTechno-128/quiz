@@ -1,10 +1,10 @@
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 
 # Install pnpm and turbo
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN pnpm add -g turbo
+RUN pnpm add -g turbo@2.8.3
 
 FROM base AS pruner
 WORKDIR /app
@@ -32,7 +32,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Use pnpm deploy to create a standalone production bundle
-# We need the full builder context to resolve workspace deps
 COPY --from=builder /app /app
 RUN pnpm --filter=api --prod deploy /app/deployed
 

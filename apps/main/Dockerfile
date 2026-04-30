@@ -1,10 +1,11 @@
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 
 # Install pnpm and turbo
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN pnpm add -g turbo
+# Install a specific version of turbo to match project
+RUN pnpm add -g turbo@2.8.3
 
 FROM base AS pruner
 WORKDIR /app
@@ -23,7 +24,7 @@ RUN pnpm install
 
 # Build the project
 COPY --from=pruner /app/out/full/ .
-COPY . .
+COPY turbo.json turbo.json
 RUN pnpm run build --filter=main
 
 FROM base AS runner
