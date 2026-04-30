@@ -23,7 +23,7 @@ RUN pnpm install
 
 # Build the project
 COPY --from=pruner /app/out/full/ .
-COPY turbo.json turbo.json
+COPY . .
 RUN pnpm run build --filter=main
 
 FROM base AS runner
