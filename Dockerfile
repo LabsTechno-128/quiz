@@ -6,10 +6,8 @@ RUN corepack enable
 
 # 2. Prune stage
 FROM base AS pruner
-ARG APP_NAME
-# Error check for APP_NAME
-RUN if [ -z "$APP_NAME" ]; then echo "❌ ERROR: APP_NAME build argument is required but not set!"; exit 1; fi
-
+# Default to 'api' if no APP_NAME is provided
+ARG APP_NAME=api
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
@@ -17,21 +15,17 @@ RUN turbo prune ${APP_NAME} --docker
 
 # 3. Installer stage
 FROM base AS installer
-ARG APP_NAME
+ARG APP_NAME=api
 WORKDIR /app
-
-# Copy the pruned lockfile and package.json files
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-
-# Install dependencies using pnpm
 RUN pnpm install --frozen-lockfile
 
 # 4. Build stage
 COPY --from=pruner /app/out/full/ .
 RUN npx turbo build --filter=${APP_NAME}
 
-# Ensure directories exist for the runner stage to avoid COPY failures
+# Ensure directories exist
 RUN mkdir -p apps/${APP_NAME}/dist \
              apps/${APP_NAME}/.next/standalone \
              apps/${APP_NAME}/.next/static \
@@ -39,10 +33,9 @@ RUN mkdir -p apps/${APP_NAME}/dist \
 
 # 5. Runner stage
 FROM base AS runner
-ARG APP_NAME
+ARG APP_NAME=api
 ENV APP_NAME=${APP_NAME}
 WORKDIR /app
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodeuser
 USER nodeuser
@@ -59,5 +52,4 @@ COPY --from=installer /app/apps/${APP_NAME}/.next/static ./apps/${APP_NAME}/.nex
 COPY --from=installer /app/apps/${APP_NAME}/public ./apps/${APP_NAME}/public
 
 EXPOSE 3000 3001 8000
-
 CMD ["sh", "-c", "if [ -f apps/${APP_NAME}/server.js ]; then node apps/${APP_NAME}/server.js; else node apps/${APP_NAME}/dist/main.js; fi"]
