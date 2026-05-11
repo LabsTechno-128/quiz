@@ -17,9 +17,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        APP_NAME: api
+      dockerfile: Dockerfile.api
     container_name: quiz_api
     restart: always
     environment:
@@ -47,9 +45,7 @@ services:
   main:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        APP_NAME: main
+      dockerfile: Dockerfile.main
     container_name: quiz_main
     restart: always
     environment:
@@ -65,9 +61,7 @@ services:
   admin:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        APP_NAME: admin
+      dockerfile: Dockerfile.admin
     container_name: quiz_admin
     restart: always
     environment:
