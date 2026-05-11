@@ -7,6 +7,9 @@ RUN corepack enable
 # 2. Prune stage
 FROM base AS pruner
 ARG APP_NAME
+# Error check for APP_NAME
+RUN if [ -z "$APP_NAME" ]; then echo "❌ ERROR: APP_NAME build argument is required but not set!"; exit 1; fi
+
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
@@ -46,11 +49,8 @@ USER nodeuser
 
 # Copy built outputs
 COPY --from=installer /app/apps/${APP_NAME}/dist ./apps/${APP_NAME}/dist
-# For NestJS, we need node_modules
 COPY --from=installer /app/node_modules ./node_modules
-# Also copy app-specific package.json and node_modules if they exist (pnpm symlinks)
 COPY --from=installer /app/apps/${APP_NAME}/package.json ./apps/${APP_NAME}/package.json
-# Using a wildcard for node_modules in case it doesn't exist for some apps
 COPY --from=installer /app/apps/${APP_NAME}/node_modules* ./apps/${APP_NAME}/node_modules/
 
 # For Next.js standalone folder and assets
