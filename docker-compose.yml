@@ -17,7 +17,9 @@ services:
   api:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: api
     container_name: quiz_api
     restart: always
     environment:
@@ -45,10 +47,13 @@ services:
   main:
     build:
       context: .
-      dockerfile: apps/main/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: main
     container_name: quiz_main
     restart: always
     environment:
+      - PORT=3000
       - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/
     ports:
       - "3000:3000"
@@ -60,13 +65,16 @@ services:
   admin:
     build:
       context: .
-      dockerfile: apps/admin/Dockerfile
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: admin
     container_name: quiz_admin
     restart: always
     environment:
+      - PORT=3001
       - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/
     ports:
-      - "3001:3000"
+      - "3001:3001"
     depends_on:
       - api
     networks:

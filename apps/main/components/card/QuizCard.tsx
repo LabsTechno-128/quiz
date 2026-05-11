@@ -22,7 +22,7 @@ export default function QuizCard({
     addToCart({
       id: quiz.id,
       title: quiz.name,
-      price: quiz.price,
+      price: quiz.price ?? 0,
       image: quiz.image,
       quantity: 1,
       type: 'ebook', // or determine based on quiz properties

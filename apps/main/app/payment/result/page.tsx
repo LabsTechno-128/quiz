@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCart } from "../../../contexts/CartContext";
 import { FiCheckCircle, FiXCircle, FiAlertCircle, FiArrowRight, FiDownload } from "react-icons/fi";
 import Link from "next/link";
 
-export default function PaymentResultPage() {
+function PaymentResult() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
   const router = useRouter();
@@ -97,5 +97,19 @@ export default function PaymentResultPage() {
         {renderContent()}
       </div>
     </div>
+  );
+}
+
+export default function PaymentResultPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-6">
+        <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100 max-w-2xl w-full text-center">
+          <h1 className="text-4xl font-black text-gray-900 mb-4">Loading...</h1>
+        </div>
+      </div>
+    }>
+      <PaymentResult />
+    </Suspense>
   );
 }
