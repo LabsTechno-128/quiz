@@ -1,126 +1,108 @@
 "use client";
-
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ebookService } from "../../services/ebook.service";
+import { FiDownload, FiBookOpen, FiLoader, FiArrowRight } from "react-icons/fi";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
-import { userService } from "../services/user.service";
-import { User } from "../types/api.types";
-import { leaderboardService } from "../services/leaderboard.service";
+import Link from "next/link";
 
-interface PurchaseItem {
-  id: number;
-  title: string;
-  subject: string;
-  icon: string;
-}
+export default function PurchaseListPage() {
+  const { data: myEbooks, isLoading } = useQuery({
+    queryKey: ["my-ebooks"],
+    queryFn: () => ebookService.getMyEbooks(),
+  });
 
-const purchaseData: PurchaseItem[] = [
-  {
-    id: 1,
-    title: "Geography Mastery",
-    subject: "Geography",
-    icon: "/assets/card-quzzy.png",
-  },
-  {
-    id: 2,
-    title: "Grammar Essentials",
-    subject: "English",
-    icon: "/assets/card-quzzy.png",
-  },
-  {
-    id: 3,
-    title: "Geography Mastery",
-    subject: "Geography",
-    icon: "/assets/card-quzzy.png",
-  },
-  {
-    id: 4,
-    title: "Geography Mastery",
-    subject: "Geography",
-    icon: "/assets/card-quzzy.png",
-  },
-  {
-    id: 5,
-    title: "Grammar Essentials",
-    subject: "English",
-    icon: "/assets/card-quzzy.png",
-  },
-  {
-    id: 6,
-    title: "Geography Mastery",
-    subject: "Geography",
-    icon: "/assets/card-quzzy.png",
-  },
-];
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <FiLoader className="animate-spin text-4xl text-indigo-600" />
+      </div>
+    );
+  }
 
-const PurchaseList: FC = () => {
-  // useEffect(()=>{
-  //    const user = async () => {
-  //     const user = await userService.getCurrentUser();
-  //     console.log(user);
-  //    };
-  //    user();
-  // },[])
-
-    const [me, setMe] = useState<User | null>(null); 
-  
-    useEffect(() => {
-        const fetchUserRanking = async () => {
-          const response = await leaderboardService.getUserRanking();
-          console.log(response)
-            setMe(response);   
-        };
-       
-        fetchUserRanking(); 
-    }, []);
-    console.log(me?.user?.answers )
   return (
-    <>
-      <div className="flex gap-4 justify-between bg-[#F7F7F7] py-14 px-4 lg:px-24 max-w-[1440px] mx-auto ">
-        <div>
-          <h1 className="text-3xl font-bold">Purchase List</h1>
-          <p className="text-normal pt-2">Here is your all pruchase list</p>
+    <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="bg-white border-b border-gray-100 py-16 px-6 lg:px-24">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-black text-gray-900 flex items-center gap-4">
+            <FiBookOpen className="text-indigo-600" /> My Library
+          </h1>
+          <p className="text-gray-500 mt-2 text-lg">Access and download your purchased ebooks.</p>
         </div>
       </div>
-      <div className="bg-white flex justify-center max-w-[1440px]  px-4 lg:px-24 mx-auto w-full ">
-        <div className=" shadow-sm rounded-xl w-full -mt-9">
-          <div className="space-y-3 ">
-            { Array.isArray(me?.user?.answers) && me?.user?.answers?.length>0 && me?.user?.answers?.map((item) => (
+
+      <div className="max-w-7xl mx-auto px-6 mt-12">
+        {!myEbooks || myEbooks.length === 0 ? (
+          <div className="bg-white rounded-3xl p-20 text-center border border-dashed border-gray-200">
+            <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+              <FiBookOpen size={40} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800">Your library is empty</h2>
+            <p className="text-gray-500 mt-2 mb-8">You haven't purchased any ebooks yet.</p>
+            <Link
+              href="/"
+              className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors"
+            >
+              Browse Ebooks
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {myEbooks.map((item: any) => (
               <div
                 key={item.id}
-                className="flex flex-col md:flex-row md:items-center justify-between bg-white border-b border-[#E4E9EE]  p-4 hover:shadow-sm transition-shadow gap-5 md:gap-0 "
+                className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 relative">
-                    <Image
-                      src={item.quiz?.image || '/'}
-                      alt={item.quiz?.name || '/'}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">
-                      {item.quiz?.name}
-                    </h3>
-                    <p className="text-sm text-gray-500 truncate">{item.quiz?.description}</p>
+                <div className="relative h-64 bg-gray-100 overflow-hidden">
+                  <Image
+                    src={item.product.image || "/assets/placeholder.png"}
+                    alt={item.product.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                    <a
+                      href={item.product.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white text-gray-900 p-4 rounded-full hover:bg-indigo-600 hover:text-white transition-colors"
+                      title="Download PDF"
+                    >
+                      <FiDownload size={24} />
+                    </a>
                   </div>
                 </div>
-
-                <div className="flex gap-3">
-                  <button className="px-4 py-2 text-sm rounded-md bg-gradient-to-r from-[#473BA4] to-[#6A5BE2] text-white font-medium hover:opacity-90">
-                    View Pdf
-                  </button>
-                  <button className="px-4 py-2 text-sm rounded-md border border-indigo-300 text-indigo-600 font-medium hover:bg-indigo-50 transition-colors">
-                    Download Pdf
-                  </button>
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                        {item.product.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm">By {item.product.author}</p>
+                    </div>
+                    <span className="bg-green-50 text-green-600 text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                      Purchased
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                    <span className="text-xs text-gray-400">
+                      Bought on {new Date(item.purchasedAt).toLocaleDateString()}
+                    </span>
+                    <a
+                      href={item.product.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 font-bold flex items-center gap-2 hover:gap-3 transition-all"
+                    >
+                      Download <FiArrowRight />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
-};
-
-export default PurchaseList;
+}

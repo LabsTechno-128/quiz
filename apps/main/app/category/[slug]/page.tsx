@@ -1,7 +1,7 @@
 "use client";
-import QuizCard from "@/app/components/card/QuizCard";
-import { quizService } from "@/app/services/quiz.service";
-import { Quiz } from "@/app/types/api.types";
+import QuizCard from "@/components/card/QuizCard";
+import { quizService } from "@/services/quiz.service";
+import { Quiz } from "@/types/api.types";
 import React, { useEffect, useState } from "react";
 import {
   FiChevronDown,
@@ -21,7 +21,7 @@ type Product = {
   type: string;
 };
 
- 
+
 
 export default function CategoryPage({
   params,
@@ -39,7 +39,7 @@ export default function CategoryPage({
   const [maxPrice, setMaxPrice] = useState("");
   const [selected, setSelected] = useState<string>("");
   const [active, setActive] = useState("grid");
-  const[quiz,setQuiz] = useState<Quiz[]>([]);
+  const [quiz, setQuiz] = useState<Quiz[]>([]);
   const handleToggleFavorite = (id: string) => {
     setFavorites((prev) =>
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id],
@@ -47,17 +47,17 @@ export default function CategoryPage({
   };
 
   const options = ["$0 – $100", "$100 – $200", "$200 – $300", "$300 – $400"];
-  useEffect(()=>{
+  useEffect(() => {
     // fetch quiz by category
     // setQuiz(products);
     const asyncFetch = async () => {
-      const response = await  quizService.getByCategory(slug);
-      const data = response ;
+      const response = await quizService.getByCategory(slug);
+      const data = response;
       setQuiz(data.result);
-      console.log("quiz",data);
+      console.log("quiz", data);
     };
     asyncFetch();
-  },[])
+  }, [])
   return (
     <div className="max-w-[1440px] mx-auto py-10 px-4 md:px-8 lg:px-24">
       {/* Breadcrumb */}
@@ -84,22 +84,20 @@ export default function CategoryPage({
           <button
             onClick={() => setActive("grid")}
             className={`w-10 h-10 flex items-center justify-center rounded-xl border transition-all duration-200
-          ${
-            active === "grid"
-              ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-transparent shadow-md"
-              : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-          }`}
+          ${active === "grid"
+                ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-transparent shadow-md"
+                : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
           >
             <FiGrid size={18} />
           </button>
           <button
             onClick={() => setActive("list")}
             className={`w-10 h-10 flex items-center justify-center rounded-xl border transition-all duration-200
-          ${
-            active === "list"
-              ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-transparent shadow-md"
-              : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-          }`}
+          ${active === "list"
+                ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-transparent shadow-md"
+                : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+              }`}
           >
             <FiMenu size={18} />
           </button>
@@ -235,7 +233,7 @@ export default function CategoryPage({
 
         {/* Product Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {quiz.length>=1 && quiz.map((p) => (
+          {quiz.length >= 1 && quiz.map((p) => (
             <QuizCard
               key={p.id}
               quiz={p}
@@ -243,7 +241,7 @@ export default function CategoryPage({
               onToggleFavorite={handleToggleFavorite}
             />
           ))}
-         
+
         </section>
       </div>
     </div>

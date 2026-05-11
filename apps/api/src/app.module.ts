@@ -7,13 +7,14 @@ import { CategoryModule } from './category/category.module';
 import dataSource from 'src/config/typeORM.config';
 import { AttachmentsModule } from './attachments/attachments.module';
 import { ArticlesModule } from './articles/articles.module';
-import { EbooksModule } from './ebooks/ebooks.module';
 import { QuizModule } from './quiz/quiz.module';
 import { BannersModule } from './banners/banners.module';
 import { QuestionModule } from './question/question.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
-import { BookModule } from './book/book.module';
 import { ProductModule } from './product/product.module';
+import { PaymentModule } from './payment/payment.module';
+import { OrderModule } from './order/order.module';
+
 
 @Module({
   imports: [
@@ -31,13 +32,14 @@ import { ProductModule } from './product/product.module';
     CategoryModule,
     AttachmentsModule,
     ArticlesModule,
-    EbooksModule,
     QuizModule,
     BannersModule,
     QuestionModule,
     LeaderboardModule,
-    BookModule,
-    ProductModule
+    ProductModule,
+    PaymentModule,
+    OrderModule
+
   ],
 })
 export class AppModule { }

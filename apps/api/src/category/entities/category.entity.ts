@@ -30,6 +30,9 @@ export class Category {
   @Column({ nullable: true })
   image?: string;
 
+  @Column({ type: 'boolean', default: false })
+  homePageCategoryProduct: boolean;
+
   // Parent Category relation
   @ManyToOne(() => Category, (category) => category.children, {
     nullable: true,
@@ -51,23 +54,19 @@ export class Category {
   @OneToMany(() => Banner, (banner) => banner.category)
   banners: Banner[];
 
-
-  //    here also relation two model
-  // book list and quizz and question model
-
   @Column({ default: true })
   status: boolean;
 
- @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-   createdAt: Date;
- 
-   @UpdateDateColumn({
-     type: 'timestamptz',
-     default: () => 'CURRENT_TIMESTAMP',
-     onUpdate: 'CURRENT_TIMESTAMP',
-   })
-   updatedAt: Date;
- 
-   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-   deletedAt: Date | null;
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+  deletedAt: Date | null;
 }

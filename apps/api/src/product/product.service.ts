@@ -2,13 +2,32 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product, ProductType } from './entities/product.entity';
+import { CreateProductDto } from './dto/create.dto';
+import { CategoryService } from 'src/category/category.service';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+    private readonly categoryService: CategoryService,
+  ) { }
+
+  async create(payload: CreateProductDto) {
+    let category: Category | undefined;
+    if (payload.categoryId) {
+      category = (await this.categoryService.findOne(payload.categoryId)).result;
+      if (!category) {
+        throw new NotFoundException(`Category with ID ${payload.categoryId} not found`);
+      }
+    }
+    const product = this.productRepository.create({
+      ...payload,
+      category,
+    });
+    return this.productRepository.save(product);
+  }
 
   async findAll(query: {
     categoryId?: string;

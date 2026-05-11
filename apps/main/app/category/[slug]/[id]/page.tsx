@@ -1,7 +1,7 @@
 "use client";
 
-import ReviewsPage from "@/app/components/dynamicPage/ReviewsPage";
-import SliderPage from "@/app/components/dynamicPage/sliderPage";
+import ReviewsPage from "@/components/dynamicPage/ReviewsPage";
+import SliderPage from "@/components/dynamicPage/sliderPage";
 import React, { use } from "react";
 
 export default function QuizPage({

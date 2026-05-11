@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -10,13 +10,13 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
-  ) {}
+  ) { }
 
   async create(dto: CreateCategoryDto): Promise<Category> {
     const parent = dto.parent_id
       ? await this.categoryRepo.findOne({
-          where: { id: dto.parent_id },
-        })
+        where: { id: dto.parent_id },
+      })
       : undefined;
     const category = this.categoryRepo.create({
       ...dto,
@@ -40,7 +40,7 @@ export class CategoryService {
   async findOne(id: string): Promise<{ result: Category; message: string }> {
     const category = await this.categoryRepo.findOne({
       where: { id },
-      relations: ['parent', 'children'],
+      relations: ['parent', 'children', 'products'],
     });
     if (!category) throw new NotFoundException('Category not found');
     return { result: category, message: 'Category found' };
@@ -49,12 +49,41 @@ export class CategoryService {
   async update(id: string, dto: UpdateCategoryDto): Promise<Category> {
     const category = await this.findOne(id);
     Object.assign(category.result, dto);
-    console.log(category,dto);
+    console.log(category, dto);
     return this.categoryRepo.save(category.result);
   }
 
   async remove(id: string): Promise<void> {
     const category = await this.findOne(id);
     await this.categoryRepo.remove(category.result);
+  }
+
+  // set home page category product 
+  async addHomepageCategoryProduct(ids: string[]) {
+    // Selected ids => true
+    await this.categoryRepo.update(
+      { id: In(ids) },
+      { homePageCategoryProduct: true },
+    );
+    // Other ids => false
+    await this.categoryRepo.update(
+      { id: Not(In(ids)) },
+      { homePageCategoryProduct: false },
+    );
+    return {
+      message: 'Categories added successfully',
+    }
+  }
+  async findAllHomePageCategoryProduct() {
+    return {
+      result: await this.categoryRepo.find({
+        where: { homePageCategoryProduct: true },
+        relations: ['parent', 'children', 'products'],
+        order: {
+          createdAt: 'DESC',
+        },
+      }),
+      message: 'Categories retrieved successfully',
+    };
   }
 }

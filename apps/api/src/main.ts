@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 8000;
   const app = await NestFactory.create(AppModule);
+
   // console.log(process.env.PORT, 'MAMAR BARIR ABDAR');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -13,7 +15,18 @@ async function bootstrap() {
       transform: true, // payload  make dto instance
     }),
   );
+  // swagger implement 
 
+
+  const config = new DocumentBuilder()
+    .setTitle('E-Learning Quiz API')
+    .setDescription('E-Learning Quiz API description')
+    .setVersion('1.0')
+    .addTag('E-Learning Quiz')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
   app.setGlobalPrefix('api/v1');
 
   // app.enableCors({

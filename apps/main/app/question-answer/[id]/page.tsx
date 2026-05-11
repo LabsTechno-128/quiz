@@ -1,9 +1,9 @@
 "use client";
 
-import LoadingSpinner from "@/app/components/common/LoadingSpinner";
-import { answerService } from "@/app/services/answer.service";
-import { quizService } from "@/app/services/quiz.service";
-import { Quiz } from "@/app/types/api.types";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { answerService } from "@/services/answer.service";
+import { quizService } from "@/services/quiz.service";
+import { Quiz } from "@/types/api.types";
 import { use, useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 
@@ -20,7 +20,7 @@ export default function QuizQuestion({
 
   // ✅ Multiple question support
   const [selected, setSelected] = useState<
-    { questionId: string; optionId: string   }[]
+    { questionId: string; optionId: string }[]
   >([]);
 
   const [quizzes, setQuizzes] = useState<Quiz>({} as Quiz);
@@ -65,7 +65,7 @@ export default function QuizQuestion({
       const durationInMinutes = response?.result?.duration || 10; // Default to 10 minutes if not provided
       const durationInSeconds = durationInMinutes * 60;
       setTimeLeft(durationInSeconds);
-      
+
       // Start timer when quiz is loaded
       setTimerActive(true);
     } catch (e: unknown) {
@@ -94,7 +94,7 @@ export default function QuizQuestion({
 
   const submitAnswer = async () => {
     if (isSubmitted) return; // Prevent multiple submissions
-    
+
     setIsSubmitted(true);
     setTimerActive(false); // Stop timer
 
@@ -106,14 +106,14 @@ export default function QuizQuestion({
     try {
       const response = await answerService.create(submitData);
       console.log("Submitted:", response);
-      
+
       // Redirect to results page or show success message
       // You can customize this based on your app flow
       alert("Quiz submitted successfully!");
-      
+
       // Optional: redirect to results page
       // window.location.href = `/quiz-results/${response.result?.id}`;
-      
+
     } catch (error) {
       console.error("Submit error:", error);
       // alert("Failed to submit quiz. Please try again.");
@@ -122,7 +122,7 @@ export default function QuizQuestion({
       setTimerActive(true);
     }
   };
- 
+
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -146,11 +146,10 @@ export default function QuizQuestion({
 
       <div className="flex flex-col items-center min-h-screen py-12 px-4 max-w-6xl -mt-9 bg-white mx-auto rounded-md">
         {/* Timer */}
-        <div className={`font-semibold px-6 py-2 rounded-lg mb-10 shadow-sm ${
-          timeLeft <= 10 
-            ? 'bg-red-100 text-red-700 animate-pulse' 
-            : 'bg-indigo-100 text-indigo-700'
-        }`}>
+        <div className={`font-semibold px-6 py-2 rounded-lg mb-10 shadow-sm ${timeLeft <= 10
+          ? 'bg-red-100 text-red-700 animate-pulse'
+          : 'bg-indigo-100 text-indigo-700'
+          }`}>
           {isSubmitted ? (
             <span>Quiz Submitted!</span>
           ) : (
@@ -165,7 +164,7 @@ export default function QuizQuestion({
           <div
             className="bg-[#F7F7F7] rounded-2xl shadow-md w-full max-w-lg p-8 relative mb-6"
             key={question.id}
-          > 
+          >
             {/* Back Button */}
             <button
               type="button"
@@ -174,10 +173,10 @@ export default function QuizQuestion({
             >
               <FiArrowLeft size={22} />
             </button>
-        
+
             {/* Question Title */}
             <h2 className="text-center text-lg font-semibold text-gray-900 mb-4 mt-2">
-              {question?.title || "Question"}  
+              {question?.title || "Question"}
             </h2>
 
             <p className="text-gray-600 text-sm text-center mb-8">
@@ -200,11 +199,10 @@ export default function QuizQuestion({
                       onClick={() =>
                         handleSelect(question.id, ans.id)
                       }
-                      className={`w-full border rounded-lg py-3 px-4 text-sm transition-all duration-200 ${
-                        isSelected
-                          ? "bg-indigo-600 text-white border-indigo-600"
-                          : "border-gray-300 text-gray-700 hover:border-indigo-400"
-                      }`}
+                      className={`w-full border rounded-lg py-3 px-4 text-sm transition-all duration-200 ${isSelected
+                        ? "bg-indigo-600 text-white border-indigo-600"
+                        : "border-gray-300 text-gray-700 hover:border-indigo-400"
+                        }`}
                     >
                       {ans?.name}
                     </button>
@@ -218,19 +216,18 @@ export default function QuizQuestion({
         {/* Submit Button */}
         <button
           type="button"
-          className={`mt-10 w-80 font-semibold py-3 rounded-lg transition-all duration-200 ${
-            isSubmitted
-              ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-          }`}
+          className={`mt-10 w-80 font-semibold py-3 rounded-lg transition-all duration-200 ${isSubmitted
+            ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+            : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            }`}
           onClick={submitAnswer}
           disabled={isSubmitted}
         >
           {isSubmitted ? (
             <div className="flex items-center justify-center gap-2">
               <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
               Submitting...
             </div>

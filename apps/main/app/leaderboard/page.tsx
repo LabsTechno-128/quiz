@@ -2,31 +2,31 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { leaderboardService } from "../services/leaderboard.service";
-import { User } from "../types/api.types";
+import { leaderboardService } from "../../services/leaderboard.service";
+import { User } from "../../types/api.types";
 
- 
 
- 
-export default function LeaderboardPage() { 
+
+
+export default function LeaderboardPage() {
   const [me, setMe] = useState<User | null>(null);
   const [userRankings, setUserRankings] = useState<User[]>([]);
 
   useEffect(() => {
-      const fetchUserRanking = async () => {
-        const response = await leaderboardService.getUserRanking();
-          setMe(response);
-          // console.log(response,"----------->>");  
-      };
-       const fetchOverAllRanking = async () => {
-        const response = await leaderboardService.getOverAllRanking();
-         console.log(response,"----------->>");
-         setUserRankings(response.result);
-      };
-      fetchUserRanking();
-      fetchOverAllRanking();
+    const fetchUserRanking = async () => {
+      const response = await leaderboardService.getUserRanking();
+      setMe(response);
+      // console.log(response,"----------->>");  
+    };
+    const fetchOverAllRanking = async () => {
+      const response = await leaderboardService.getOverAllRanking();
+      console.log(response, "----------->>");
+      setUserRankings(response.result);
+    };
+    fetchUserRanking();
+    fetchOverAllRanking();
   }, []);
-    
+
 
   return (
     <div className="   ">
@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
           <div className="flex flex-col md:flex-row justify-between md:items-center p-4 rounded-2xl shadow-sm bg-gradient-to-r from-violet-600 to-purple-500 text-white -mt-9 gap-5 md:gap-0">
             <div className="flex items-center gap-3">
               <Image
-                src={me.avatar??"/"}
+                src={me.avatar ?? "/"}
                 alt={me.name || "Loading"}
                 width={40}
                 height={40}
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
                   className="rounded"
                 />
                 <div>
-                  <h4 className="font-medium text-gray-800">{user.name ||"unknown"}</h4>
+                  <h4 className="font-medium text-gray-800">{user.name || "unknown"}</h4>
                   <p className="text-sm text-gray-500">{user.rank}</p>
                 </div>
               </div>

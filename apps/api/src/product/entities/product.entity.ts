@@ -7,12 +7,17 @@ import {
   DeleteDateColumn,
   ManyToOne,
   Index,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
+import { Validate } from 'class-validator';
+import { BadRequestException } from '@nestjs/common';
 
 export enum ProductType {
-  BOOK = 'book',
   EBOOK = 'ebook',
+  ALL = 'all',
+  GADGET = 'gadget',
 }
 
 @Entity('products')
@@ -23,7 +28,7 @@ export class Product {
   @Column({
     type: 'enum',
     enum: ProductType,
-    default: ProductType.BOOK,
+    default: ProductType.ALL,
   })
   @Index()
   type: ProductType;
@@ -31,7 +36,7 @@ export class Product {
   @Column({ length: 255 })
   title: string;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, nullable: true })
   author: string;
 
   @Column({ type: 'text', nullable: true })
@@ -49,6 +54,9 @@ export class Product {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   offerPrice: number;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  discountPercentage: number;
+
   // Physical book stock
   @Column({ type: 'int', nullable: true })
   stock: number;
@@ -59,6 +67,14 @@ export class Product {
 
   @Column({ default: true })
   isActive: boolean;
+
+  // ratting add 
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  ratting: number;
+
+  // total sell count 
+  @Column({ type: 'int', nullable: true })
+  totalSell: number;
 
   @ManyToOne(() => Category, (category) => category.products, {
     onDelete: 'SET NULL',
@@ -74,4 +90,38 @@ export class Product {
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt: Date | null;
+
+  // validate price related validation do here 
+  @BeforeInsert()
+  @BeforeUpdate()
+  async validatePrice() {
+    try {
+      if (this.sellPrice <= this.buyPrice) {
+        throw new BadRequestException('Sell price must be greater than buy price');
+      }
+      if (this.offerPrice && this.offerPrice >= this.sellPrice) {
+        throw new BadRequestException('Offer price must be less than sell price');
+      }
+      if (this.offerPrice && this.offerPrice <= this.buyPrice && this.offerPrice < this.sellPrice) {
+        throw new BadRequestException('Offer price must be greater than buy price');
+      }
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+  // here add on before insert and update calculate discound percentage 
+  @BeforeInsert()
+  @BeforeUpdate()
+  async calculateDiscountPercentage() {
+    try {
+      if (this.offerPrice) {
+        this.discountPercentage = Math.round(((this.sellPrice - this.offerPrice) / this.sellPrice) * 100);
+      } else {
+        this.discountPercentage = 0;
+      }
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
 }

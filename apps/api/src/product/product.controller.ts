@@ -1,10 +1,16 @@
-import { Controller, Get, Param, Query, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Param, Query, ParseUUIDPipe, Post, Body } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductType } from './entities/product.entity';
+import { CreateProductDto } from './dto/create.dto';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
+
+  @Post()
+  create(@Body() payload: CreateProductDto) {
+    return this.productService.create(payload);
+  }
 
   @Get()
   findAll(
