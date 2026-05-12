@@ -46,11 +46,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.main
+      args:
+        NEXT_PUBLIC_API_URL: https://api.thinkhive.net/api/v1/
     container_name: quiz_main
     restart: always
     environment:
       - PORT=3000
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1/
     ports:
       - "3000:3000"
     depends_on:

@@ -22,6 +22,10 @@ RUN pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 RUN npx turbo build --filter=main
 
+# ✅ Inject NEXT_PUBLIC vars at build time
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Ensure directories exist
 RUN mkdir -p apps/main/.next/standalone apps/main/.next/static apps/main/public
 
