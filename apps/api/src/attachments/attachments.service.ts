@@ -82,10 +82,11 @@ export class AttachmentsService {
       } else {
         attachment.type = 'other';
       }
-
+      const attachmentData = await this.attachmentsRepository.save(attachment)
       return {
         result: results,
-        attachment: await this.attachmentsRepository.save(attachment)
+        url: result.url || attachmentData.url,
+        attachment: attachmentData
       };
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`);

@@ -6,8 +6,12 @@ import {
   removeToken,
 } from "../utils/helpers";
 
-const apiUrl = "https://api.thinkhive.net/api/v1/";
-// const apiUrl = "https://api.thinkhive.net/api/v1";
+let apiUrl;
+if (process.env.NEXT_PUBLIC_API_URL) {
+  apiUrl = `${process.env.NEXT_PUBLIC_API_URL}`
+} else {
+  apiUrl = "https://api.thinkhive.net/api/v1";
+}
 
 /* Public request config */
 const publicRequest = axios.create({
