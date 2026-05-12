@@ -22,7 +22,9 @@ export default function LoginPage() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      console.log(data);
+      console.log(data, publicRequest,
+        process.env.NEXT_PUBLIC_API_URL
+      );
       const response = await publicRequest.post("auth/login", data);
       console.log(response);
       const resData = response.data;
@@ -88,8 +90,8 @@ export default function LoginPage() {
                   })}
                   type="email"
                   className={`block w-full pl-10 pr-3 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${errors.email
-                      ? "border-red-500"
-                      : "border-slate-200 focus:border-indigo-500"
+                    ? "border-red-500"
+                    : "border-slate-200 focus:border-indigo-500"
                     }`}
                   placeholder="admin@thinkhive.com"
                 />
@@ -128,8 +130,8 @@ export default function LoginPage() {
                   })}
                   type={showPassword ? "text" : "password"}
                   className={` text-black block w-full pl-10 pr-10 py-3 border rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-100 outline-none transition-all duration-200 ${errors.password
-                      ? "border-red-500"
-                      : "border-slate-200 focus:border-indigo-500"
+                    ? "border-red-500"
+                    : "border-slate-200 focus:border-indigo-500"
                     }`}
                   placeholder="••••••••"
                 />
