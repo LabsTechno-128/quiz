@@ -2,7 +2,7 @@ export class ClientApi {
   baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api.thinkhive.net/api/v1/";
   }
 
   async request(
