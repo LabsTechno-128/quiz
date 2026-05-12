@@ -48,8 +48,11 @@ services:
       dockerfile: Dockerfile.main
     container_name: quiz_main
     restart: always
+    env_file:
+      - .env
     environment:
       - PORT=3000
+      - API_URL=https://api.thinkhive.net/api/v1
       - NEXT_PUBLIC_API_URL=https://api.thinkhive.net/api/v1
     ports:
       - "3000:3000"
