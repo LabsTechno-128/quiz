@@ -16,6 +16,7 @@ export class ProductController {
   @Get()
   findAll(
     @Query('categoryId') categoryId?: string,
+    @Query('categorySlug') categorySlug?: string,
     @Query('type') type?: ProductType,
     @Query('search') search?: string,
     @Query('page') page?: number,
@@ -23,6 +24,7 @@ export class ProductController {
   ) {
     return this.productService.findAll({
       categoryId,
+      categorySlug,
       type,
       search,
       page: page ? Number(page) : undefined,

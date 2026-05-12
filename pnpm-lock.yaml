@@ -281,6 +281,9 @@ importers:
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@19.2.3)
+      swiper:
+        specifier: ^12.1.4
+        version: 12.1.4
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
@@ -4591,6 +4594,10 @@ packages:
 
   swagger-ui-dist@5.31.0:
     resolution: {integrity: sha512-zSUTIck02fSga6rc0RZP3b7J7wgHXwLea8ZjgLA3Vgnb8QeOl3Wou2/j5QkzSGeoz6HusP/coYuJl33aQxQZpg==}
+
+  swiper@12.1.4:
+    resolution: {integrity: sha512-bihiwoKMOQwW8FfdUbo1DgkVH25E+4ZELIq0oopL1KTKBteLuaTMi/wwFjMxtlhTkk45k3XQ89D1Fvv0spSqBA==}
+    engines: {node: '>= 4.7.0'}
 
   symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
@@ -9947,6 +9954,8 @@ snapshots:
   swagger-ui-dist@5.31.0:
     dependencies:
       '@scarf/scarf': 1.4.0
+
+  swiper@12.1.4: {}
 
   symbol-observable@4.0.0: {}
 

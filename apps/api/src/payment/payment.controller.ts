@@ -1,4 +1,5 @@
-import { Controller, Post, Get, Body, Param, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, UseGuards, Req, Res } from '@nestjs/common';
+import express from 'express';
 import { PaymentService } from './payment.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { InitPaymentDto } from './dto/init-payment.dto';
@@ -14,19 +15,27 @@ export class PaymentController {
   }
 
   @Post('success')
-  async success(@Body() body: any) {
-    return await this.paymentService.processSuccess(body);
-
+  async success(@Body() body: any, @Res() res: express.Response) {
+    console.log('Payment Success Callback Received:', body);
+    const redirectUrl = await this.paymentService.processSuccess(body);
+    console.log('Redirecting to:', redirectUrl);
+    return res.redirect(redirectUrl);
   }
 
   @Post('fail')
-  async fail(@Body() body: any) {
-    return await this.paymentService.processFail(body);
+  async fail(@Body() body: any, @Res() res: express.Response) {
+    console.log('Payment Fail Callback Received:', body);
+    const redirectUrl = await this.paymentService.processFail(body);
+    console.log('Redirecting to:', redirectUrl);
+    return res.redirect(redirectUrl);
   }
 
   @Post('cancel')
-  async cancel(@Body() body: any) {
-    return await this.paymentService.processCancel(body);
+  async cancel(@Body() body: any, @Res() res: express.Response) {
+    console.log('Payment Cancel Callback Received:', body);
+    const redirectUrl = await this.paymentService.processCancel(body);
+    console.log('Redirecting to:', redirectUrl);
+    return res.redirect(redirectUrl);
   }
 
   @Post('ipn')

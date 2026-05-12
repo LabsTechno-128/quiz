@@ -8,6 +8,7 @@ import Link from "next/link";
 function PaymentResult() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
+  const tranId = searchParams.get("tran_id");
   const router = useRouter();
   const { clearCart } = useCart();
 
@@ -29,6 +30,12 @@ function PaymentResult() {
             <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
               Thank you for your purchase. Your order has been confirmed and your digital assets are now available.
             </p>
+            {tranId && (
+              <div className="mb-8 p-3 bg-indigo-50 rounded-xl inline-block">
+                <span className="text-xs font-bold text-indigo-400 uppercase block mb-1">Transaction ID</span>
+                <span className="text-sm font-mono font-bold text-indigo-600">{tranId}</span>
+              </div>
+            )}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/purchase-list"

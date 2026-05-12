@@ -7,7 +7,7 @@ type CartItem = {
   price: number;
   image?: string;
   quantity: number;
-  type: 'book' | 'ebook';
+  type: 'book' | 'ebook' | 'gadget' | 'product';
 };
 
 type CartContextType = {

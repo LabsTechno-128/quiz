@@ -38,7 +38,14 @@ export class PaymentService {
       let totalAmount = 0;
       const orderItemsData: any[] = [];
 
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
       for (const item of productIds) {
+        if (!uuidRegex.test(item.id)) {
+          this.logger.warn(`Skipping invalid product ID: ${item.id}`);
+          continue;
+        }
+
         const product = await queryRunner.manager.findOne(Product, { where: { id: item.id } });
         if (!product) throw new NotFoundException(`Product ${item.id} not found`);
 
@@ -110,6 +117,7 @@ export class PaymentService {
       };
 
       const result = await this.sslCommerzService.initPayment(sslData);
+      this.logger.log('Payment Init Result: ' + JSON.stringify(result));
 
       if (result?.status === 'SUCCESS') {
         return { url: result.GatewayPageURL };
@@ -117,7 +125,9 @@ export class PaymentService {
         throw new BadRequestException('Failed to initiate payment with SSLCommerz');
       }
     } catch (error) {
-      await queryRunner.rollbackTransaction();
+      if (queryRunner.isTransactionActive) {
+        await queryRunner.rollbackTransaction();
+      }
       this.logger.error('Payment Initialization Failed', error.stack);
       throw error;
     } finally {
@@ -141,10 +151,10 @@ export class PaymentService {
 
     if (validationResult?.status === 'VALID' || validationResult?.status === 'AUTHENTICATED') {
       await this.updatePaymentSuccess(payment, validationResult);
-      return this.getRedirectUrl(PaymentStatus.PAID);
+      return this.getRedirectUrl(PaymentStatus.PAID, tran_id);
     } else {
       await this.updatePaymentStatus(payment, PaymentStatus.FAILED, validationResult);
-      return this.getRedirectUrl(PaymentStatus.FAILED);
+      return this.getRedirectUrl(PaymentStatus.FAILED, tran_id);
     }
   }
 
@@ -152,14 +162,14 @@ export class PaymentService {
     const { tran_id } = data;
     const payment = await this.paymentRepository.findOne({ where: { transactionId: tran_id } });
     if (payment) await this.updatePaymentStatus(payment, PaymentStatus.FAILED, data);
-    return this.getRedirectUrl(PaymentStatus.FAILED);
+    return this.getRedirectUrl(PaymentStatus.FAILED, tran_id);
   }
 
   async processCancel(data: any) {
     const { tran_id } = data;
     const payment = await this.paymentRepository.findOne({ where: { transactionId: tran_id } });
     if (payment) await this.updatePaymentStatus(payment, PaymentStatus.CANCELLED, data);
-    return this.getRedirectUrl(PaymentStatus.CANCELLED);
+    return this.getRedirectUrl(PaymentStatus.CANCELLED, tran_id);
   }
 
   async processIpn(data: any) {
@@ -212,9 +222,12 @@ export class PaymentService {
     }
   }
 
-  private getRedirectUrl(status: string) {
+  private getRedirectUrl(status: string, tran_id?: string) {
     const frontendUrl = this.configService.get<string>('FRONTEND_URL');
-    return `${frontendUrl}/payment/result?status=${status}`;
+    const path = status === PaymentStatus.PAID ? 'success' : 'failed';
+    let url = `${frontendUrl}/payment/${path}`;
+    if (tran_id) url += `?tran_id=${tran_id}`;
+    return url;
   }
 
   async verifyTransaction(tran_id: string) {

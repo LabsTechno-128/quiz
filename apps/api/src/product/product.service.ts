@@ -33,14 +33,16 @@ export class ProductService {
 
   async findAll(query: {
     categoryId?: string;
+    categorySlug?: string;
     type?: ProductType;
     search?: string;
     isActive?: boolean;
     page?: number;
     limit?: number;
   }) {
-    const { categoryId, type, search, isActive = true, page = 1, limit = 10 } = query;
+    const { categoryId, categorySlug, type, search, isActive = true, page = 1, limit = 10 } = query;
     const skip = (page - 1) * limit;
+    console.log(categorySlug)
 
     const queryBuilder = this.productRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
@@ -48,6 +50,10 @@ export class ProductService {
 
     if (categoryId) {
       queryBuilder.andWhere('category.id = :categoryId', { categoryId });
+    }
+
+    if (categorySlug) {
+      queryBuilder.andWhere('category.slug = :categorySlug', { categorySlug });
     }
 
     if (type) {

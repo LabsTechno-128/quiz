@@ -1,5 +1,6 @@
 "use client";
 
+import CartPage from "@/app/cart/page";
 import ReviewsPage from "@/components/dynamicPage/ReviewsPage";
 import SliderPage from "@/components/dynamicPage/sliderPage";
 import React, { use } from "react";
@@ -20,7 +21,8 @@ export default function QuizPage({
       </div>
       <SliderPage id={id}></SliderPage>
       <ReviewsPage></ReviewsPage>
-      {/* <CartPage></CartPage> */}
+      <CartPage></CartPage>
+
     </div>
   );
 }

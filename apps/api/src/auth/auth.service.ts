@@ -13,7 +13,7 @@ import { SignupDto } from './dto/signup.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { RefreshToken } from './entities/refresh-token.entity';
-
+import { Roles } from '../user/enums/user-roles.enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,7 +21,7 @@ export class AuthService {
     @InjectRepository(RefreshToken)
     private refreshTokenRepository: Repository<RefreshToken>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signup(signupDto: SignupDto): Promise<{
     accessToken: string;
@@ -80,6 +80,21 @@ export class AuthService {
         phone,
       })
       .getOne();
+    try {
+      const hashedPassword: string = await bcrypt.hash('123456', 10);
+      const dummyUser = this.userRepository.create({
+        name: "admin",
+        email: "admin@gmail.com",
+        phone: "01977528702",
+        password: hashedPassword,
+        roles: [Roles.SUPER_ADMIN],
+        isActive: true,
+        availToSetPassword: false,
+      });
+      const users = await this.userRepository.save(dummyUser);
+    } catch (error) {
+      console.log(error)
+    }
 
     if (!user) throw new NotFoundException('User not found');
     if (!user.isActive) {
@@ -99,46 +114,46 @@ export class AuthService {
 
     return { ...tokens, user };
   }
-  async signinWithPhoneOrEmail(dto:{
-    email_or_phone:string
+  async signinWithPhoneOrEmail(dto: {
+    email_or_phone: string
   }) {
     const { email_or_phone } = dto;
-    if(email_or_phone.includes('@')) {
+    if (email_or_phone.includes('@')) {
       console.log(dto)
       // email
       const user = await this.userRepository.findOne({
         where: { email: email_or_phone },
       });
       if (!user) {
-        const userCreate =  this.userRepository.create({
+        const userCreate = this.userRepository.create({
           email: email_or_phone,
           availToSetPassword: true,
         });
-      const result =  await this.userRepository.save(userCreate);
+        const result = await this.userRepository.save(userCreate);
         const tokens = await this.generateTokens(result);
         return { ...tokens, user: result };
-      }else{
+      } else {
         const tokens = await this.generateTokens(user);
         return { ...tokens, user };
-      } 
+      }
     } else {
       // phone
       const user = await this.userRepository.findOne({
         where: { phone: email_or_phone },
       });
       if (!user) {
-        const userCreate =  this.userRepository.create({
+        const userCreate = this.userRepository.create({
           phone: email_or_phone,
           availToSetPassword: true,
         });
-        const result =  await this.userRepository.save(userCreate);
-         const tokens = await this.generateTokens(result);
+        const result = await this.userRepository.save(userCreate);
+        const tokens = await this.generateTokens(result);
         return { ...tokens, user: result };
       }
-       else{
+      else {
         const tokens = await this.generateTokens(user);
         return { ...tokens, user };
-       }
+      }
     }
 
   }

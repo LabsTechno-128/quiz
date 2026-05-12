@@ -44,9 +44,13 @@ export class CreateProductDto {
 
     @IsOptional()
     @IsNumber()
-    ratting: number;
+    rating: number;
 
     @IsOptional()
     @IsString()
     categoryId: string;
+
+    @IsOptional()
+    @IsString()
+    description: string;
 }

@@ -3,91 +3,120 @@ import Image from "next/image";
 import { Category } from "@/types/api.types";
 import Link from "next/link";
 import { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FeaturedCategory({
   category,
 }: {
   category: Category[];
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 300;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+  const swiperRef = useRef<any>(null);
 
   return (
-    <section className="pt-8 bg-white pb-6">
+    <section className="pt-12 bg-white pb-10 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-24">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-            Featured Category
-          </h2>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Featured Categories
+            </h2>
+            <div className="h-1 w-12 bg-indigo-600 rounded-full mt-2"></div>
+          </div>
 
-          {/* Arrows */}
-          <div className="flex items-center gap-2">
+          {/* Custom Navigation */}
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => scroll("left")}
-              className="border px-3 py-2 rounded-lg hover:bg-gray-100"
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all shadow-sm active:scale-95"
+              aria-label="Previous slide"
             >
-              ←
+              <ChevronLeft size={20} />
             </button>
             <button
-              onClick={() => scroll("right")}
-              className="border px-3 py-2 rounded-lg hover:bg-gray-100"
+              onClick={() => swiperRef.current?.slideNext()}
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all shadow-sm active:scale-95"
+              aria-label="Next slide"
             >
-              →
+              <ChevronRight size={20} />
             </button>
           </div>
         </div>
 
-        {/* Categories */}
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide"
-        >
-          {category.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/category/${cat.id}`}
-              className="min-w-[140px] bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all flex-shrink-0 flex flex-col items-center text-center"
-            >
-              <div className="max-w-32 max-h-32 pb-2 pt-3 px-3">
-                <Image
-                  src={cat.image || "/assets/card.png"}
-                  alt={cat.name}
-                  width={100}
-                  height={100}
-                  className="object-contain mx-auto"
-                />
-              </div>
+        {/* Categories Swiper */}
+        <div className="relative">
+          <Swiper
+            modules={[Navigation]}
+            onBeforeInit={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            spaceBetween={16}
+            slidesPerView={2.2}
+            breakpoints={{
+              480: {
+                slidesPerView: 2.5,
+              },
+              640: {
+                slidesPerView: 3.5,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 4.5,
+                spaceBetween: 24,
+              },
+              1024: {
+                slidesPerView: 5.5,
+                spaceBetween: 24,
+              },
+              1280: {
+                slidesPerView: 6.5,
+                spaceBetween: 30,
+              },
+            }}
+            className="!overflow-visible"
+          >
+            {category.map((cat) => (
+              <SwiperSlide key={cat.id}>
+                <Link
+                  href={`/category/${cat.slug}`}
+                  className="block p-4 bg-white border border-gray-100 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-100 transition-all duration-300 text-center group"
+                >
+                  <div className="aspect-square relative mb-4 bg-slate-50 rounded-2xl overflow-hidden p-4 group-hover:bg-indigo-50 transition-colors">
+                    <Image
+                      src={cat.image || "/assets/card.png"}
+                      alt={cat.name}
+                      fill
+                      className="object-contain p-2 group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
 
-              <span className="text-gray-800 leading-4 pb-1">
-                {cat.name}
-              </span>
+                  <h3 className="font-bold text-gray-900 text-sm md:text-base line-clamp-1 mb-1">
+                    {cat.name}
+                  </h3>
 
-              {cat.quizCount !== undefined && (
-                <p className="text-sm text-gray-500">
-                  {cat.quizCount} Quizzes
-                </p>
-              )}
-            </Link>
-          ))}
+                  {cat.quizCount !== undefined && (
+                    <p className="text-[10px] uppercase tracking-wider text-gray-400 font-bold">
+                      {cat.quizCount} Quizzes
+                    </p>
+                  )}
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
-        {/* Bottom Right Button */}
-        <div className="flex justify-end mt-4">
-          <button className="border border-indigo-500 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition-all">
-            View Detail
+        {/* View All */}
+        {/* <div className="flex justify-center mt-12">
+          <button className="flex items-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-2xl text-sm font-bold hover:bg-indigo-600 transition-all shadow-xl shadow-slate-900/10 active:scale-95 group">
+            Explore All Categories
+            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
-        </div>
+        </div> */}
 
       </div>
     </section>

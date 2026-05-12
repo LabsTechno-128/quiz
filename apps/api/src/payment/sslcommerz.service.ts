@@ -50,6 +50,8 @@ export class SslCommerzService {
         ...data,
       };
 
+      console.log(payload, "----", this.storeId, this.storePassword);
+
       const formData = new URLSearchParams();
       Object.entries(payload).forEach(([key, value]) => {
         formData.append(key, value.toString());
@@ -61,6 +63,7 @@ export class SslCommerzService {
         }),
       );
 
+      this.logger.log('SSLCommerz Response: ' + JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       this.logger.error('SSLCommerz Init Payment Error', error.response?.data || error.message);

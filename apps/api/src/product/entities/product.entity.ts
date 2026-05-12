@@ -68,9 +68,9 @@ export class Product {
   @Column({ default: true })
   isActive: boolean;
 
-  // ratting add 
+  // rating add
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  ratting: number;
+  rating: number;
 
   // total sell count 
   @Column({ type: 'int', nullable: true })
