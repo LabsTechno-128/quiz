@@ -1,4 +1,6 @@
-import React, { Suspense } from "react";
+
+"use client"
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { FiXCircle, FiRefreshCw, FiHome } from "react-icons/fi";
 import Link from "next/link";
@@ -15,7 +17,7 @@ function FailedContent() {
             <FiXCircle size={56} />
           </div>
         </div>
-        
+
         <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Payment Failed</h1>
         <p className="text-slate-500 text-lg mb-6 max-w-md mx-auto leading-relaxed">
           We encountered an issue while processing your transaction. No funds were deducted from your account.
@@ -42,7 +44,7 @@ function FailedContent() {
             <FiHome /> Back to Home
           </Link>
         </div>
-        
+
         <div className="mt-10 p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <p className="text-sm text-slate-500">
             If you continue to experience issues, please contact our support team with your order details.

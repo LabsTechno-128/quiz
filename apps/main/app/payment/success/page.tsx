@@ -1,5 +1,6 @@
-import React, { useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+"use client"
+import { useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useCart } from "../../../contexts/CartContext";
 import { FiCheckCircle, FiArrowRight, FiHome } from "react-icons/fi";
 import Link from "next/link";
@@ -21,7 +22,7 @@ function SuccessContent() {
             <FiCheckCircle size={56} />
           </div>
         </div>
-        
+
         <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Payment Successful!</h1>
         <p className="text-slate-500 text-lg mb-6 max-w-md mx-auto leading-relaxed">
           Your order has been confirmed. Thank you for shopping with us!
@@ -48,7 +49,7 @@ function SuccessContent() {
             <FiHome /> Continue Shopping
           </Link>
         </div>
-        
+
         <p className="mt-10 text-xs text-slate-400 font-medium">
           A confirmation email has been sent to your registered address.
         </p>
