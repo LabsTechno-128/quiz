@@ -67,6 +67,7 @@ export default function Home() {
   //   }
   // };
 
+  console.log("env", process.env.NEXT_PUBLIC_API_URL, "env");
 
   return (
     <div className="max-w-[1440px] mx-auto">
