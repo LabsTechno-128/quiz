@@ -145,6 +145,9 @@ importers:
       cloudinary:
         specifier: ^2.9.0
         version: 2.9.0
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
