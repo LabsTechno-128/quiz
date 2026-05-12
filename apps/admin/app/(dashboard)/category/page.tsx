@@ -18,6 +18,8 @@ import Link from "next/link";
 import { useDeleteConfirm } from "@/app/context/DeleteModalProvider";
 import Image from "next/image";
 import StatusBadge from "@/app/components/ui/badge";
+import HomepageCategoryModal from "./components/HomepageCategoryModal";
+import { Home } from "lucide-react";
 
 export default function CategoryPage() {
    const deleteConfirm = useDeleteConfirm();
@@ -25,6 +27,7 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHomepageModalOpen, setIsHomepageModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
   const [formData, setFormData] = useState<any>({ name: "", slug: "" }); 
 
@@ -95,13 +98,22 @@ console.log(categories)
             Organize your content with intuitive categories.
           </p>
         </div>
-        <Link
-          href="/category/create"
-          className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
-        >
-          <Plus className="h-4 w-4" />
-          Add Category
-        </Link>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsHomepageModalOpen(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm hover:shadow-md"
+          >
+            <Home className="h-4 w-4 text-indigo-600" />
+            Homepage Settings
+          </button>
+          <Link
+            href="/category/create"
+            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
+          >
+            <Plus className="h-4 w-4" />
+            Add Category
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
@@ -222,6 +234,11 @@ console.log(categories)
           )}
         </div>
       </div> 
+      <HomepageCategoryModal 
+        isOpen={isHomepageModalOpen}
+        onClose={() => setIsHomepageModalOpen(false)}
+        allCategories={categories}
+      />
     </div>
   );
 }

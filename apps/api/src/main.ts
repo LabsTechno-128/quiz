@@ -44,7 +44,7 @@ async function bootstrap() {
   //   origin: '*',
   //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   //   // credentials: true,
-  // });
+  // }); 
   // app.enableCors(); // Allow all origins for development; adjust in production
   app.enableCors({
     origin: "*",

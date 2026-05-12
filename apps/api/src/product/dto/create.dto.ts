@@ -34,6 +34,9 @@ export class CreateProductDto {
     @IsString()
     fileUrl: string;
 
+    @IsOptional()
+    @IsString()
+    image: string;
 
     @IsOptional()
     @IsBoolean()

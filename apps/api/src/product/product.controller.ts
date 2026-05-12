@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Query, ParseUUIDPipe, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Query, ParseUUIDPipe, Post, Body, Patch, Delete } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductType } from './entities/product.entity';
 import { CreateProductDto } from './dto/create.dto';
+import { UpdateProductDto } from './dto/update.dto';
 
 @Controller('products')
 export class ProductController {
@@ -32,5 +33,15 @@ export class ProductController {
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.productService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() payload: UpdateProductDto) {
+    return this.productService.update(id, payload);
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.productService.remove(id);
   }
 }

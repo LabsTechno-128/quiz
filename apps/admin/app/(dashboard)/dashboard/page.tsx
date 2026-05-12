@@ -11,6 +11,9 @@ import {
   Calendar,
   Filter,
   Loader2,
+  Package,
+  DollarSign,
+  ShoppingCart,
 } from "lucide-react";
 import {
   BarChart,
@@ -89,56 +92,49 @@ const StatCard = ({
 );
 
 export default function Dashboard() {
-  const [stats, setStats] = useState({
-    users: 0,
-    quizzes: 0,
-    categories: 0,
-    articles: 0,
-  });
+  const [stats, setStats] = useState<any>(null);
+  const [salesData, setSalesData] = useState<any[]>([]);
+  const [distribution, setDistribution] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchAnalytics = async () => {
       try {
-        const [usersRes, quizzesRes, catRes, artRes] = await Promise.all([
-          privateRequest.get("/user"),
-          privateRequest.get("/quizzes"),
-          privateRequest.get("/categories"),
-          privateRequest.get("/articles"),
+        setLoading(true);
+        const [statsRes, salesRes, distRes] = await Promise.all([
+          privateRequest.get("/analytics/dashboard-stats"),
+          privateRequest.get("/analytics/sales-report"),
+          privateRequest.get("/analytics/category-distribution"),
         ]);
 
-        setStats({
-          users: usersRes.data?.length || 0,
-          quizzes:
-            quizzesRes.data?.length || quizzesRes.data?.items?.length || 0,
-          categories: catRes.data?.length || 0,
-          articles: artRes.data?.length || artRes.data?.items?.length || 0,
-        });
+        setStats(statsRes.data);
+        setSalesData(salesRes.data);
+        setDistribution(distRes.data);
       } catch (error) {
-        console.error("Error fetching stats:", error);
+        console.error("Error fetching analytics:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchStats();
+    fetchAnalytics();
   }, []);
 
   return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Analytics Dashboard
+            Ecommerce Analytics
           </h1>
           <p className="text-slate-500 mt-2 font-medium">
-            Welcome back, here's what's happening Today.
+            Overview of your store's performance and growth.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm">
-            <Calendar className="h-4 w-4" />
-            Last 30 Days
+            <Calendar className="h-4 w-4 text-indigo-600" />
+            Current Year
           </button>
         </div>
       </div>
@@ -146,67 +142,61 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         <StatCard
-          title="Total Users"
-          value={stats.users.toLocaleString()}
-          icon={UsersIcon}
+          title="Total Sales"
+          value={loading ? "..." : `$${(stats?.totalSales || 0).toLocaleString()}`}
+          icon={DollarSign}
+          trend="up"
+          trendValue="+24%"
+          color="bg-rose-500"
+          loading={loading}
+        />
+        <StatCard
+          title="Total Orders"
+          value={loading ? "..." : (stats?.totalOrders || 0).toLocaleString()}
+          icon={ShoppingCart}
           trend="up"
           trendValue="+12%"
-          color="bg-indigo-600"
+          color="bg-amber-500"
           loading={loading}
         />
         <StatCard
-          title="Active Quizzes"
-          value={stats.quizzes.toLocaleString()}
-          icon={HelpCircle}
+          title="Total Products"
+          value={loading ? "..." : (stats?.totalProducts || 0).toLocaleString()}
+          icon={Package}
           trend="up"
           trendValue="+5.4%"
-          color="bg-violet-600"
+          color="bg-emerald-600"
           loading={loading}
         />
         <StatCard
-          title="Categories"
-          value={stats.categories.toLocaleString()}
-          icon={Layers}
-          trend="up"
-          trendValue="+2.1%"
-          color="bg-pink-600"
-          loading={loading}
-        />
-        <StatCard
-          title="Blog Posts"
-          value={stats.articles.toLocaleString()}
-          icon={FileText}
+          title="Total Users"
+          value={loading ? "..." : (stats?.totalUsers || 0).toLocaleString()}
+          icon={UsersIcon}
           trend="up"
           trendValue="+18%"
-          color="bg-amber-500"
+          color="bg-indigo-600"
           loading={loading}
         />
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        {/* Main Growth Chart */}
-        <div className="xl:col-span-2 bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+        {/* Sales Growth Chart */}
+        <div className="xl:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-                System Growth
+                Sales Growth
               </h2>
               <p className="text-sm text-slate-400 font-medium">
-                Monthly performance overview
+                Revenue overview for the current year
               </p>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full bg-indigo-500"></div>
                 <span className="text-xs font-bold text-slate-500 uppercase">
-                  Users
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-violet-500"></div>
-                <span className="text-xs font-bold text-slate-500 uppercase">
-                  Quizzes
+                  Revenue
                 </span>
               </div>
             </div>
@@ -214,17 +204,13 @@ export default function Dashboard() {
           <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={data}
+                data={salesData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
                 <defs>
-                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.1} />
                     <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorQuiz" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
@@ -248,58 +234,45 @@ export default function Dashboard() {
                   contentStyle={{
                     borderRadius: "16px",
                     border: "none",
-                    boxShadow:
-                      "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
                     padding: "12px 16px",
                   }}
+                  formatter={(value: any) => [`$${value.toLocaleString()}`, "Revenue"]}
                 />
                 <Area
                   type="monotone"
-                  dataKey="users"
+                  dataKey="sales"
                   stroke="#6366f1"
                   strokeWidth={4}
                   fillOpacity={1}
-                  fill="url(#colorUsers)"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="quiz"
-                  stroke="#8b5cf6"
-                  strokeWidth={4}
-                  fillOpacity={1}
-                  fill="url(#colorQuiz)"
+                  fill="url(#colorSales)"
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Distribution Chart */}
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col">
+        {/* Category Distribution Chart */}
+        <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
           <div className="mb-8">
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              Content Distribution
+              Product Distribution
             </h2>
             <p className="text-sm text-slate-400 font-medium">
-              Resources by category
+              Inventory by category
             </p>
           </div>
           <div className="flex-1 min-h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={[
-                    { name: "Articles", value: stats.articles || 10 },
-                    { name: "Quizzes", value: stats.quizzes || 5 },
-                    { name: "Categories", value: stats.categories || 5 },
-                    { name: "Users", value: stats.users || 20 },
-                  ]}
+                  data={distribution}
                   innerRadius={80}
                   outerRadius={120}
                   paddingAngle={8}
                   dataKey="value"
                 >
-                  {[400, 300, 300, 200].map((entry, index) => (
+                  {distribution.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -310,18 +283,18 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-8">
-            {["Articles", "Quizzes", "Categories", "Users"].map((label, i) => (
+          <div className="grid grid-cols-2 gap-3 mt-8">
+            {distribution.slice(0, 4).map((item, i) => (
               <div
-                key={label}
-                className="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl"
+                key={item.name}
+                className="flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100"
               >
                 <div
-                  className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: COLORS[i] }}
+                  className="h-3 w-3 rounded-full shrink-0"
+                  style={{ backgroundColor: COLORS[i % COLORS.length] }}
                 ></div>
-                <span className="text-xs font-bold text-slate-600">
-                  {label}
+                <span className="text-[10px] font-bold text-slate-600 truncate">
+                  {item.name}
                 </span>
               </div>
             ))}

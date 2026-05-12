@@ -9,7 +9,7 @@ import {
   HelpCircle,
   User,
   Users,
-  LogOut, 
+  LogOut,
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,14 +18,14 @@ import { Toastify } from "../ui/toastify";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Profile", href: "/profile", icon: User },
   { name: "Categories", href: "/category", icon: Layers },
+  { name: "Product", href: "/product", icon: FileText },
   { name: "Banners", href: "/banner", icon: Layers },
   { name: "Quiz", href: "/quiz", icon: HelpCircle },
   { name: "Questions", href: "/question", icon: HelpCircle },
   { name: "Blogs", href: "/article", icon: FileText },
   { name: "Users", href: "/users", icon: Users },
-  { name: "Profile", href: "/profile", icon: User },
-  { name: "Ebook", href: "/ebook", icon: FileText },
 ];
 
 export default function Sidebar({
@@ -85,11 +85,10 @@ export default function Sidebar({
             <Link
               key={item.name}
               href={item.href}
-              className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
-                  : "hover:bg-slate-800 hover:text-white"
-              }`}
+              className={`group flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold transition-all duration-200 ${isActive
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
+                : "hover:bg-slate-800 hover:text-white"
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Icon

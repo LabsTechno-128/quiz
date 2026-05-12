@@ -14,6 +14,7 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
 import { OrderModule } from './order/order.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 
 @Module({
@@ -38,7 +39,8 @@ import { OrderModule } from './order/order.module';
     LeaderboardModule,
     ProductModule,
     PaymentModule,
-    OrderModule
+    OrderModule,
+    AnalyticsModule
 
   ],
 })

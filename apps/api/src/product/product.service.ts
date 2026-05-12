@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product, ProductType } from './entities/product.entity';
 import { CreateProductDto } from './dto/create.dto';
+import { UpdateProductDto } from './dto/update.dto';
 import { CategoryService } from 'src/category/category.service';
 import { Category } from 'src/category/entities/category.entity';
 
@@ -26,7 +27,8 @@ export class ProductService {
       ...payload,
       category,
     });
-    return this.productRepository.save(product);
+    const result = await this.productRepository.save(product);
+    return { result, message: 'Product created successfully' };
   }
 
   async findAll(query: {
@@ -65,13 +67,14 @@ export class ProductService {
       .getManyAndCount();
 
     return {
-      items,
+      result: items,
       meta: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit),
       },
+      message: 'Products retrieved successfully',
     };
   }
 
@@ -85,6 +88,33 @@ export class ProductService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
-    return product;
+    return { result: product, message: 'Product retrieved successfully' };
+  }
+
+  async update(id: string, payload: UpdateProductDto) {
+    const product = await this.findOne(id);
+
+    let category: Category | undefined;
+    if (payload.categoryId) {
+      const categoryRes = await this.categoryService.findOne(payload.categoryId);
+      category = categoryRes.result;
+      if (!category) {
+        throw new NotFoundException(`Category with ID ${payload.categoryId} not found`);
+      }
+    }
+
+    const updatedProduct = this.productRepository.merge(product.result, {
+      ...payload,
+      category: category !== undefined ? category : product.result.category,
+    });
+
+    const result = await this.productRepository.save(updatedProduct);
+    return { result, message: 'Product updated successfully' };
+  }
+
+  async remove(id: string) {
+    const product = await this.findOne(id);
+    const result = await this.productRepository.softRemove(product.result);
+    return { result, message: 'Product removed successfully' };
   }
 }

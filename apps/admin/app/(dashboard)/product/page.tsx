@@ -6,11 +6,15 @@ import {
   Edit2,
   Trash2,
   Layers,
-  BarChart3,
+  Package,
   Calendar,
   MoreHorizontal,
   Loader2,
   X,
+  User,
+  Tag,
+  DollarSign,
+  Box,
 } from "lucide-react";
 import { Toastify } from "@/app/components/ui/toastify";
 import { useState, useEffect } from "react";
@@ -19,80 +23,67 @@ import { useDeleteConfirm } from "@/app/context/DeleteModalProvider";
 import Image from "next/image";
 import StatusBadge from "@/app/components/ui/badge";
 
-export default function CategoryPage() {
+export default function ProductPage() {
   const deleteConfirm = useDeleteConfirm();
-  const [book, setBook] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<any>(null);
-  const [formData, setFormData] = useState<any>({ name: "", slug: "" });
 
-  const fetchbook = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await privateRequest.get("/book");
-      setBook(response.data?.result);
+      setLoading(true);
+      const response = await privateRequest.get("/products");
+      setProducts(response.data?.result || []);
     } catch (error) {
-      console.error("Error fetching book:", error);
-      Toastify.Error("Failed to fetch book");
+      console.error("Error fetching products:", error);
+      Toastify.Error("Failed to fetch products");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchbook();
+    fetchProducts();
   }, []);
 
   const handleDelete = async (id: string) => {
     deleteConfirm(async () => {
       try {
-        await privateRequest.delete(`/book/${id}`);
-        setBook(book.filter((c: any) => c.id !== id));
-        Toastify.Success("Category deleted successfully");
+        await privateRequest.delete(`/products/${id}`);
+        setProducts(products.filter((p: any) => p.id !== id));
+        Toastify.Success("Product deleted successfully");
       } catch (error) {
-        Toastify.Error("Failed to delete category");
+        Toastify.Error("Failed to delete product");
       }
     });
   };
 
-
-
-  const handleOpenModal = (category: any = null) => {
-    if (category) {
-      setEditingCategory(category);
-      setFormData({ name: category.name, slug: category.slug });
-    } else {
-      setEditingCategory(null);
-      setFormData({ name: "", slug: "" });
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingCategory(null);
-    setFormData({ name: "", slug: "" });
-  };
-
+  const filteredProducts =
+    (products.length > 0 &&
+      products?.filter(
+        (p: any) =>
+          p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          p.author?.toLowerCase().includes(searchTerm.toLowerCase())
+      )) ||
+    [];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 font-sans tracking-tight">
-            Category Management
+            Product Management
           </h1>
           <p className="text-sm text-slate-500 font-medium">
-            Organize your content with intuitive book.
+            Manage your inventory, prices, and stock levels.
           </p>
         </div>
         <Link
-          href="/book/create"
+          href="/product/create"
           className="flex items-center gap-2 px-6 py-3 bg-indigo-600 rounded-2xl text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
         >
           <Plus className="h-4 w-4" />
-          Add Book
+          Add Product
         </Link>
       </div>
 
@@ -102,7 +93,7 @@ export default function CategoryPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
               type="text"
-              placeholder="Search book..."
+              placeholder="Search products..."
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border-none text-sm focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -113,23 +104,24 @@ export default function CategoryPage() {
         <div className="overflow-x-auto">
           {loading ? (
             <div className="p-20 text-center text-slate-400 font-medium">
-              Loading book...
+              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+              Loading products...
             </div>
           ) : (
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-slate-50/50">
                   <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Name & info
+                    Product Info
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Category & Type
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Price
                   </th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">
-                    Resources
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Description
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Slug
+                    Stock
                   </th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
                     Status
@@ -140,67 +132,83 @@ export default function CategoryPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {book.map((category: any) => (
+                {filteredProducts.map((product: any) => (
                   <tr
-                    key={category.id}
+                    key={product.id}
                     className="hover:bg-slate-50/50 transition-colors group"
                   >
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
                         <div
-                          className={`h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-100`}
+                          className={`h-12 w-12 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-100 flex-shrink-0 overflow-hidden`}
                         >
-                          {
-                            category?.image ? (
-                              <Image src={category.image} alt={category.name || "loading..."} className="h-10 w-10 rounded-xl" width={40} height={40} />
-                            ) : (
-                              <Layers className="h-5 w-5" />
-                            )
-                          }
+                          {product?.image ? (
+                            <Image
+                              src={product.image}
+                              alt={product.title}
+                              className="h-full w-full object-cover"
+                              width={48}
+                              height={48}
+                            />
+                          ) : (
+                            <Package className="h-6 w-6" />
+                          )}
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-900">
-                            {category.name}
+                          <p className="text-sm font-bold text-slate-900 line-clamp-1">
+                            {product.title}
                           </p>
-                          <p className="text-[10px] font-medium text-slate-400">
-                            Created:{" "}
-                            {new Date(category.createdAt).toLocaleDateString()}
+                          <p className="text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                            <User className="h-3 w-3" /> {product.author || "Unknown Author"}
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <div className="flex justify-center">
-                        <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-bold">
-                          {category.articles?.length || 0} items
+                      <div className="space-y-1">
+                        <span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                          {product.type}
                         </span>
+                        <p className="text-xs text-slate-500 font-medium">
+                          {product.category?.name || "Uncategorized"}
+                        </p>
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <p className="text-sm text-slate-600 line-clamp-2 truncate">
-                        {category.description || "No description"}
-                      </p>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-indigo-600">
+                          ${product.sellPrice}
+                        </span>
+                        {product.offerPrice && (
+                          <span className="text-[10px] text-slate-400 line-through">
+                            ${product.sellPrice}
+                          </span>
+                        )}
+                        {product.offerPrice && (
+                          <span className="text-[10px] font-bold text-emerald-500">
+                            ${product.offerPrice} (Offer)
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span className={`px-3 py-1 rounded-lg text-xs font-bold ${product.stock > 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+                        {product.stock || 0}
+                      </span>
                     </td>
                     <td className="px-6 py-5">
-                      <code className="px-2 py-1 bg-slate-100 rounded text-[11px] font-mono text-slate-600">
-                        /{category.slug}
-                      </code>
-                    </td>
-                    <td className="px-6 py-5">
-                      <code className="px-2 py-1   rounded text-[11px] font-mono text-slate-600">
-                        <StatusBadge status={category.status ? 'active' : 'inactive'} />
-                      </code>
+                      <StatusBadge status={product.isActive ? 'active' : 'inactive'} />
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/category/create?id=${category.id}`}
+                          href={`/product/create?id=${product.id}`}
                           className="p-2 rounded-xl text-slate-400 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 transition-all"
                         >
                           <Edit2 className="h-4 w-4" />
                         </Link>
                         <button
-                          onClick={() => handleDelete(category.id)}
+                          onClick={() => handleDelete(product.id)}
                           className="p-2 rounded-xl text-slate-400 hover:bg-white hover:text-red-600 hover:shadow-sm border border-transparent hover:border-slate-100 transition-all"
                         >
                           <Trash2 className="h-4 w-4 " />
@@ -209,6 +217,13 @@ export default function CategoryPage() {
                     </td>
                   </tr>
                 ))}
+                {filteredProducts.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-20 text-center text-slate-400 font-medium">
+                      No products found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           )}

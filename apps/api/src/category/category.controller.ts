@@ -49,6 +49,7 @@ export class CategoryController {
   remove(@Param('id') id: string) {
     return this.categoryService.remove(id);
   }
+
   @Post('homepage-category-product')
   @ApiOperation({ summary: 'Add category to homepage' })
   @ApiBody({
