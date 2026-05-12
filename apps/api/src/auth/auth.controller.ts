@@ -13,10 +13,11 @@ import type { Response, Request } from 'express';
 import { User } from 'src/user/entities/user.entity';
 // import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { SignupDto } from './dto/signup.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   // @Get('profile')
   // @UseGuards(AuthGuard('jwt'))
@@ -24,24 +25,24 @@ export class AuthController {
   //   return req.user;
   // }
 
-  // @Post('signup')
-  // async signup(
-  //   @Body() signupDto: SignupDto,
-  // ) {
-  //   return await this.authService.signup(signupDto);
-  // }
+  @Post('signup')
+  async signup(
+    @Body() signupDto: SignupDto,
+  ) {
+    return await this.authService.signup(signupDto);
+  }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-  
+
   @Post('login-with-phone-or-email')
   async loginWithPhoneOrEmail(@Body() loginDto: { email_or_phone: string }) {
     return this.authService.signinWithPhoneOrEmail(loginDto);
   }
-  
-// auth/login-with-phone-or-email
+
+  // auth/login-with-phone-or-email
   @Post('refresh-token')
   async refreshTokens(@Body('refreshToken') refreshToken: string) {
     return this.authService.refreshTokens(refreshToken);
