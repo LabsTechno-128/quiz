@@ -92,7 +92,7 @@ export default function FeaturedCategory({
                       alt={cat.name}
                       width={200}
                       height={200}
-                      className="w-full object-contain    group-hover:scale-110 transition-transform duration-500 rounded-sm"
+                      className="w-full object-contain    group-hover:scale-110 transition-transform duration-500 rounded-sm duration-700 hover:scale-105   "
                     />
                   </div>
 
