@@ -40,11 +40,13 @@ export default function RootLayout({
       >
         {/* seo add where  */}
         <Providers>
-          <div className="max-w-[1440px] mx-auto">
+          <div className="container mx-auto">
             <Navbar></Navbar>
           </div>
-          {children}
-          <div className="max-w-[1440px] mx-auto">
+          <div className="container mx-auto">
+            {children}
+          </div>
+          <div className="container mx-auto">
             <Footer></Footer>
           </div>
         </Providers>

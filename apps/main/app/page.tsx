@@ -70,7 +70,7 @@ export default function Home() {
   console.log("env", process.env.NEXT_PUBLIC_API_URL, "env");
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="space-y-6" >
       <HeroSection></HeroSection>
 
       {/* Categories Section */}
@@ -83,7 +83,8 @@ export default function Home() {
           <ErrorMessage message={categoryError} onRetry={loadCategories} />
         </div>
       ) : (
-        <FeaturedCategory category={categories}></FeaturedCategory>
+        <ProductLayout> <FeaturedCategory category={categories}></FeaturedCategory></ProductLayout>
+
       )}
 
       <ProductSection></ProductSection>

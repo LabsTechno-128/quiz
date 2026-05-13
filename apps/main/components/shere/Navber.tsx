@@ -89,7 +89,7 @@ export default function Navbar() {
       {loading ? (
         <NavbarSkeleton />
       ) : (
-        <nav className="w-full bg-white border-b border-gray-200 relative z-50">
+        <nav className="w-full bg-transparent border-b border-gray-200 relative z-50 mb-4">
           <div className="mx-auto flex items-center justify-between py-4 px-6 md:px-24">
             {/* Left - Logo */}
 

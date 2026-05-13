@@ -17,8 +17,8 @@ export default function FeaturedCategory({
   const swiperRef = useRef<any>(null);
 
   return (
-    <section className="pt-12 bg-white pb-10 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-10 lg:px-24">
+    <section className=" overflow-hidden">
+      <div className="    ">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
