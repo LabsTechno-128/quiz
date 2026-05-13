@@ -72,7 +72,7 @@ export class Product {
   rating: number;
 
   // total sell count 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'int', default: 0, nullable: true })
   totalSell: number;
 
   @ManyToOne(() => Category, (category) => category.products, {

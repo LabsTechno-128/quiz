@@ -7,8 +7,12 @@ import {
   DeleteDateColumn,
   Index,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
+  RelationId,
 } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
+import { Product } from '../../product/entities/product.entity';
 
 
 @Entity('banners')
@@ -37,6 +41,15 @@ export class Banner {
   @Index()
   category: Category;
 
+  @RelationId((banner: Banner) => banner.category)
+  categoryId: string;
+
+  @ManyToMany(() => Product)
+  @JoinTable({ name: 'banner_products' })
+  products: Product[];
+
+  @RelationId((banner: Banner) => banner.products)
+  productIds: string[];
 
   // status add 
   @Column({ type: 'boolean', default: true })

@@ -258,13 +258,18 @@ export interface ArticleQueryParams extends PaginationParams {
 export interface Banner {
   id: string;
   name: string;
-  subname?: string;
+  subName?: string;
   description?: string;
   image: string;
   imageUrl?: string;
   link?: string;
   buttonText?: string;
   isActive?: boolean;
+  status?: boolean;
+  category?: Category;
+  categoryId?: string;
+  products?: Product[];
+  productIds?: string[];
   order?: number;
   startDate?: string;
   endDate?: string;
@@ -273,13 +278,16 @@ export interface Banner {
 }
 
 export interface CreateBannerDto {
-  title: string;
-  subtitle?: string;
+  name: string;
+  subName?: string;
   description?: string;
   image: string;
   link?: string;
   buttonText?: string;
   isActive?: boolean;
+  status?: boolean;
+  categoryId?: string;
+  productIds?: string[];
   order?: number;
   startDate?: string;
   endDate?: string;

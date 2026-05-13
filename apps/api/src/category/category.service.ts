@@ -4,12 +4,15 @@ import { In, Not, Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Product } from 'src/product/entities/product.entity';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
+    @InjectRepository(Product)
+    private readonly productRepo: Repository<Product>,
   ) { }
 
   async create(dto: CreateCategoryDto): Promise<Category> {
@@ -75,6 +78,13 @@ export class CategoryService {
     }
   }
   async findAllHomePageCategoryProduct() {
+    // find top 10 product sell list 
+    // const top10ProductSellList = await this.productRepo.find({
+    //   order: {
+    //     totalSell: 'DESC',
+    //   },
+    //   take: 10,
+    // }) 
     return {
       result: await this.categoryRepo.find({
         where: { homePageCategoryProduct: true },

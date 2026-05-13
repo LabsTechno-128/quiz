@@ -69,7 +69,7 @@ export default function HeroSection() {
           }}
         >
           {banners.map((ban) => (
-            <Link key={ban.id} className="min-w-full" href={'/'}>
+            <Link key={ban.id} className="min-w-full" href={`/banner/${ban.id}`}>
               <Image
                 width={1440}
                 height={400}

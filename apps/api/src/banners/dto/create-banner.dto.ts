@@ -4,6 +4,7 @@ import {
   MaxLength,
   IsOptional,
   IsBoolean,
+  IsArray,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -50,7 +51,7 @@ export class CreateBannerDto {
   @IsString()
   @IsOptional()
   description?: string | null;
-  
+
   @ApiProperty({
     description: 'Status of the banner',
     required: false,
@@ -59,5 +60,27 @@ export class CreateBannerDto {
   })
   @IsBoolean()
   @IsOptional()
-  status?: boolean  ;
+  status?: boolean;
+
+  @ApiProperty({
+    description: 'ID of the category associated with the banner',
+    required: false,
+    nullable: true,
+    example: 'uuid-of-category',
+  })
+  @IsString()
+  @IsOptional()
+  categoryId?: string | null;
+
+  @ApiProperty({
+    description: 'IDs of the products associated with the banner',
+    required: false,
+    nullable: true,
+    example: ['uuid1', 'uuid2'],
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  productIds?: string[] | null;
 }

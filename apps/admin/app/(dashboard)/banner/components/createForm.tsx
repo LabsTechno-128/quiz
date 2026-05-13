@@ -1,6 +1,6 @@
 // components/CategoryTable.jsx
 "use client";
- import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { useState, useEffect } from "react";
 import {
@@ -17,18 +17,21 @@ import { privateRequest } from "@/app/config/axios.config";
 import { Toastify } from "@/app/components/ui/toastify";
 import PageHeader from "@/app/components/ui/pageHeader";
 import ImageUpload from "@/app/components/ui/input/imageUpload";
-import { customSelectStyles } from "@/utils/variable"; 
+import { customSelectStyles } from "@/utils/variable";
 
-export default function CreateForm( ) {
+export default function CreateForm() {
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const { data: categoryData, loading: categoryFetchLoading } =
-    useFetch("/banners"); 
+
+  // Fetch categories and products for selectors
+  const { data: categoryData, loading: categoryFetchLoading } = useFetch("/categories");
+  const { data: productData, loading: productFetchLoading } = useFetch("/products");
+
   const searchParams = useSearchParams();
-  const id = searchParams.get("id"); 
-  const router = useRouter()
-//   const id = params?.id as string;
-   const {
+  const id = searchParams.get("id");
+  const router = useRouter();
+
+  const {
     register,
     handleSubmit,
     reset,
@@ -41,48 +44,92 @@ export default function CreateForm( ) {
       name: "",
       subName: "",
       description: "",
-      status:true
+      status: true,
+      categoryId: "",
+      productIds: [] as string[],
     },
   });
 
-
   const status = watch("status");
+  const selectedCategoryId = watch("categoryId");
+  const selectedProductIds = watch("productIds") || [];
 
-  // Fetch category data for edit mode
+  // Fetch banner data for edit mode
   useEffect(() => {
-    if (id) {
-      setIsEditMode(true); 
-    }
-  }, [id]);
+    const fetchBanner = async () => {
+      if (id) {
+        setIsEditMode(true);
+        try {
+          setLoading(true);
+          const response = await privateRequest.get(`/banners/${id}`);
+          const banner = response?.data;
+          if (banner) {
+            reset({
+              image: banner.image || "",
+              name: banner.name || "",
+              subName: banner.subName || "",
+              description: banner.description || "",
+              status: banner.status,
+              categoryId: banner.category?.id || "",
+              productIds: banner.products?.map((p: any) => p.id) || [],
+            });
+          }
+        } catch (err) {
+          console.error(err);
+          Toastify.Error("Failed to fetch banner data");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchBanner();
+  }, [id, reset]);
 
-  
   const onSubmit = async (values: any) => {
     try {
-      setLoading(true); 
+      setLoading(true);
       const payload = {
         image: values.image || null,
         name: values.name || null,
         subName: values.subName || null,
         description: values.description || null,
-        status: values.status || true,
+        status: values.status ?? true,
+        categoryId: values.categoryId || null,
+        productIds: values.productIds || [],
       };
-    Toastify.Success("Banner created successfully");
-      const res = await privateRequest.post("/banners", payload);
-      router.push("/banner")
+
+      if (isEditMode) {
+        await privateRequest.patch(`/banners/${id}`, payload);
+        Toastify.Success("Banner updated successfully");
+      } else {
+        await privateRequest.post("/banners", payload);
+        Toastify.Success("Banner created successfully");
+      }
+      router.push("/banner");
       reset();
-    //   onSuccess?.(res.data);
     } catch (err) {
-        console.log(err); 
-        Toastify.Error("Failed to create banner");
+      console.log(err);
+      Toastify.Error(isEditMode ? "Failed to update banner" : "Failed to create banner");
     } finally {
       setLoading(false);
     }
   };
+
+  const categoryOptions = categoryData?.result?.map((cat: any) => ({
+    value: cat.id,
+    label: cat.name,
+  })) || [];
+
+  const productOptions = productData?.result?.map((prod: any) => ({
+    value: prod.id,
+    label: prod.title,
+  })) || [];
+
   return (
-   <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
-        title={isEditMode ? "Edit Category" : "Create Category"}
-        actionLink={{ href: "/category", label: "Back to List" }}
+        title={isEditMode ? "Edit Banner" : "Create Banner"}
+        actionLink={{ href: "/banner", label: "Back to List" }}
       />
 
       <div className="max-w-4xl mx-auto mt-8">
@@ -100,13 +147,12 @@ export default function CreateForm( ) {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
                   <Tag className="h-3.5 w-3.5 text-indigo-500" />
-                  Category Name
+                  Banner Name
                 </label>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  
                   className={`w-full px-6 py-4 bg-slate-50 border ${errors.name ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
-                  placeholder="e.g. Technology"
+                  placeholder="e.g. Summer Sale"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-xs font-bold ml-2 animate-in fade-in duration-300">
@@ -115,7 +161,7 @@ export default function CreateForm( ) {
                 )}
               </div>
 
-              {/* Slug */}
+              {/* Sub Name */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
                   <Globe className="h-3.5 w-3.5 text-indigo-500" />
@@ -124,7 +170,7 @@ export default function CreateForm( ) {
                 <input
                   {...register("subName", { required: "Sub Name is required" })}
                   className={`w-full px-6 py-4 bg-slate-50 border ${errors.subName ? "border-red-200 ring-red-50" : "border-slate-100"} rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400`}
-                  placeholder="e.g. technology-news"
+                  placeholder="e.g. Up to 50% off"
                 />
                 {errors.subName && (
                   <p className="text-red-500 text-xs font-bold ml-2 animate-in fade-in duration-300">
@@ -133,8 +179,41 @@ export default function CreateForm( ) {
                 )}
               </div>
 
-              {/* Parent Category */}
-               
+              {/* Category Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
+                  <Layers className="h-3.5 w-3.5 text-indigo-500" />
+                  Link to Category (Auto-adds all products)
+                </label>
+                <Select
+                  options={categoryOptions}
+                  isLoading={categoryFetchLoading}
+                  placeholder="Select a category..."
+                  isClearable
+                  styles={customSelectStyles}
+                  value={categoryOptions.find((opt: any) => opt.value === selectedCategoryId) || null}
+                  onChange={(opt: any) => setValue("categoryId", opt?.value || "")}
+                  className="rounded-[1.5rem]"
+                />
+              </div>
+
+              {/* Specific Products Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-700 ml-1 flex items-center gap-2">
+                  <Tag className="h-3.5 w-3.5 text-indigo-500" />
+                  Specific Products (Multi-select)
+                </label>
+                <Select
+                  isMulti
+                  options={productOptions}
+                  isLoading={productFetchLoading}
+                  placeholder="Select specific products..."
+                  styles={customSelectStyles}
+                  value={productOptions.filter((opt: any) => selectedProductIds.includes(opt.value))}
+                  onChange={(opts: any) => setValue("productIds", opts ? opts.map((o: any) => o.value) : [])}
+                  className="rounded-[1.5rem]"
+                />
+              </div>
 
               {/* Status */}
               <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-[1.5rem] border border-slate-100 transition-all hover:bg-slate-100/50">
@@ -171,7 +250,7 @@ export default function CreateForm( ) {
                 <textarea
                   {...register("description")}
                   className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium placeholder:text-slate-400 min-h-[120px]"
-                  placeholder="Tell us more about this category..."
+                  placeholder="Tell us more about this banner..."
                   rows={4}
                 />
               </div>
@@ -179,11 +258,12 @@ export default function CreateForm( ) {
               {/* Image Upload */}
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700 ml-1">
-                  Category Image
+                  Banner Image
                 </label>
                 <div className="p-1 bg-slate-50 rounded-[1.5rem] border border-slate-100">
                   <ImageUpload
                     onChange={(url) => setValue("image", url || "")}
+                    value={watch("image")}
                   />
                 </div>
               </div>
@@ -205,12 +285,12 @@ export default function CreateForm( ) {
                 <>
                   {isEditMode ? (
                     <>
-                      Update Category
+                      Update Banner
                       <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   ) : (
                     <>
-                      Create Category
+                      Create Banner
                       <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
