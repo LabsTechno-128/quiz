@@ -11,7 +11,6 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { Category } from '../../category/entities/category.entity';
-import { Validate } from 'class-validator';
 import { BadRequestException } from '@nestjs/common';
 
 export enum ProductType {
@@ -118,6 +117,20 @@ export class Product {
         this.discountPercentage = Math.round(((this.sellPrice - this.offerPrice) / this.sellPrice) * 100);
       } else {
         this.discountPercentage = 0;
+      }
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
+  }
+  @BeforeInsert()
+  @BeforeUpdate()
+  async validateRating() {
+    try {
+      if (this.rating && this.rating > 5) {
+        throw new BadRequestException('Rating must be less than or equal to 5');
+      }
+      if (this.rating && this.rating < 1) {
+        throw new BadRequestException('Rating must be greater than or equal to 1');
       }
     } catch (error: any) {
       throw new BadRequestException(error.message);

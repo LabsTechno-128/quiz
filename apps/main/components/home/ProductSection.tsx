@@ -29,7 +29,7 @@ export default function ProductSection() {
     return (
         <section className="pt-16 text-center">
             {categoryProduct.map((category) => (
-                <ProductLayout key={category.id} title={category.name}>
+                <ProductLayout key={category.id} title={category.name} slug={category.slug || ''}>
                     <div className="flex gap-2">
                         {category.products?.map((product) => (
                             <ProductCard key={product.id} product={product} />

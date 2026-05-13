@@ -56,7 +56,7 @@ export default function ProductForm() {
       fileUrl: "",
       image: "",
       isActive: true,
-      ratting: 0,
+      rating: 0,
       categoryId: "",
       description: "",
     },
@@ -77,7 +77,7 @@ export default function ProductForm() {
       setLoading(true);
       const response = await privateRequest.get(`/products/${id}`);
       const product = response?.data?.result;
-      
+
       reset({
         title: product.title || "",
         author: product.author || "",
@@ -89,7 +89,7 @@ export default function ProductForm() {
         fileUrl: product.fileUrl || "",
         image: product.image || "",
         isActive: product.isActive !== undefined ? product.isActive : true,
-        ratting: Number(product.ratting) || 0,
+        rating: Number(product.rating) || 0,
         categoryId: product.category?.id || "",
         description: product.description || "",
       });
@@ -111,7 +111,7 @@ export default function ProductForm() {
         buyPrice: Number(values.buyPrice),
         offerPrice: values.offerPrice ? Number(values.offerPrice) : undefined,
         stock: values.stock ? Number(values.stock) : undefined,
-        ratting: values.ratting ? Number(values.ratting) : undefined,
+        rating: values.rating ? Number(values.rating) : undefined,
         categoryId: values.categoryId || null,
       };
 
@@ -297,13 +297,13 @@ export default function ProductForm() {
                     type="number"
                     step="0.1"
                     max="5"
-                    {...register("ratting")}
+                    {...register("rating")}
                     className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-[1.5rem] focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all font-medium"
                   />
                 </div>
                 <div className="space-y-2">
-                   <label className="text-sm font-bold text-slate-700 ml-1">Status</label>
-                   <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-[1.5rem] border border-slate-100 transition-all hover:bg-slate-100/50 h-[60px]">
+                  <label className="text-sm font-bold text-slate-700 ml-1">Status</label>
+                  <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-[1.5rem] border border-slate-100 transition-all hover:bg-slate-100/50 h-[60px]">
                     <div
                       className={`w-12 h-6 rounded-full relative cursor-pointer transition-colors duration-300 ${isActive ? "bg-indigo-600" : "bg-slate-300"}`}
                       onClick={() => setValue("isActive", !isActive)}
