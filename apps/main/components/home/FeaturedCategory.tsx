@@ -84,18 +84,19 @@ export default function FeaturedCategory({
               <SwiperSlide key={cat.id}>
                 <Link
                   href={`/category/${cat.slug}`}
-                  className="block p-4 bg-white border border-gray-100 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-100 transition-all duration-300 text-center group"
+                  className="  flex flex-col justify-center items-center gap-2 rounded-sm  shadow-lg p-2  bg-white shadow-slate-200 "
                 >
-                  <div className="aspect-square relative mb-4 bg-slate-50 rounded-2xl overflow-hidden p-4 group-hover:bg-indigo-50 transition-colors">
+                  <div className="w-[150px] h-[150px]    ">
                     <Image
                       src={cat.image || "/assets/card.png"}
                       alt={cat.name}
-                      fill
-                      className="object-contain p-2 group-hover:scale-110 transition-transform duration-500"
+                      width={200}
+                      height={200}
+                      className="w-full object-contain    group-hover:scale-110 transition-transform duration-500 rounded-sm"
                     />
                   </div>
 
-                  <h3 className="font-bold text-gray-900 text-sm md:text-base line-clamp-1 mb-1">
+                  <h3 className="font-bold text-gray-900 text-sm md:text-base line-clamp-1  ">
                     {cat.name}
                   </h3>
 
