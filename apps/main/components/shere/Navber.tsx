@@ -100,7 +100,7 @@ export default function Navbar() {
               <Link href="/" className="flex items-center gap-2 ml-3">
                 <div className="hidden lg:flex relative min-w-8">
                   <img
-                    src="/free.png"
+                    src="/Free.png"
                     alt="Quizzy Logo"
                     className="object-contain rounded-md"
                     width={50}
