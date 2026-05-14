@@ -46,6 +46,18 @@ export class Order {
   @JoinColumn()
   payment: Payment;
 
+  @Column({ nullable: true })
+  customerName: string;
+
+  @Column({ nullable: true })
+  customerPhone: string;
+
+  @Column({ nullable: true })
+  customerAddress: string;
+
+  @Column({ nullable: true })
+  city: string;
+
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 

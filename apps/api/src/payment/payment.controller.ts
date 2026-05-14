@@ -11,7 +11,12 @@ export class PaymentController {
   @UseGuards(JwtAuthGuard)
   @Post('init')
   async initPayment(@Req() req, @Body() body: InitPaymentDto) {
-    return this.paymentService.initPayment(req.user.id, body.items);
+    return this.paymentService.initPayment(req.user.id, body.items, {
+      customerName: body.customerName,
+      customerPhone: body.customerPhone,
+      customerAddress: body.customerAddress,
+      city: body.city,
+    });
   }
 
   @Post('success')
@@ -46,5 +51,10 @@ export class PaymentController {
   @Get('verify/:transactionId')
   async verify(@Param('transactionId') transactionId: string) {
     return this.paymentService.verifyTransaction(transactionId);
+  }
+
+  @Get('address/:phone')
+  async getAddress(@Param('phone') phone: string) {
+    return this.paymentService.getAddressByPhone(phone);
   }
 }

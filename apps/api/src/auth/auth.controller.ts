@@ -38,7 +38,7 @@ export class AuthController {
   }
 
   @Post('login-with-phone-or-email')
-  async loginWithPhoneOrEmail(@Body() loginDto: { email_or_phone: string }) {
+  async loginWithPhoneOrEmail(@Body() loginDto: { email_or_phone: string; name?: string }) {
     return this.authService.signinWithPhoneOrEmail(loginDto);
   }
 

@@ -43,6 +43,11 @@ export interface User {
   rank?: string;
   answers?: any[];
   user?: User;
+  phone?: string;
+  address?: string;
+  city?: string;
+  shippingAddress?: string;
+  location?: string
 }
 
 export interface AuthTokens {

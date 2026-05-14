@@ -28,7 +28,7 @@ export class PaymentService {
     private readonly dataSource: DataSource,
   ) { }
 
-  async initPayment(userId: string, productIds: { id: string; quantity: number }[]) {
+  async initPayment(userId: string, productIds: { id: string; quantity: number }[], addressDetails: { customerName: string; customerPhone: string; customerAddress: string; city: string }) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -66,6 +66,10 @@ export class PaymentService {
         user: { id: userId } as User,
         totalAmount,
         status: OrderStatus.PENDING,
+        customerName: addressDetails.customerName,
+        customerPhone: addressDetails.customerPhone,
+        customerAddress: addressDetails.customerAddress,
+        city: addressDetails.city,
       });
       const savedOrder = await queryRunner.manager.save(order);
 
@@ -103,13 +107,13 @@ export class PaymentService {
         fail_url: `${backendUrl}/payment/fail`,
         cancel_url: `${backendUrl}/payment/cancel`,
         ipn_url: `${backendUrl}/payment/ipn`,
-        cus_name: user?.name || 'Customer',
+        cus_name: addressDetails.customerName,
         cus_email: user?.email || 'customer@example.com',
-        cus_add1: 'Dhaka',
-        cus_city: 'Dhaka',
+        cus_add1: addressDetails.customerAddress,
+        cus_city: addressDetails.city,
         cus_postcode: '1000',
         cus_country: 'Bangladesh',
-        cus_phone: user?.phone || '01700000000',
+        cus_phone: addressDetails.customerPhone,
         shipping_method: 'NO',
         product_name: 'Ecommerce Products',
         product_category: 'Mixed',
@@ -240,5 +244,32 @@ export class PaymentService {
     });
     if (!payment) throw new NotFoundException('Transaction not found');
     return payment;
+  }
+
+  async getAddressByPhone(phone: string) {
+    const latestOrder = await this.orderRepository.findOne({
+      where: { customerPhone: phone },
+      order: { createdAt: 'DESC' },
+    });
+
+    if (latestOrder) {
+      return {
+        customerName: latestOrder.customerName,
+        customerAddress: latestOrder.customerAddress,
+        city: latestOrder.city,
+      };
+    }
+
+    // Fallback to user profile if phone matches
+    const user = await this.dataSource.manager.findOne(User, { where: { phone } });
+    if (user) {
+      return {
+        customerName: user.name,
+        customerAddress: user.location, // Assuming location is address
+        city: '',
+      };
+    }
+
+    return null;
   }
 }

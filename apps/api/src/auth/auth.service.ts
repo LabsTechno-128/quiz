@@ -115,9 +115,10 @@ export class AuthService {
     return { ...tokens, user };
   }
   async signinWithPhoneOrEmail(dto: {
-    email_or_phone: string
+    email_or_phone: string;
+    name?: string;
   }) {
-    const { email_or_phone } = dto;
+    const { email_or_phone, name } = dto;
     if (email_or_phone.includes('@')) {
       console.log(dto)
       // email
@@ -127,6 +128,7 @@ export class AuthService {
       if (!user) {
         const userCreate = this.userRepository.create({
           email: email_or_phone,
+          name: name,
           availToSetPassword: true,
         });
         const result = await this.userRepository.save(userCreate);
@@ -144,6 +146,7 @@ export class AuthService {
       if (!user) {
         const userCreate = this.userRepository.create({
           phone: email_or_phone,
+          name: name,
           availToSetPassword: true,
         });
         const result = await this.userRepository.save(userCreate);

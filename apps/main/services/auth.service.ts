@@ -28,7 +28,7 @@ class AuthService {
     return response;
   }
 
-  async loginWithPhoneOrEmail(data: { email_or_phone: string }): Promise<AuthResponse> {
+  async loginWithPhoneOrEmail(data: { email_or_phone: string; name?: string }): Promise<AuthResponse> {
     const response = await clientApi.post("auth/login-with-phone-or-email", data);
     console.log(response, "ki problem")
     this.setTokens(response.accessToken, response.refreshToken);

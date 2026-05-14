@@ -5,30 +5,74 @@ import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { paymentService } from "../../services/payment.service";
 import { useRouter } from "next/navigation";
-import { FiLoader, FiShoppingCart, FiCreditCard } from "react-icons/fi";
+import { FiLoader, FiShoppingCart, FiCreditCard, FiMapPin, FiUser, FiPhone } from "react-icons/fi";
 
 export default function CheckoutPage() {
   const { cart, totalAmount, clearCart } = useCart();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, user, login } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [addressDetails, setAddressDetails] = useState({
+    customerName: "",
+    customerPhone: "",
+    customerAddress: "",
+    city: "",
+  });
   const router = useRouter();
 
+  // Populate name and phone from auth if available
+  React.useEffect(() => {
+    if (user) {
+      setAddressDetails((prev) => ({
+        ...prev,
+        customerName: user.name || "",
+        customerPhone: user.phone || "",
+        customerAddress: user.location || "",
+      }));
+    }
+  }, [user]);
+
+  const handlePhoneChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const phone = e.target.value;
+    setAddressDetails((prev) => ({ ...prev, customerPhone: phone }));
+
+    if (phone.length >= 11) {
+      try {
+        const existingAddress = await paymentService.getAddressByPhone(phone);
+        if (existingAddress) {
+          setAddressDetails((prev) => ({
+            ...prev,
+            customerName: existingAddress.customerName || prev.customerName,
+            customerAddress: existingAddress.customerAddress || prev.customerAddress,
+            city: existingAddress.city || prev.city,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch address:", error);
+      }
+    }
+  };
+
   const handleCheckout = async () => {
-    if (!isAuthenticated) {
-      router.push("/login"); // or show login modal
+    if (cart.length === 0) return;
+
+    if (!addressDetails.customerName || !addressDetails.customerPhone || !addressDetails.customerAddress || !addressDetails.city) {
+      alert("Please fill in all address details.");
       return;
     }
 
-    if (cart.length === 0) return;
-
     setIsProcessing(true);
     try {
+      if (!isAuthenticated) {
+        await login({
+          email_or_phone: addressDetails.customerPhone,
+          name: addressDetails.customerName,
+        });
+      }
+
       const items = cart.map((item) => ({ id: item.id, quantity: item.quantity }));
-      const response = await paymentService.initPayment(items);
+      const response = await paymentService.initPayment(items, addressDetails);
 
       if (response?.url) {
-        // Optional: clear cart before redirecting or after success? 
-        // Better after success, but if user cancels they might want their cart back.
         window.location.href = response.url;
       }
     } catch (error) {
@@ -49,8 +93,79 @@ export default function CheckoutPage() {
       </div>
 
       <div className="max-w-6xl mx-auto px-6 -mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Order Summary */}
+        {/* Left Side: Address and Cart */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Shipping Address */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-50">
+              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <FiMapPin className="text-indigo-600" /> Shipping Address
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">Provide your delivery details</p>
+            </div>
+
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <FiUser className="text-gray-400" /> Full Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  value={addressDetails.customerName}
+                  onChange={(e) => setAddressDetails({ ...addressDetails, customerName: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <FiPhone className="text-gray-400" /> Phone Number
+                </label>
+                <input
+                  type="tel"
+                  placeholder="017XXXXXXXX"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  value={addressDetails.customerPhone}
+                  onChange={handlePhoneChange}
+                />
+              </div>
+
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <FiMapPin className="text-gray-400" /> Delivery Address
+                </label>
+                <textarea
+                  placeholder="House #123, Road #4, Block #A, Dhaka"
+                  rows={2}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
+                  value={addressDetails.customerAddress}
+                  onChange={(e) => setAddressDetails({ ...addressDetails, customerAddress: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">City</label>
+                <select
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  value={addressDetails.city}
+                  onChange={(e) => setAddressDetails({ ...addressDetails, city: e.target.value })}
+                >
+                  <option value="">Select City</option>
+                  <option value="Dhaka">Dhaka</option>
+                  <option value="Chittagong">Chittagong</option>
+                  <option value="Sylhet">Sylhet</option>
+                  <option value="Rajshahi">Rajshahi</option>
+                  <option value="Khulna">Khulna</option>
+                  <option value="Barisal">Barisal</option>
+                  <option value="Rangpur">Rangpur</option>
+                  <option value="Mymensingh">Mymensingh</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Order Summary */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-50 flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">

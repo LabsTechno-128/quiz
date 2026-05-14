@@ -11,6 +11,7 @@ import {
   Users,
   LogOut,
   X,
+  ShoppingCart,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getUser, removeToken } from "@/app/utils/helpers";
@@ -19,6 +20,7 @@ import { Toastify } from "../ui/toastify";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Profile", href: "/profile", icon: User },
+  { name: "Orders", href: "/orders", icon: ShoppingCart },
   { name: "Categories", href: "/category", icon: Layers },
   { name: "Product", href: "/product", icon: FileText },
   { name: "Banners", href: "/banner", icon: Layers },

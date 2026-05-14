@@ -16,4 +16,20 @@ export class InitPaymentDto {
   @ValidateNested({ each: true })
   @Type(() => CartItemDto)
   items: CartItemDto[];
+
+  @IsString()
+  @IsNotEmpty()
+  customerName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  customerPhone: string;
+
+  @IsString()
+  @IsNotEmpty()
+  customerAddress: string;
+
+  @IsString()
+  @IsNotEmpty()
+  city: string;
 }
