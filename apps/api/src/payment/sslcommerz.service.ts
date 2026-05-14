@@ -50,7 +50,7 @@ export class SslCommerzService {
         ...data,
       };
 
-      console.log(payload, "----", this.storeId, this.storePassword);
+      // console.log(payload, "----", this.storeId, this.storePassword, data);
 
       const formData = new URLSearchParams();
       Object.entries(payload).forEach(([key, value]) => {
@@ -73,8 +73,9 @@ export class SslCommerzService {
 
   async validatePayment(val_id: string) {
     try {
-      const url = `${this.apiUrl}/validator/api/validationserverphp.php?val_id=${val_id}&store_id=${this.storeId}&store_passwd=${this.storePassword}&format=json`;
+      const url = `${this.apiUrl}/validator/api/validationserverAPI.php?val_id=${val_id}&store_id=${this.storeId}&store_passwd=${this.storePassword}&format=json`;
       const response = await firstValueFrom(this.httpService.get(url));
+      // console.log(response, "--------------------->>>>>> response issue", url);
       return response.data;
     } catch (error) {
       this.logger.error('SSLCommerz Validate Payment Error', error.response?.data || error.message);

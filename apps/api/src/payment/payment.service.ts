@@ -136,25 +136,28 @@ export class PaymentService {
   }
 
   async processSuccess(data: any) {
-    const { tran_id, val_id } = data;
+    try {
+      const { tran_id, val_id } = data;
 
-    const payment = await this.paymentRepository.findOne({
-      where: { transactionId: tran_id },
-      relations: ['order', 'order.user', 'order.items', 'order.items.product'],
-    });
+      const payment = await this.paymentRepository.findOne({
+        where: { transactionId: tran_id },
+        relations: ['order', 'order.user', 'order.items', 'order.items.product'],
+      });
 
-    if (!payment) throw new NotFoundException('Payment not found');
-    if (payment.status === PaymentStatus.PAID) return this.getRedirectUrl(PaymentStatus.PAID);
-
-    // Validate with SSLCommerz
-    const validationResult = await this.sslCommerzService.validatePayment(val_id);
-
-    if (validationResult?.status === 'VALID' || validationResult?.status === 'AUTHENTICATED') {
-      await this.updatePaymentSuccess(payment, validationResult);
-      return this.getRedirectUrl(PaymentStatus.PAID, tran_id);
-    } else {
-      await this.updatePaymentStatus(payment, PaymentStatus.FAILED, validationResult);
-      return this.getRedirectUrl(PaymentStatus.FAILED, tran_id);
+      if (!payment) throw new NotFoundException('Payment not found');
+      if (payment.status === PaymentStatus.PAID) return this.getRedirectUrl(PaymentStatus.PAID);
+      // Validate with SSLCommerz
+      const validationResult = await this.sslCommerzService.validatePayment(val_id);
+      if (validationResult?.status === 'VALID' || validationResult?.status === 'AUTHENTICATED') {
+        await this.updatePaymentSuccess(payment, validationResult);
+        return this.getRedirectUrl(PaymentStatus.PAID, tran_id);
+      } else {
+        await this.updatePaymentStatus(payment, PaymentStatus.FAILED, validationResult);
+        return this.getRedirectUrl(PaymentStatus.FAILED, tran_id);
+      }
+    } catch (error) {
+      this.logger.error('Payment Validation Failed', error.stack);
+      return this.getRedirectUrl(PaymentStatus.FAILED, data?.tran_id);
     }
   }
 
