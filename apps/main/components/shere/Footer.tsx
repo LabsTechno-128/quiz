@@ -11,10 +11,10 @@ export default function Footer() {
           <div className="flex items-center gap-2 mb-3">
             <div className=" relative">
               <Image
-                src="/logo/Logo.png"
+                src="/free.png"
                 alt="Quizzy Logo"
                 className="object-contain rounded-md"
-                width={150}
+                width={70}
                 height={50}
               />
             </div>

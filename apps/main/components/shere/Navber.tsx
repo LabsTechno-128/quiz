@@ -98,13 +98,13 @@ export default function Navbar() {
 
             <div className="hidden lg:flex items-center bg-gray-50 rounded-md overflow-visible w-[500px] xl:w-[800px] relative">
               <Link href="/" className="flex items-center gap-2 ml-3">
-                <div className="hidden lg:flex relative">
+                <div className="hidden lg:flex relative min-w-8">
                   <Image
                     src="/free.png"
                     alt="Quizzy Logo"
                     className="object-contain rounded-md"
-                    width={20}
-                    height={30}
+                    width={50}
+                    height={50}
                   />
                 </div>
                 <button
