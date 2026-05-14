@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="flex items-center gap-2 mb-3">
             <div className=" relative">
               <Image
-                src="/free.png"
+                src="/Free.png"
                 alt="Quizzy Logo"
                 className="object-contain rounded-md"
                 width={70}
