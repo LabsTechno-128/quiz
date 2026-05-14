@@ -30,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="group relative bg-white border border-gray-100 rounded-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl w-full max-w-[240px]">
             {/* Discount Badge */}
             {product?.discountPercentage && (
-                <div className="absolute top-2 left-2 z-30">
+                <div className="absolute top-0 left-0 z-30">
                     <div className="relative flex items-center justify-center w-12 h-12">
                         <svg
                             viewBox="0 0 100 100"
@@ -47,13 +47,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
 
             {/* Image Section */}
-            <div className="relative aspect-[4/5] w-full p-4 flex items-center justify-center bg-white">
+            <div className="relative bg-transparent aspect-[4/5] w-full  p-2 flex items-center justify-center b e">
                 <Image
                     src={product?.image}
                     alt={product?.title}
-                    width={180}
-                    height={200}
-                    className="object-contain transition-transform duration-500 group-hover:opacity-80"
+                    width={3000}
+                    height={2000}
+                    className=" object-fit transition-transform duration-500 group-hover:opacity-80 h-full rounded-sm"
                 />
 
                 {/* Hover Overlay: Add to Cart Button */}

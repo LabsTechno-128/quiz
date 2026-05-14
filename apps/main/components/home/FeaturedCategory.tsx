@@ -90,8 +90,8 @@ export default function FeaturedCategory({
                     <Image
                       src={cat.image || "/assets/card.png"}
                       alt={cat.name}
-                      width={200}
-                      height={200}
+                      width={1000}
+                      height={1000}
                       className="w-full object-contain    group-hover:scale-110 transition-transform duration-500 rounded-sm duration-700 hover:scale-105   "
                     />
                   </div>
