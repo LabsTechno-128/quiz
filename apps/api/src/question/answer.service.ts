@@ -25,53 +25,88 @@ export class AnswerService {
     private userRepository: Repository<User>, 
   ) { }
 
-  async create(id:string, createDto: CreateAnswerDto) {
+  async create(userId: string, createDto: CreateAnswerDto) {
+    // 1. Check if user already participated in this quiz
+    const existingAnswer = await this.answerRepository.findOne({
+      where: {
+        quiz: { id: createDto.quizId },
+        users: { id: userId },
+      },
+    });
+
+    if (existingAnswer) {
+      return existingAnswer; // Or throw error: throw new BadRequestException('Already participated');
+    }
+
     const quizRepo = await this.quizRepository.findOne({ where: { id: createDto.quizId } });
     if (!quizRepo) {
       throw new NotFoundException(`Quiz with ID ${createDto.quizId} not found`);
     }
+
     const answer = this.answerRepository.create({
       quiz: quizRepo,
-    });  
+    });
+
     let totalQuestionLength = createDto.questionAnswerDto.length;
-    let questionIds:string[] = [];
-    let optionIds:string[] = [];
-    let correctOptionIds:string[] = [];
+    let correctOptionIds: string[] = [];
     let totalCorrectCount = 0;
-     
+    let attemptedCount = 0;
+
     for (let submitData of createDto.questionAnswerDto) {
       if (submitData.optionId) {
-        optionIds.push(submitData.optionId);
-        const optionRep  = await this.optionRepository.findOne({ where: { id: submitData.optionId, isCorrect: true } });
+        attemptedCount++;
+        const optionRep = await this.optionRepository.findOne({
+          where: { id: submitData.optionId, isCorrect: true },
+        });
         if (optionRep) {
-           totalCorrectCount++;
-           correctOptionIds.push(optionRep.id);
+          totalCorrectCount++;
+          correctOptionIds.push(optionRep.id);
         }
-      } 
+      }
     }
-    let questionRepo = await this.questionRepository.find({ where: {  id: In(questionIds) } });
-    const length = optionIds.length;
-    answer.totalQuestion =totalQuestionLength;
-    answer.notAttemptedQuestion = totalQuestionLength - length;
-    answer.totalScore = totalQuestionLength;
-    answer.wrongScore = totalQuestionLength - totalCorrectCount;
+
+    answer.totalQuestion = totalQuestionLength;
+    answer.notAttemptedQuestion = totalQuestionLength - attemptedCount;
+    answer.totalScore = totalQuestionLength; // Max score
+    answer.wrongScore = attemptedCount - totalCorrectCount;
     answer.correctScore = totalCorrectCount;
     answer.correctOptionId = correctOptionIds;
-    answer.question_answer = questionRepo;
-    if(id){
-      const user = await this.userRepository.findOne({ where: { id } });
+
+    if (userId) {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
       if (user) {
         answer.users = [user];
       }
     }
-    return this.answerRepository.save(answer);
 
+    const savedAnswer = await this.answerRepository.save(answer);
+    
+    // Increment participant count in Quiz
+    await this.quizRepository.increment({ id: quizRepo.id }, 'participantCount', 1);
+
+    return savedAnswer;
   }
 
-  async findAll(questionId?: string): Promise<Answer[]> {
-
+  async getLeaderboard(quizId: string) {
     return this.answerRepository.find({
-      relations: ['quiz','user'],
+      where: { quiz: { id: quizId } },
+      relations: ['users'],
+      order: { correctScore: 'DESC', createdAt: 'ASC' },
+      take: 50,
+    });
+  }
+
+  async getMyAnswers(userId: string) {
+    return this.answerRepository.find({
+      where: { users: { id: userId } },
+      relations: ['quiz'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  async findAll(): Promise<Answer[]> {
+    return this.answerRepository.find({
+      relations: ['quiz', 'users'],
       withDeleted: false,
     });
   }

@@ -32,6 +32,19 @@ export class AnswerController {
     return this.answerService.create(req.user.id,dto);
   }
 
+  @Get('leaderboard/:quizId')
+  @ApiOperation({ summary: 'Get leaderboard for a quiz' })
+  getLeaderboard(@Param('quizId') quizId: string) {
+    return this.answerService.getLeaderboard(quizId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my-submissions')
+  @ApiOperation({ summary: 'Get my submissions' })
+  getMySubmissions(@Req() req: any) {
+    return this.answerService.getMyAnswers(req.user.id);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all questions' })
   @ApiResponse({

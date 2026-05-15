@@ -118,6 +118,9 @@ export interface Quiz {
   createdAt: string;
   updatedAt?: string;
   category?: Category;
+  isPurchased?: boolean;
+  participantCount?: number;
+
 }
 
 export interface CreateQuizDto {
@@ -311,7 +314,7 @@ export interface Product {
   fileUrl?: string;
   price: number;
   offerPrice?: number;
-  sellPrice?: number;
+  sellPrice: number;
   brand?: string;
   language?: string;
   publishedDate?: string;

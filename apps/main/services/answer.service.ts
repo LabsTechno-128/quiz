@@ -1,90 +1,35 @@
 import { clientApi } from "../lib/clientApi";
-import type {
-  Article,
-  CreateArticleDto,
-  UpdateArticleDto,
-  PaginatedResponse,
-  ArticleQueryParams,
-  CreateAnswerDto,
-} from "../types/api.types";
+import type { CreateAnswerDto } from "../types/api.types";
 
 class AnswerService {
   private readonly BASE_PATH = "answers";
 
   /**
-   * Get all answers with pagination and filters
+   * Submit quiz answers
    */
-  async getAll(
-    params?: ArticleQueryParams,
-  ): Promise<PaginatedResponse<Article>> {
-    const queryParams = new URLSearchParams();
-
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.search) queryParams.append("search", params.search);
-    if (params?.category) queryParams.append("category", params.category);
-    if (params?.author) queryParams.append("author", params.author);
-
-    const query = queryParams.toString();
-    const url = query ? `${this.BASE_PATH}?${query}` : this.BASE_PATH;
-
-    return clientApi.get(url);
-  }
-
-  /**
-   * Get published articles only
-   */
-  async getPublished(
-    params?: ArticleQueryParams,
-  ): Promise<PaginatedResponse<Article>> {
-    const queryParams = new URLSearchParams();
-
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.search) queryParams.append("search", params.search);
-    if (params?.category) queryParams.append("category", params.category);
-
-    const query = queryParams.toString();
-    const url = query
-      ? `${this.BASE_PATH}/published?${query}`
-      : `${this.BASE_PATH}/published`;
-
-    return clientApi.get(url);
-  }
-
-  /**
-   * Get a single article by ID
-   */
-  async getById(id: string): Promise<Article> {
-    return clientApi.get(`${this.BASE_PATH}/${id}`);
-  }
-
-  /**
-   * Get all article categories
-   */
-  async getCategories(): Promise<string[]> {
-    return clientApi.get(`${this.BASE_PATH}/categories`);
-  }
-
-  /**
-   * Create a new article (admin only)
-   */
-  async create(data: CreateAnswerDto): Promise<Article> {
+  async create(data: CreateAnswerDto): Promise<any> {
     return clientApi.post(this.BASE_PATH, data);
   }
 
   /**
-   * Update an article (admin only)
+   * Get leaderboard for a specific quiz
    */
-  async update(id: string, data: UpdateArticleDto): Promise<Article> {
-    return clientApi.put(`${this.BASE_PATH}/${id}`, data);
+  async getLeaderboard(quizId: string): Promise<any[]> {
+    return clientApi.get(`${this.BASE_PATH}/leaderboard/${quizId}`);
   }
 
   /**
-   * Delete an article (admin only)
+   * Get current user's quiz submissions
    */
-  async delete(id: string): Promise<void> {
-    return clientApi.delete(`${this.BASE_PATH}/${id}`);
+  async getMySubmissions(): Promise<any[]> {
+    return clientApi.get(`${this.BASE_PATH}/my-submissions`);
+  }
+
+  /**
+   * Get single submission by ID
+   */
+  async getById(id: string): Promise<any> {
+    return clientApi.get(`${this.BASE_PATH}/${id}`);
   }
 }
 

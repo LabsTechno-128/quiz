@@ -19,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         addToCart({
             id: product.id,
             title: product.title,
-            price: product.price,
+            price: product.offerPrice || product.sellPrice || 0,
             image: product.image,
             quantity: 1,
             type: "book",
@@ -110,13 +110,13 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {/* Price */}
                 <div className="mt-1 flex items-center justify-center gap-2">
                     {product.sellPrice && (
-                        <span className="text-[#999] line-through text-[13px] group-hover:text-[#CCC]">
+                        <span className={`text-[#999] text-[13px] group-hover:text-[#CCC] ${product.offerPrice ? "line-through" : ""}`}>
                             TK. {product.sellPrice}
                         </span>
                     )}
-                    <span className="text-black font-bold text-[15px] group-hover:text-[#999] transition-colors">
+                    {product.offerPrice && <span className="text-black font-bold text-[15px] group-hover:text-[#999] transition-colors">
                         TK. {product.offerPrice}
-                    </span>
+                    </span>}
                 </div>
             </div>
 
