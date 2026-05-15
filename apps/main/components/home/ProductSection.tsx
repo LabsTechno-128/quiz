@@ -37,7 +37,7 @@ export default function ProductSection() {
     if (isLoading) return <div className="py-20 text-center text-gray-400">Loading collections...</div>;
 
     return (
-        <section className="space-y-8 pb-20">
+        <section className="space-y-8 pb-6">
             {categoryProduct.map((category) => (
                 <ProductLayout key={category.id} title={category.name} slug={category.slug || ''}>
                     <div className="relative group px-2 sm:px-4">
@@ -68,12 +68,12 @@ export default function ProductSection() {
                         </Swiper>
 
                         {/* Custom Navigation Buttons */}
-                        <button 
+                        <button
                             className={`prev-${category.id} absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/90 shadow-md rounded-full text-gray-700 hover:bg-indigo-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 -translate-x-2 sm:-translate-x-4 border border-gray-100 disabled:hidden`}
                         >
                             <ChevronLeft size={18} />
                         </button>
-                        <button 
+                        <button
                             className={`next-${category.id} absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/90 shadow-md rounded-full text-gray-700 hover:bg-indigo-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 sm:translate-x-4 border border-gray-100 disabled:hidden`}
                         >
                             <ChevronRight size={18} />
